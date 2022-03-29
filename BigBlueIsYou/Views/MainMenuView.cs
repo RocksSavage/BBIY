@@ -7,6 +7,8 @@ namespace CS5410
 {
     public class MainMenuView : GameStateView
     {
+        private KeyboardState kBS;
+        private KeyboardState oldKBS;
         private SpriteFont m_fontMenu;
         private SpriteFont m_fontMenuSelect;
 
@@ -15,12 +17,11 @@ namespace CS5410
             NewGame,
             HighScores,
             Help,
-            About,
+            Credits,
             Quit
         }
 
         private MenuState m_currentSelection = MenuState.NewGame;
-        private bool m_waitForKeyRelease = false;
 
         public override void loadContent(ContentManager contentManager)
         {
@@ -29,46 +30,34 @@ namespace CS5410
         }
         public override GameStateEnum processInput(GameTime gameTime)
         {
-            // This is the technique I'm using to ensure one keypress makes one menu navigation move
-            if (!m_waitForKeyRelease)
-            {
-                // Arrow keys to navigate the menu
-                if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    m_currentSelection = m_currentSelection + 1;
-                    m_waitForKeyRelease = true;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    m_currentSelection = m_currentSelection - 1;
-                    m_waitForKeyRelease = true;
-                }
-                
-                // If enter is pressed, return the appropriate new state
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && m_currentSelection == MenuState.NewGame)
-                {
-                    return GameStateEnum.GamePlay;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && m_currentSelection == MenuState.HighScores)
-                {
-                    return GameStateEnum.HighScores;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && m_currentSelection == MenuState.Help)
-                {
-                    return GameStateEnum.Help;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && m_currentSelection == MenuState.About)
-                {
-                    return GameStateEnum.About;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && m_currentSelection == MenuState.Quit)
-                {
-                    return GameStateEnum.Exit;
-                }
+            kBS = Keyboard.GetState();
+            // Arrow keys to navigate the menu
+            if (kBS.IsKeyUp(Keys.Down) && oldKBS.IsKeyDown(Keys.Down) && m_currentSelection != MenuState.Quit){
+                m_currentSelection = m_currentSelection + 1;
             }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Down) && Keyboard.GetState().IsKeyUp(Keys.Up))
-            {
-                m_waitForKeyRelease = false;
+            if (kBS.IsKeyUp(Keys.Up) && oldKBS.IsKeyDown(Keys.Up) && m_currentSelection != MenuState.NewGame){
+                m_currentSelection = m_currentSelection - 1;
+            }
+            
+            if (!(kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter))) {
+                oldKBS = kBS; 
+                return GameStateEnum.MainMenu;
+            }
+            oldKBS = kBS;
+            if (m_currentSelection == MenuState.NewGame) {
+                return GameStateEnum.GamePlay;
+            }
+            if (m_currentSelection == MenuState.HighScores) {
+                return GameStateEnum.HighScores;
+            }
+            if (m_currentSelection == MenuState.Help) {
+                return GameStateEnum.Help;
+            }
+            if (m_currentSelection == MenuState.Credits) {
+                return GameStateEnum.Credits;
+            }
+            if (m_currentSelection == MenuState.Quit) {
+                return GameStateEnum.Exit;
             }
 
             return GameStateEnum.MainMenu;
@@ -88,7 +77,7 @@ namespace CS5410
                 m_currentSelection == MenuState.NewGame ? Color.Yellow : Color.Blue);
             bottom = drawMenuItem(m_currentSelection == MenuState.HighScores ? m_fontMenuSelect : m_fontMenu, "High Scores", bottom, m_currentSelection == MenuState.HighScores ? Color.Yellow : Color.Blue);
             bottom = drawMenuItem(m_currentSelection == MenuState.Help ? m_fontMenuSelect : m_fontMenu, "Help", bottom, m_currentSelection == MenuState.Help ? Color.Yellow : Color.Blue);
-            bottom = drawMenuItem(m_currentSelection == MenuState.About ? m_fontMenuSelect : m_fontMenu, "About", bottom, m_currentSelection == MenuState.About ? Color.Yellow : Color.Blue);
+            bottom = drawMenuItem(m_currentSelection == MenuState.Credits ? m_fontMenuSelect : m_fontMenu, "Credits", bottom, m_currentSelection == MenuState.Credits ? Color.Yellow : Color.Blue);
             drawMenuItem(m_currentSelection == MenuState.Quit ? m_fontMenuSelect : m_fontMenu, "Quit", bottom, m_currentSelection == MenuState.Quit ? Color.Yellow : Color.Blue);
 
             m_spriteBatch.End();
