@@ -10,6 +10,7 @@ Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down
 TODO vvvvvvvvvvvv-------------------------------------------------
 
+exit quits from main menu
 main menu: new game controls credits only
 Integrate text Renderer
 Name game
