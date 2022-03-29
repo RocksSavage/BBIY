@@ -2,11 +2,35 @@ copy sneke code
 git init
 make remote repo
 connect repo with trent
-Done ^^^^^^^^^^^^-------------------------------------------------
-to move these in vs code highlight all three lines hold alt and press up or down
-TODO vvvvvvvvvvvv-------------------------------------------------
 clean up files
 Fix menu switching down and up off screen
-browser integration
-Name game
+exiting from game instantly starts new game
+
+Done ^^^^^^^^^^^^-------------------------------------------------
+to move these in vs code highlight all five lines hold alt and press up or down
+TODO vvvvvvvvvvvv-------------------------------------------------
+
+main menu: new game controls credits only
 Integrate text Renderer
+Name game
+Controlls view
+Configurable controlls
+Keyboard controlls are saved when the program is exited
+control YOU/BB up down left right
+R to reset the level
+read in levels from text file
+Rules are processed vertically and horizontally (see assignment description for particulars)
+Use TA written python code to extract animated spritesheet
+Animated Sprites for Nouns and verbs exception YOU/BB
+Sound Effect: Background music
+Sound Effect: Win a level music
+Sound Effect: Each time YOU is moved make a little walking/step sound (should be subtle)
+Sound Effect: When WIN is changed
+Create particle System
+particle effect when Winning: make fireworks
+particle effect when YOU is changed: particles origionate along the edge of the tile not the center
+particle effect when WIN is changed: particles origionate along the edge of the tile not the center
+Level Transition: Fireworks for a few seconds then new level If the whole game is won give the player the option to go back to the main menu
+browser integration
+
+Z to undo one step (stretch goal)
