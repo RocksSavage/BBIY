@@ -1,0 +1,10 @@
+copy sneke code
+git init
+make remote repo
+connect repo with trent
+Done ^^^^^^^^^^^^-------------------------------------------------
+TODO vvvvvvvvvvvv-------------------------------------------------
+Fix menu switching down and up off screen
+browser integration
+Name game
+Integrate text Renderer
