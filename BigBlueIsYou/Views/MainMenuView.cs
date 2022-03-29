@@ -39,6 +39,9 @@ namespace CS5410
                 m_currentSelection = m_currentSelection - 1;
             }
             
+            if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape)){
+                return GameStateEnum.Exit;
+            }
             if (!(kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter))) {
                 oldKBS = kBS; 
                 return GameStateEnum.MainMenu;
