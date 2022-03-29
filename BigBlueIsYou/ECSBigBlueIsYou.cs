@@ -34,7 +34,7 @@ namespace CS5410
             m_states.Add(GameStateEnum.GamePlay, new GamePlayView());
             m_states.Add(GameStateEnum.HighScores, new HighScoresView());
             m_states.Add(GameStateEnum.Help, new HelpView());
-            m_states.Add(GameStateEnum.About, new AboutView());
+            m_states.Add(GameStateEnum.Credits, new CreditsView());
 
             // We are starting with the main menu
             m_currentState = m_states[GameStateEnum.MainMenu];

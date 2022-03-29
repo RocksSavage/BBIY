@@ -6,7 +6,7 @@
         GamePlay,
         HighScores,
         Help,
-        About,
+        Credits,
         Exit
     }
 }
