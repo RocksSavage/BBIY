@@ -88,8 +88,6 @@ namespace CS5410
         private float drawMenuItem(SpriteFont font, string text, float y, Color color)
         {
             Vector2 stringSize1 = font.MeasureString(text);
-            // m_spriteBatch.DrawString(font, text, new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize.X / 2, y), color);
-            
             Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, y);
             Printer.PrintWithOutline(text, m_graphics, m_spriteBatch, stringSize, font, color, Color.White);
 
