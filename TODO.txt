@@ -6,12 +6,13 @@ clean up files
 Fix menu switching down and up off screen
 exiting from game instantly starts new game
 exit quits from main menu
+fix console log
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-main menu: new game controls credits only
+main menu: NewGame Controls Credits only
 Integrate text Renderer
 Name game
 Controlls view
