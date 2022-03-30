@@ -8,7 +8,7 @@ namespace CS5410
     public class CreditsView : GameStateView
     {
         private SpriteFont m_font;
-        private const string MESSAGE = "*I* wrote this amazing game!";
+        private const string MESSAGE = "Big Blue is You Written by Trent Savage and Bradley Sherman!";
 
         public override void loadContent(ContentManager contentManager)
         {
@@ -29,9 +29,13 @@ namespace CS5410
         {
             m_spriteBatch.Begin();
 
-            Vector2 stringSize = m_font.MeasureString(MESSAGE);
-            m_spriteBatch.DrawString(m_font, MESSAGE,
-                new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize.X / 2, m_graphics.PreferredBackBufferHeight / 2 - stringSize.Y), Color.Yellow);
+            // Vector2 stringSize = m_font.MeasureString(MESSAGE);
+            // m_spriteBatch.DrawString(m_font, MESSAGE, new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize.X / 2, m_graphics.PreferredBackBufferHeight / 2 - stringSize.Y), Color.Yellow);
+
+            Vector2 stringSize1 = m_font.MeasureString(MESSAGE);
+            Printer p = new Printer();
+            Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, m_graphics.PreferredBackBufferHeight / 2 - stringSize1.Y);
+            p.printWithOutline(MESSAGE, m_graphics, m_spriteBatch, stringSize, m_font, Color.Blue, Color.Yellow);
 
             m_spriteBatch.End();
         }

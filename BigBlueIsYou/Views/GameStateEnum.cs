@@ -5,6 +5,7 @@
         MainMenu,
         GamePlay,
         HighScores,
+        Controls,
         Help,
         Credits,
         Exit

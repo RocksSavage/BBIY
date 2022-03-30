@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+// using System;
+// using CS5410.Input;
 
 namespace CS5410
 {
@@ -8,11 +12,13 @@ namespace CS5410
     {
         protected GraphicsDeviceManager m_graphics;
         protected SpriteBatch m_spriteBatch;
+        public List<Keys> m_controls;
 
-        public void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
+        public void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics, List<Keys> controls)
         {
             m_graphics = graphics;
             m_spriteBatch = new SpriteBatch(graphicsDevice);
+            m_controls = controls;
         }
 
         public virtual void initializeSession() { }

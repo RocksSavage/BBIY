@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace CS5410
 {
@@ -16,6 +17,7 @@ namespace CS5410
         {
             NewGame,
             HighScores,
+            Controls,
             Help,
             Credits,
             Quit
@@ -48,15 +50,22 @@ namespace CS5410
             }
             oldKBS = kBS;
             if (m_currentSelection == MenuState.NewGame) {
+                oldKBS = kBS;
                 return GameStateEnum.GamePlay;
             }
             if (m_currentSelection == MenuState.HighScores) {
                 return GameStateEnum.HighScores;
             }
+            if (m_currentSelection == MenuState.Controls){
+                oldKBS = kBS;
+                Console.WriteLine("This Happens");
+                return GameStateEnum.Controls;
+            }
             if (m_currentSelection == MenuState.Help) {
                 return GameStateEnum.Help;
             }
             if (m_currentSelection == MenuState.Credits) {
+                oldKBS = kBS;
                 return GameStateEnum.Credits;
             }
             if (m_currentSelection == MenuState.Quit) {
@@ -79,6 +88,7 @@ namespace CS5410
                 200, 
                 m_currentSelection == MenuState.NewGame ? Color.Yellow : Color.Blue);
             bottom = drawMenuItem(m_currentSelection == MenuState.HighScores ? m_fontMenuSelect : m_fontMenu, "High Scores", bottom, m_currentSelection == MenuState.HighScores ? Color.Yellow : Color.Blue);
+            bottom = drawMenuItem(m_currentSelection == MenuState.Controls ? m_fontMenuSelect : m_fontMenu, "Controls", bottom, m_currentSelection == MenuState.Controls ? Color.Yellow : Color.Blue);
             bottom = drawMenuItem(m_currentSelection == MenuState.Help ? m_fontMenuSelect : m_fontMenu, "Help", bottom, m_currentSelection == MenuState.Help ? Color.Yellow : Color.Blue);
             bottom = drawMenuItem(m_currentSelection == MenuState.Credits ? m_fontMenuSelect : m_fontMenu, "Credits", bottom, m_currentSelection == MenuState.Credits ? Color.Yellow : Color.Blue);
             drawMenuItem(m_currentSelection == MenuState.Quit ? m_fontMenuSelect : m_fontMenu, "Quit", bottom, m_currentSelection == MenuState.Quit ? Color.Yellow : Color.Blue);

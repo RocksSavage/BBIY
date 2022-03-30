@@ -11,6 +11,7 @@ namespace CS5410
         private IGameState m_currentState;
         private GameStateEnum m_nextStateEnum = GameStateEnum.MainMenu;
         private Dictionary<GameStateEnum, IGameState> m_states;
+        public List<Keys> m_controls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.Space};
 
         public ECSBigBlueIsYou()
         {
@@ -33,6 +34,7 @@ namespace CS5410
             m_states.Add(GameStateEnum.MainMenu, new MainMenuView());
             m_states.Add(GameStateEnum.GamePlay, new GamePlayView());
             m_states.Add(GameStateEnum.HighScores, new HighScoresView());
+            m_states.Add(GameStateEnum.Controls, new ControlsView());
             m_states.Add(GameStateEnum.Help, new HelpView());
             m_states.Add(GameStateEnum.Credits, new CreditsView());
 
@@ -47,7 +49,7 @@ namespace CS5410
             // Give all game states a chance to load their content
             foreach (var item in m_states)
             {
-                item.Value.initialize(this.GraphicsDevice, m_graphics);
+                item.Value.initialize(this.GraphicsDevice, m_graphics, m_controls);
                 item.Value.loadContent(this.Content);
             }
         }
