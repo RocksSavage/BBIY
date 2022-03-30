@@ -33,9 +33,7 @@ namespace CS5410
             m_states = new Dictionary<GameStateEnum, IGameState>();
             m_states.Add(GameStateEnum.MainMenu, new MainMenuView());
             m_states.Add(GameStateEnum.GamePlay, new GamePlayView());
-            m_states.Add(GameStateEnum.HighScores, new HighScoresView());
             m_states.Add(GameStateEnum.Controls, new ControlsView());
-            m_states.Add(GameStateEnum.Help, new HelpView());
             m_states.Add(GameStateEnum.Credits, new CreditsView());
 
             // We are starting with the main menu
@@ -58,7 +56,7 @@ namespace CS5410
         {
             m_nextStateEnum = m_currentState.processInput(gameTime);
 
-            // Special case for exiting the game
+            // // Special case for exiting the game
             if (m_nextStateEnum == GameStateEnum.Exit)
             {
                 Exit();
