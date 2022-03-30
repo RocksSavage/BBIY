@@ -6,6 +6,7 @@
         GamePlay,
         Controls,
         Credits,
+        GameOver,
         Exit
     }
 }

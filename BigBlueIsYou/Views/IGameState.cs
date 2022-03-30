@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-// using CS5410.Input;
+using CS5410.Input;
 
 
 namespace CS5410
@@ -11,7 +11,7 @@ namespace CS5410
     public interface IGameState
     {
         void initializeSession();
-        void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics, List<Keys> controls);
+        void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics, KeyboardInput inputKeyboard, List<Keys> controls);
         void loadContent(ContentManager contentManager);
         GameStateEnum processInput(GameTime gameTime);
         void update(GameTime gameTime);

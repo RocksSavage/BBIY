@@ -2,21 +2,24 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using CS5410.Input;
 
 namespace CS5410
 {
-    public class ECSBigBlueIsYou : Game
+    public class ECSBigBlueIsYouControler : Game
     {
         private GraphicsDeviceManager m_graphics;
         private IGameState m_currentState;
+        private KeyboardInput m_inputKeyboard;
         private GameStateEnum m_nextStateEnum = GameStateEnum.MainMenu;
         private Dictionary<GameStateEnum, IGameState> m_states;
         public List<Keys> m_controls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.Space};
 
-        public ECSBigBlueIsYou()
+        public ECSBigBlueIsYouControler()
         {
             m_graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            m_inputKeyboard = new KeyboardInput();
             IsMouseVisible = true;
         }
 
@@ -47,7 +50,7 @@ namespace CS5410
             // Give all game states a chance to load their content
             foreach (var item in m_states)
             {
-                item.Value.initialize(this.GraphicsDevice, m_graphics, m_controls);
+                item.Value.initialize(this.GraphicsDevice, m_graphics, m_inputKeyboard, m_controls);
                 item.Value.loadContent(this.Content);
             }
         }
