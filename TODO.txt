@@ -11,20 +11,22 @@ main menu: NewGame Controls Credits only
 Change background to Black
 Integrate text Renderer
 Name game
+R to restart the game
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
+read in levels from text file
+Restructure snake Game to show grid
 Controlls view
 Configurable controlls
 Keyboard controlls are saved when the program is exited
 control YOU/BB up down left right
-R to reset the level
-read in levels from text file
 Rules are processed vertically and horizontally (see assignment description for particulars)
 Use TA written python code to extract animated spritesheet
 Animated Sprites for Nouns and verbs exception YOU/BB
+R to reset the level
 Sound Effect: Background music
 Sound Effect: Win a level music
 Sound Effect: Each time YOU is moved make a little walking/step sound (should be subtle)

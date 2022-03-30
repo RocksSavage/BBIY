@@ -24,8 +24,8 @@ namespace CS5410
         {
             // Set window size preferences
             m_graphics.IsFullScreen = false;
-            m_graphics.PreferredBackBufferWidth = 1440;
-            m_graphics.PreferredBackBufferHeight = 1080;
+            m_graphics.PreferredBackBufferWidth = 1080;
+            m_graphics.PreferredBackBufferHeight = 720;
 
             m_graphics.ApplyChanges();
 
