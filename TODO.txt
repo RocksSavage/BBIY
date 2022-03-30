@@ -17,12 +17,12 @@ Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-read in levels from text file
 Restructure snake Game to show grid
-Controlls view
-Configurable controlls
-Keyboard controlls are saved when the program is exited
+read in levels from text file
 control YOU/BB up down left right
+Controlls view
+Configurable movement controlls
+Keyboard controlls are saved when the program is exited
 Rules are processed vertically and horizontally (see assignment description for particulars)
 Use TA written python code to extract animated spritesheet
 Animated Sprites for Nouns and verbs exception YOU/BB

@@ -94,11 +94,11 @@ namespace CS5410
                 if(kBS.IsKeyDown(Keys.Left)) {key = Keys.Left; }
                 if(kBS.IsKeyDown(Keys.Right)) {key = Keys.Right; }
                 if (key != Keys.None){
-                    // if(m_currentSelection == Selection.UP) {m_controls[0] = key; m_enterNewKey = false;}
-                    // else if(m_currentSelection == Selection.DOWN) {m_controls[1] = key; m_enterNewKey = false;}
-                    // else if(m_currentSelection == Selection.LEFT) {m_controls[2] = key; m_enterNewKey = false;}
-                    // else if(m_currentSelection == Selection.RIGHT) {m_controls[3] = key; m_enterNewKey = false;}
-                    // else if(m_currentSelection == Selection.SHOOT) {m_controls[4] = key; m_enterNewKey = false;}
+                    if(m_currentSelection == Selection.UP) {m_controls[0] = key; m_enterNewKey = false;}
+                    else if(m_currentSelection == Selection.DOWN) {m_controls[1] = key; m_enterNewKey = false;}
+                    else if(m_currentSelection == Selection.LEFT) {m_controls[2] = key; m_enterNewKey = false;}
+                    else if(m_currentSelection == Selection.RIGHT) {m_controls[3] = key; m_enterNewKey = false;}
+                    else if(m_currentSelection == Selection.SHOOT) {m_controls[4] = key; m_enterNewKey = false;}
                     updateControlStringsWithInput();
                 }
 
@@ -175,7 +175,7 @@ namespace CS5410
                 // Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, 100);
                 // p.printWithOutline(Title, m_graphics, m_spriteBatch, stringSize, m_fontTitle, Color.Green, Color.White);
 
-                float bottom = drawMenuItem(m_currentSelection == Selection.UP ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[0], m_graphics.PreferredBackBufferWidth/4, m_currentSelection == Selection.UP ? Color.Black : Color.Blue);
+                float bottom = drawMenuItem(m_currentSelection == Selection.UP ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[0], m_graphics.PreferredBackBufferHeight/2, m_currentSelection == Selection.UP ? Color.Black : Color.Blue);
                 bottom = drawMenuItem(m_currentSelection == Selection.DOWN ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[1], bottom, m_currentSelection == Selection.DOWN ? Color.Black : Color.Blue);
                 bottom = drawMenuItem(m_currentSelection == Selection.LEFT ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[2], bottom, m_currentSelection == Selection.LEFT ? Color.Black : Color.Blue);
                 bottom = drawMenuItem(m_currentSelection == Selection.RIGHT ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[3], bottom, m_currentSelection == Selection.RIGHT ? Color.Black : Color.Blue);
