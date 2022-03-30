@@ -10,8 +10,10 @@ namespace CS5410
     {
         private KeyboardState kBS;
         private KeyboardState oldKBS;
+        private SpriteFont m_fontTitle;
         private SpriteFont m_fontMenu;
         private SpriteFont m_fontMenuSelect;
+        private const string Title = "BBIY";
 
         private enum MenuState
         {
@@ -25,6 +27,7 @@ namespace CS5410
 
         public override void loadContent(ContentManager contentManager)
         {
+            m_fontTitle = contentManager.Load<SpriteFont>("Fonts/gameTitle");
             m_fontMenu = contentManager.Load<SpriteFont>("Fonts/menu");
             m_fontMenuSelect = contentManager.Load<SpriteFont>("Fonts/menu-select");
         }
@@ -71,31 +74,26 @@ namespace CS5410
         {
             m_spriteBatch.Begin();
 
-            // I split the first one's parameters on separate lines to help you see them better
-            float bottom = drawMenuItem(
-                m_currentSelection == MenuState.NewGame ? m_fontMenuSelect : m_fontMenu, 
-                "New Game",
-                200, 
-                m_currentSelection == MenuState.NewGame ? Color.Yellow : Color.Blue);
-            // bottom = drawMenuItem(m_currentSelection == MenuState.HighScores ? m_fontMenuSelect : m_fontMenu, "High Scores", bottom, m_currentSelection == MenuState.HighScores ? Color.Yellow : Color.Blue);
-            bottom = drawMenuItem(m_currentSelection == MenuState.Controls ? m_fontMenuSelect : m_fontMenu, "Controls", bottom, m_currentSelection == MenuState.Controls ? Color.Yellow : Color.Blue);
-            // bottom = drawMenuItem(m_currentSelection == MenuState.Help ? m_fontMenuSelect : m_fontMenu, "Help", bottom, m_currentSelection == MenuState.Help ? Color.Yellow : Color.Blue);
-            bottom = drawMenuItem(m_currentSelection == MenuState.Credits ? m_fontMenuSelect : m_fontMenu, "Credits", bottom, m_currentSelection == MenuState.Credits ? Color.Yellow : Color.Blue);
-            // drawMenuItem(m_currentSelection == MenuState.Quit ? m_fontMenuSelect : m_fontMenu, "Quit", bottom, m_currentSelection == MenuState.Quit ? Color.Yellow : Color.Blue);
+            Vector2 stringSize1 = m_fontTitle.MeasureString(Title);
+            Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, 100);
+            Printer.PrintWithOutline(Title, m_graphics, m_spriteBatch, stringSize, m_fontTitle, Color.Green, Color.White);
+
+            float bottom = drawMenuItem(m_currentSelection == MenuState.NewGame ? m_fontMenuSelect : m_fontMenu, "New Game", 500, m_currentSelection == MenuState.NewGame ? Color.Black : Color.Blue);
+            bottom = drawMenuItem(m_currentSelection == MenuState.Controls ? m_fontMenuSelect : m_fontMenu, "Controls", bottom, m_currentSelection == MenuState.Controls ? Color.Black : Color.Blue);
+            bottom = drawMenuItem(m_currentSelection == MenuState.Credits ? m_fontMenuSelect : m_fontMenu, "Credits", bottom, m_currentSelection == MenuState.Credits ? Color.Black : Color.Blue);
 
             m_spriteBatch.End();
         }
 
         private float drawMenuItem(SpriteFont font, string text, float y, Color color)
         {
-            Vector2 stringSize = font.MeasureString(text);
-            m_spriteBatch.DrawString(
-                font,
-                text,
-                new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize.X / 2, y),
-                color);
+            Vector2 stringSize1 = font.MeasureString(text);
+            // m_spriteBatch.DrawString(font, text, new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize.X / 2, y), color);
+            
+            Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, y);
+            Printer.PrintWithOutline(text, m_graphics, m_spriteBatch, stringSize, font, color, Color.White);
 
-            return y + stringSize.Y;
+            return y + stringSize1.Y;
         }
     }
 }

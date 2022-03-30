@@ -7,14 +7,15 @@ Fix menu switching down and up off screen
 exiting from game instantly starts new game
 exit quits from main menu
 fix console log
+main menu: NewGame Controls Credits only
+Change background to Black
+Integrate text Renderer
+Name game
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-main menu: NewGame Controls Credits only
-Integrate text Renderer
-Name game
 Controlls view
 Configurable controlls
 Keyboard controlls are saved when the program is exited

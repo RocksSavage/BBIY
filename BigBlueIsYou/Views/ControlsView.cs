@@ -189,9 +189,8 @@ namespace CS5410
         private float drawMenuItem(SpriteFont font, string text, float y, Color color)
         {
             Vector2 stringSize1 = font.MeasureString(text);
-            Printer p = new Printer();
             Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, y);
-            p.printWithOutline(text, m_graphics, m_spriteBatch, stringSize, font, color, Color.White);
+            Printer.PrintWithOutline(text, m_graphics, m_spriteBatch, stringSize, font, color, Color.White);
             return y + stringSize1.Y;
         }
 
