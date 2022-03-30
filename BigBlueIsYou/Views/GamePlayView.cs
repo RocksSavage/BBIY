@@ -7,6 +7,8 @@ namespace CS5410
 {
     public class GamePlayView : GameStateView
     {
+        private KeyboardState kBS;
+        private KeyboardState oldKBS;
         ContentManager m_content;
         private GameModel m_gameModel;
 
@@ -23,11 +25,17 @@ namespace CS5410
 
         public override GameStateEnum processInput(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
+            kBS = Keyboard.GetState();
+            if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape)) {
+                oldKBS = kBS;
+                initializeSession();
                 return GameStateEnum.MainMenu;
             }
+            if (kBS.IsKeyUp(Keys.R) && oldKBS.IsKeyDown(Keys.R)){
+                initializeSession();
+            }
 
+            oldKBS = kBS;
             return GameStateEnum.GamePlay;
         }
 
