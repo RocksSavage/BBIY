@@ -12,13 +12,13 @@ Change background to Black
 Integrate text Renderer
 Name game
 R to restart the game
+Restructure snake Game to show grid
+read in levels from text file
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-Restructure snake Game to show grid
-read in levels from text file
 control YOU/BB up down left right
 Controlls view
 Configurable movement controlls
