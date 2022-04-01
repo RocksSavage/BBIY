@@ -59,11 +59,13 @@ namespace CS5410
             foreach (List<Cell> r in m_grid){
                 foreach(Cell c in r){
                     if(c.things.Count > 0){
-                        String s = Char.ToString(c.things[0]);
-                        Vector2 stringSize1 = font.MeasureString(s);
-                        // Vector2 stringSize = new Vector2(graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, graphics.PreferredBackBufferHeight/8);
-                        Vector2 stringSize = new Vector2(c.Y*30, c.X*30);
-                        Printer.PrintWithOutline(s, graphics, spriteBatch, stringSize, font, Color.Green, Color.White);
+                        foreach(Char ch in c.things){
+                            String s = Char.ToString(ch);
+                            Vector2 stringSize1 = font.MeasureString(s);
+                            // Vector2 stringSize = new Vector2(graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, graphics.PreferredBackBufferHeight/8);
+                            Vector2 stringSize = new Vector2(c.Y*30, c.X*30);
+                            Printer.PrintWithOutline(s, graphics, spriteBatch, stringSize, font, Color.Green, Color.White);
+                        }
                     }
                 }
             }

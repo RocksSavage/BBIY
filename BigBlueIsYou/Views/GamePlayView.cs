@@ -36,7 +36,7 @@ namespace CS5410
         {
             m_contentManager = contentManager;
             grid = new Grid(currentLevel);
-            m_font = contentManager.Load<SpriteFont>("Fonts/menu");  
+            m_font = contentManager.Load<SpriteFont>("Fonts/gameFont");  
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
            
