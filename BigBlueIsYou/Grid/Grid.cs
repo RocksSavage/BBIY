@@ -15,7 +15,6 @@ namespace CS5410
         public int m_X;
         public int m_Y;
         public List<List<Cell>> m_grid;
-        public List<Mushroom> m_mushroomList = new List<Mushroom>();
         public Random rnd = new Random();
         public int m_currentLevel;
         public string[] level1 = System.IO.File.ReadAllLines("C:/Programming/CS Homework/CS5410 Game Development/HW 4 Big Blue is You/BBIY/BigBlueIsYou/Levels/levelSource/level-1.bbiy");
@@ -44,10 +43,10 @@ namespace CS5410
                 for (int j = 0; j < m_Y; j++){
                     Cell cell = new Cell(i, j);
                     if(level1[i][j] != ' '){                // adds background letters like shrubs grass
-                        cell.things.Add(level1[i][j]); 
+                        cell.things.Add(new Thing(level1[i][j], cell.X, cell.Y)); 
                     }
                     if(level1[i+20][j] != ' '){             // adds foreground letters like bb is you rock skull ice flag
-                        cell.things.Add(level1[i+20][j]);
+                        cell.things.Add(new Thing(level1[i+20][j], cell.X, cell.Y));
                     }
                     row.Add(cell);
                 }
@@ -59,10 +58,9 @@ namespace CS5410
             foreach (List<Cell> r in m_grid){
                 foreach(Cell c in r){
                     if(c.things.Count > 0){
-                        foreach(Char ch in c.things){
-                            String s = Char.ToString(ch);
+                        foreach(Thing t in c.things){
+                            String s = Char.ToString(t.m_name);
                             Vector2 stringSize1 = font.MeasureString(s);
-                            // Vector2 stringSize = new Vector2(graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, graphics.PreferredBackBufferHeight/8);
                             Vector2 stringSize = new Vector2(c.Y*30, c.X*30);
                             Printer.PrintWithOutline(s, graphics, spriteBatch, stringSize, font, Color.Green, Color.White);
                         }
@@ -98,8 +96,7 @@ namespace CS5410
     }
     public class Cell{
 
-        public Mushroom mushroom { get; set; }
-        public List<char> things = new List<char>();
+        public List<Thing> things = new List<Thing>();
 
         public int X { get; set; }
         public int Y { get; set; }
@@ -112,25 +109,26 @@ namespace CS5410
             return "x:"+ X+ "y:"+ Y;
         }
     }
-    public class Mushroom{
+    public class Thing{
 
-        public int health = 4;
-        public int mushroomSize = 30;
-        public Rectangle body;
-        public bool isPoisoned = false;
+        public Char m_name;
+        public int X { get; set; }
+        public int Y { get; set; }
+        // public Rectangle body;
 
-        public Mushroom(int x, int y){
-            body = new Rectangle(x, y, mushroomSize, mushroomSize);
-
+        public Thing(Char name, int x, int y){
+            m_name = name;
+            X = x;
+            Y = y;
         }
-        public Mushroom(int x, int y, int h){
-            body = new Rectangle(x, y, mushroomSize, mushroomSize);
-            health = h;
+        // public Thing(int x, int y, int h){
+        //     body = new Rectangle(x, y, mushroomSize, mushroomSize);
+        //     // health = h;
 
-        }
+        // }
         
-        public override string ToString(){
-            return "x:"+ body.X+ "y:"+ body.Y;
-        }
+        // public override string ToString(){
+        //     return "x:"+ body.X+ "y:"+ body.Y;
+        // }
     }
 }

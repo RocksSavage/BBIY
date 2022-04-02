@@ -29,6 +29,11 @@ namespace CS5410
         public Random rnd = new Random();
         // private bool saving = false;
         public int currentLevel = 1;
+        public List<Thing> you = new List<Thing>();
+        public List<Thing> win = new List<Thing>();
+        public List<Thing> push = new List<Thing>();
+        public List<Thing> best = new List<Thing>();
+        public List<Thing> stop = new List<Thing>();
 
 
 
@@ -72,6 +77,9 @@ namespace CS5410
         }
         public override void update(GameTime gameTime)
         {
+            checkRules();
+            performRules();
+            
 
 
         }
@@ -85,6 +93,23 @@ namespace CS5410
 
 
             m_spriteBatch.End();
+        }
+
+        public void checkRules(){
+            // Console.WriteLine("check rules");
+        }
+        public void performRules(){
+            // Console.WriteLine("perform rules");
+            you = new List<Thing>();
+            foreach(List<Cell> r in grid.m_grid){           // adds b to list of you
+                foreach(Cell c in r){
+                    foreach(Thing t in c.things){
+                        if (t.m_name == 'b'){
+                            you.Add(t);
+                        }
+                    }
+                }
+            }
         }
 
         // public bool isPathClear(Rectangle square1, Rectangle square2){ // detect for collisions
@@ -110,30 +135,23 @@ namespace CS5410
         }
 
         public void onMoveUp(GameTime gameTime, float scale){
-            // if (m_player.body.Top > m_graphics.GraphicsDevice.Viewport.Height / 2){
-            // if (m_player.body.Top > 5){
-            //     int moveDistance = (int)(gameTime.ElapsedGameTime.TotalMilliseconds * m_player.SPRITE_MOVE_PIXELS_PER_MS * scale);
-            //     Rectangle temp = m_player.body;
-            //     temp.Y = Math.Max(m_player.body.Y - moveDistance, 0);
-            //     foreach(Mushroom m in grid.m_mushroomList){
-            //         if (isPathClear(m.body, temp)){ continue; }
-            //         else{ return; }
-            //     }
-            //     m_player.body.Y = temp.Y;
-            // }
+            foreach(Thing t in you){
+                if (grid.m_grid[t.X-3][t.Y].things.Count < 2){
+                    grid.m_grid[t.X-2][t.Y].things.Remove(t);
+                    grid.m_grid[t.X-3][t.Y].things.Add(t);
+                    t.Y = t.Y-3;
+                }
+            }
         }
 
         public void onMoveDown(GameTime gameTime, float scale){
-            // if ((m_player.body.Bottom) < m_graphics.GraphicsDevice.Viewport.Height - m_player.body.Height){
-            //     int moveDistance = (int)(gameTime.ElapsedGameTime.TotalMilliseconds * m_player.SPRITE_MOVE_PIXELS_PER_MS * scale);
-            //     Rectangle temp = m_player.body;
-            //     temp.Y = Math.Min(m_player.body.Y + moveDistance, m_graphics.GraphicsDevice.Viewport.Height);
-            //     foreach(Mushroom m in grid.m_mushroomList){
-            //         if (isPathClear(m.body, temp)){ continue; }
-            //         else{ return; }
-            //     }
-            //     m_player.body.Y = temp.Y;
-            // }
+            foreach(Thing t in you){
+                if (grid.m_grid[t.X-1][t.Y].things.Count < 2){
+                    grid.m_grid[t.X-2][t.Y].things.Remove(t);
+                    grid.m_grid[t.X-1][t.Y].things.Add(t);
+                    t.Y = t.Y-1;
+                }
+            }
         }
 
         public void onMoveLeft(GameTime gameTime, float scale){
