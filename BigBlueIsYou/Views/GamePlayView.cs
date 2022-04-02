@@ -9,6 +9,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Diagnostics;
 using CS5410.Input;
 using System;
 
@@ -27,13 +28,26 @@ namespace CS5410
         public bool gameOver = false;
         public int gridXOffset = 510; // number of pixels from the left side of the screen to where the grid starts
         public Random rnd = new Random();
+        public int millisecondsToWait = 100;
+        public int moveTimer = 0;
         // private bool saving = false;
         public int currentLevel = 1;
-        public List<Thing> you = new List<Thing>();
+        public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
+        public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
+        
+        public List<Char> isYou = new List<Char>(); // Rule of what thing is you
+        public List<Char> isWin = new List<Char>();
+        public List<Char> isPush = new List<Char>();
+        public List<Char> isStop = new List<Char>();
+        public List<Char> isSink = new List<Char>();
+        public List<Char> isKill = new List<Char>();
+        //--------------------------------------------------------
+        public List<Thing> you = new List<Thing>(); // things that are you
         public List<Thing> win = new List<Thing>();
         public List<Thing> push = new List<Thing>();
-        public List<Thing> best = new List<Thing>();
         public List<Thing> stop = new List<Thing>();
+        public List<Thing> sink = new List<Thing>();
+        public List<Thing> kill = new List<Thing>();
 
 
 
@@ -77,8 +91,8 @@ namespace CS5410
         }
         public override void update(GameTime gameTime)
         {
-            checkRules();
-            performRules();
+            wipeRules();
+            findRules();       // finds the rules
             
 
 
@@ -95,33 +109,71 @@ namespace CS5410
             m_spriteBatch.End();
         }
 
-        public void checkRules(){
-            // Console.WriteLine("check rules");
-        }
-        public void performRules(){
-            // Console.WriteLine("perform rules");
-            you = new List<Thing>();
-            foreach(List<Cell> r in grid.m_grid){           // adds b to list of you
-                foreach(Cell c in r){
+        public void findRules(){
+            foreach(List<Cell> col in grid.m_grid){
+                foreach(Cell c in col){
                     foreach(Thing t in c.things){
-                        if (t.m_name == 'b'){
-                            you.Add(t);
+                        if(t.m_name == 'I'){
+                            checkForRules(t);
+                        }
+                    }
+                }
+            }
+            // Console.WriteLine("check rules");
+            // find all instances of is
+            // check neighboring cells to see if rules exist
+        }
+        public void checkForRules(Thing t){
+            // if (grid.m_grid[t.X-1][t.Y].things.Count > 0 && grid.m_grid[t.X+1][t.Y].things.Count > 0){
+            //     if (objects.Contains(grid.m_grid[t.X-1][t.Y].things[0].m_name) && text.Contains(grid.m_grid[t.X+1][t.Y].things[0].m_name)) {
+            //         Char obj = grid.m_grid[t.X-1][t.Y].things[0].m_name;
+            //         Char txt = grid.m_grid[t.X+1][t.Y].things[0].m_name;
+            //         Console.WriteLine("this happens");
+            //         if (txt == 'Y') performRules(you, obj);
+            //         if (txt == 'X') performRules(win, obj);
+            //         if (txt == 'P') performRules(push, obj);
+            //         if (txt == 'S') performRules(stop, obj);
+            //         if (txt == 'N') performRules(sink, obj);
+            //         if (txt == 'K') performRules(kill, obj);
+            //             // reorganizes lists according to the rules
+            //     }
+            // }
+            if (grid.m_grid[t.X][t.Y-1].things.Count > 0 && grid.m_grid[t.X][t.Y+1].things.Count > 0){
+                if (text.Contains(grid.m_grid[t.X][t.Y-1].things[0].m_name) && text.Contains(grid.m_grid[t.X][t.Y+1].things[0].m_name)) {
+                    Char obj = grid.m_grid[t.X][t.Y-1].things[0].m_name;
+                    Char txt = grid.m_grid[t.X][t.Y+1].things[0].m_name;
+                    if (txt == 'Y') performRules(you, Char.ToLower(obj));
+                    if (txt == 'X') performRules(win, Char.ToLower(obj));
+                    if (txt == 'P') performRules(push, Char.ToLower(obj));
+                    if (txt == 'S') performRules(stop, Char.ToLower(obj));
+                    if (txt == 'N') performRules(sink, Char.ToLower(obj));
+                    if (txt == 'K') performRules(kill, Char.ToLower(obj));
+                }
+            }
+            // if (objects.Contains(grid.m_grid[t.X][t.Y-1].things[0].m_name) && text.Contains(grid.m_grid[t.X][t.Y+1].things[0].m_name)) {
+            //     performRules();     // reorganizes lists according to the rules
+            // }
+
+        }
+        public void wipeRules(){
+            you = new List<Thing>();
+            win = new List<Thing>();
+            push = new List<Thing>();
+            stop = new List<Thing>();
+            sink = new List<Thing>();
+            kill = new List<Thing>();
+        }
+        public void performRules(List<Thing> rule, Char obj){
+            foreach(List<Cell> col in grid.m_grid){           // adds obj to list
+                foreach(Cell c in col){
+                    foreach(Thing t in c.things){
+                        if (t.m_name == obj){
+                            rule.Add(t);
                         }
                     }
                 }
             }
         }
-
-        // public bool isPathClear(Rectangle square1, Rectangle square2){ // detect for collisions
-        //     if (square1.X       < square2.X      + square2.Width     &&
-        //         square1.X       + square1.Width  > square2.X         &&
-        //         square1.Y       < square2.Y      + square2.Height    &&
-        //         square1.Y       + square1.Height > square2.Y)        {
-        //         return false;                                               // collision
-        //     } else {
-        //         return true;                                                // no collision
-        //     }
-        // }
 
         public void updateControls (){
             m_inputKeyboard.removeCommand(m_inUseControls[0]);
@@ -135,49 +187,86 @@ namespace CS5410
         }
 
         public void onMoveUp(GameTime gameTime, float scale){
-            foreach(Thing t in you){
-                if (grid.m_grid[t.X-3][t.Y].things.Count < 2){
-                    grid.m_grid[t.X-2][t.Y].things.Remove(t);
-                    grid.m_grid[t.X-3][t.Y].things.Add(t);
-                    t.Y = t.Y-3;
+            moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(moveTimer > millisecondsToWait){
+                foreach(Thing y in you){
+                    bool canMove = true;
+                    foreach(Thing s in stop){
+                        if (s.X == y.X && s.Y == y.Y-1) canMove = false; 
+                    }
+                    if (canMove){
+                        grid.m_grid[y.X][y.Y].things.Remove(y);
+                        grid.m_grid[y.X][y.Y-1].things.Add(y);
+                        y.Y = y.Y-1;
+                    }
                 }
+                moveTimer = moveTimer % millisecondsToWait;
             }
         }
 
         public void onMoveDown(GameTime gameTime, float scale){
-            foreach(Thing t in you){
-                if (grid.m_grid[t.X-1][t.Y].things.Count < 2){
-                    grid.m_grid[t.X-2][t.Y].things.Remove(t);
-                    grid.m_grid[t.X-1][t.Y].things.Add(t);
-                    t.Y = t.Y-1;
+            moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(moveTimer > millisecondsToWait){
+                foreach(Thing y in you){
+                    bool canMove = true;
+                    foreach(Thing s in stop){
+                        if (s.X == y.X && s.Y == y.Y+1) canMove = false; 
+                    }
+                    if (canMove){
+                        grid.m_grid[y.X][y.Y].things.Remove(y);
+                        grid.m_grid[y.X][y.Y+1].things.Add(y);
+                        y.Y = y.Y+1;
+                    }
                 }
+                moveTimer = moveTimer % millisecondsToWait;
             }
         }
 
         public void onMoveLeft(GameTime gameTime, float scale){
-            // if ((m_player.body.Left) > 510){
-            //     int moveDistance = (int)(gameTime.ElapsedGameTime.TotalMilliseconds * m_player.SPRITE_MOVE_PIXELS_PER_MS * scale);
-            //     Rectangle temp = m_player.body;
-            //     temp.X = Math.Max(m_player.body.X - moveDistance, 0);
-            //     foreach(Mushroom m in grid.m_mushroomList){
-            //         if (isPathClear(m.body, temp)){ continue; }
-            //         else{ return; }
-            //     }
-            //     m_player.body.X = temp.X;
-            // }
+            moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(moveTimer > millisecondsToWait){
+                foreach(Thing y in you){
+                    bool canMove = true;
+                    foreach(Thing s in stop){
+                        if (s.X == y.X-1&& s.Y == y.Y) canMove = false; 
+                    }
+                    if (canMove){
+                        grid.m_grid[y.X][y.Y].things.Remove(y);
+                        grid.m_grid[y.X-1][y.Y].things.Add(y);
+                        y.X = y.X-1;
+                    }
+                }
+                moveTimer = moveTimer % millisecondsToWait;
+            }
         }
 
         public void onMoveRight(GameTime gameTime, float scale){
-            // if ((m_player.body.Right) < m_graphics.GraphicsDevice.Viewport.Width - 510){
-            //     int moveDistance = (int)(gameTime.ElapsedGameTime.TotalMilliseconds * m_player.SPRITE_MOVE_PIXELS_PER_MS * scale);
-            //     Rectangle temp = m_player.body;
-            //     temp.X = Math.Min(m_player.body.X + moveDistance, m_graphics.GraphicsDevice.Viewport.Width);
-            //     foreach(Mushroom m in grid.m_mushroomList){
-            //         if (isPathClear(m.body, temp)){ continue; }
-            //         else{ return; }
-            //     }
-            //     m_player.body.X = temp.X;
-            // }
+            moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(moveTimer > millisecondsToWait){
+                foreach(Thing y in you){
+                    bool canMove = true;
+                    foreach(Thing s in stop){
+                        if (s.X == y.X+1 && s.Y == y.Y) canMove = false; 
+                    }
+                    if (canMove){
+                        grid.m_grid[y.X][y.Y].things.Remove(y);
+                        grid.m_grid[y.X+1][y.Y].things.Add(y);
+                        y.X = y.X+1;
+                    }
+                }
+                moveTimer = moveTimer % millisecondsToWait;
+            }
+        }
+    }
+    public class Wait {
+        public static void wait(){
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            while (true) {
+                if (stopwatch.ElapsedMilliseconds >= 200)
+                {
+                    break;
+                }
+            }
         }
     }
 }

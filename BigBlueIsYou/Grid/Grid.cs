@@ -39,29 +39,34 @@ namespace CS5410
         }
         public void makeGrid(){
             for (int i = 2; i < m_X+2; i++){
-                List<Cell> row = new List<Cell>();
+                List<Cell> col = new List<Cell>();
                 for (int j = 0; j < m_Y; j++){
                     Cell cell = new Cell(i, j);
                     if(level1[i][j] != ' '){                // adds background letters like shrubs grass
-                        cell.things.Add(new Thing(level1[i][j], cell.X, cell.Y)); 
+                        // Console.WriteLine("cell.X " + (cell.X-2) + " cell.Y " + cell.Y);
+                        cell.things.Add(new Thing(level1[i][j], i-2, j)); 
                     }
                     if(level1[i+20][j] != ' '){             // adds foreground letters like bb is you rock skull ice flag
-                        cell.things.Add(new Thing(level1[i+20][j], cell.X, cell.Y));
+                        cell.things.Add(new Thing(level1[i+20][j], i-2, j));
                     }
-                    row.Add(cell);
+                    col.Add(cell);
                 }
-                m_grid.Add(row);
+                m_grid.Add(col);
             } 
         }
         public void renderLevel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, SpriteFont font){
 
-            foreach (List<Cell> r in m_grid){
-                foreach(Cell c in r){
+            foreach (List<Cell> col in m_grid){
+                // foreach(Cell c in r){
+                //     // Console.Write(c + ""); 
+                // }
+                    // Console.WriteLine();
+                foreach(Cell c in col){
                     if(c.things.Count > 0){
                         foreach(Thing t in c.things){
                             String s = Char.ToString(t.m_name);
                             Vector2 stringSize1 = font.MeasureString(s);
-                            Vector2 stringSize = new Vector2(c.Y*30, c.X*30);
+                            Vector2 stringSize = new Vector2(c.X*30, (c.Y+2)*30);
                             Printer.PrintWithOutline(s, graphics, spriteBatch, stringSize, font, Color.Green, Color.White);
                         }
                     }
@@ -106,7 +111,8 @@ namespace CS5410
         }
         
         public override string ToString(){
-            return "x:"+ X+ "y:"+ Y;
+            // return "x:"+ X+ " y:"+ Y + "  " + ((things.Count() > 0) ? things[0].ToString() : "") + "  ";
+            return ((things.Count() > 0) ? things[0].ToString() + "    " : "     ");
         }
     }
     public class Thing{
@@ -127,8 +133,8 @@ namespace CS5410
 
         // }
         
-        // public override string ToString(){
-        //     return "x:"+ body.X+ "y:"+ body.Y;
-        // }
+        public override string ToString(){
+            return "X" + X + " Y" + Y + " " + m_name.ToString();
+        }
     }
 }

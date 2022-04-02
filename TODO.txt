@@ -14,12 +14,14 @@ Name game
 R to restart the game
 Restructure snake Game to show grid
 read in levels from text file
+control YOU/BB up down left right
+control You/bb can be held and is slow
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-control YOU/BB up down left right
+check grid for is and make rules
 Controlls view
 Configurable movement controlls
 Keyboard controlls are saved when the program is exited
