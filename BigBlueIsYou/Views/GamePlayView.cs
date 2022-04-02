@@ -146,6 +146,7 @@ namespace CS5410
                     if (txt == 'X') performRules(win, Char.ToLower(obj));
                     if (txt == 'P') performRules(push, Char.ToLower(obj));
                     if (txt == 'S') performRules(stop, Char.ToLower(obj));
+                    performRules(stop, 'h'); // adds border hedge to stop
                     if (txt == 'N') performRules(sink, Char.ToLower(obj));
                     if (txt == 'K') performRules(kill, Char.ToLower(obj));
                 }
@@ -192,6 +193,7 @@ namespace CS5410
                 foreach(Thing y in you){
                     bool canMove = true;
                     foreach(Thing s in stop){
+                        Console.WriteLine(s);
                         if (s.X == y.X && s.Y == y.Y-1) canMove = false; 
                     }
                     if (canMove){
