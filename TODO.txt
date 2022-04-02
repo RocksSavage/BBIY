@@ -22,6 +22,7 @@ to move these in vs code highlight all five lines hold alt and press up or down.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
 check grid for is and make rules
+add is push logic
 Controlls view
 Configurable movement controlls
 Keyboard controlls are saved when the program is exited

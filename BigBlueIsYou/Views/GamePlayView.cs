@@ -91,7 +91,7 @@ namespace CS5410
         }
         public override void update(GameTime gameTime)
         {
-            wipeRules();
+            wipeRules();        //reset the rules
             findRules();       // finds the rules
             
 
@@ -124,20 +124,20 @@ namespace CS5410
             // check neighboring cells to see if rules exist
         }
         public void checkForRules(Thing t){
-            // if (grid.m_grid[t.X-1][t.Y].things.Count > 0 && grid.m_grid[t.X+1][t.Y].things.Count > 0){
-            //     if (objects.Contains(grid.m_grid[t.X-1][t.Y].things[0].m_name) && text.Contains(grid.m_grid[t.X+1][t.Y].things[0].m_name)) {
-            //         Char obj = grid.m_grid[t.X-1][t.Y].things[0].m_name;
-            //         Char txt = grid.m_grid[t.X+1][t.Y].things[0].m_name;
-            //         Console.WriteLine("this happens");
-            //         if (txt == 'Y') performRules(you, obj);
-            //         if (txt == 'X') performRules(win, obj);
-            //         if (txt == 'P') performRules(push, obj);
-            //         if (txt == 'S') performRules(stop, obj);
-            //         if (txt == 'N') performRules(sink, obj);
-            //         if (txt == 'K') performRules(kill, obj);
-            //             // reorganizes lists according to the rules
-            //     }
-            // }
+            if (grid.m_grid[t.X-1][t.Y].things.Count > 0 && grid.m_grid[t.X+1][t.Y].things.Count > 0){
+                if (text.Contains(grid.m_grid[t.X-1][t.Y].things[0].m_name) && text.Contains(grid.m_grid[t.X+1][t.Y].things[0].m_name)) {
+                    Char obj = grid.m_grid[t.X-1][t.Y].things[0].m_name;
+                    Char txt = grid.m_grid[t.X+1][t.Y].things[0].m_name;
+                    Console.WriteLine("this happens");
+                    if (txt == 'Y') performRules(you, obj);
+                    if (txt == 'X') performRules(win, obj);
+                    if (txt == 'P') performRules(push, obj);
+                    if (txt == 'S') performRules(stop, obj);
+                    if (txt == 'N') performRules(sink, obj);
+                    if (txt == 'K') performRules(kill, obj);
+                        // reorganizes lists according to the rules
+                }
+            }
             if (grid.m_grid[t.X][t.Y-1].things.Count > 0 && grid.m_grid[t.X][t.Y+1].things.Count > 0){
                 if (text.Contains(grid.m_grid[t.X][t.Y-1].things[0].m_name) && text.Contains(grid.m_grid[t.X][t.Y+1].things[0].m_name)) {
                     Char obj = grid.m_grid[t.X][t.Y-1].things[0].m_name;
@@ -146,14 +146,14 @@ namespace CS5410
                     if (txt == 'X') performRules(win, Char.ToLower(obj));
                     if (txt == 'P') performRules(push, Char.ToLower(obj));
                     if (txt == 'S') performRules(stop, Char.ToLower(obj));
-                    performRules(stop, 'h'); // adds border hedge to stop
                     if (txt == 'N') performRules(sink, Char.ToLower(obj));
                     if (txt == 'K') performRules(kill, Char.ToLower(obj));
                 }
             }
-            // if (objects.Contains(grid.m_grid[t.X][t.Y-1].things[0].m_name) && text.Contains(grid.m_grid[t.X][t.Y+1].things[0].m_name)) {
-            //     performRules();     // reorganizes lists according to the rules
-            // }
+            performRules(stop, 'h'); // hedge is stop
+            foreach (Char c in text){
+                performRules(push, c); // all text blocks are pushable
+            }
 
         }
         public void wipeRules(){
@@ -193,7 +193,7 @@ namespace CS5410
                 foreach(Thing y in you){
                     bool canMove = true;
                     foreach(Thing s in stop){
-                        Console.WriteLine(s);
+                        // Console.WriteLine(s);
                         if (s.X == y.X && s.Y == y.Y-1) canMove = false; 
                     }
                     if (canMove){
