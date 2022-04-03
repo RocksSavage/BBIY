@@ -196,13 +196,20 @@ namespace CS5410
                         // Console.WriteLine(s);
                         if (s.X == y.X && s.Y == y.Y-1) canMove = false; 
                     }
+                    foreach(Thing p in push){
+                        if (p.X == y.X && p.Y == y.Y-1) {
+                            if (canBePushed(y, p, 12)) canMove = true;
+                        }
+                    }
                     if (canMove){
+                        Console.WriteLine("yous");
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
+                Console.WriteLine("Done-----------------");
             }
         }
 
@@ -258,6 +265,37 @@ namespace CS5410
                 }
                 moveTimer = moveTimer % millisecondsToWait;
             }
+        }
+        public bool canBePushed(Thing pushed, Thing pusher, int direction){
+            // if direction is out of bounds return false
+            if (stop.Contains(pushed)){
+                return false;
+            }
+            if (direction == 12 && (grid.m_grid[pushed.X][pushed.Y-1].things.Count == 0 || canBePushed(grid.m_grid[pushed.X][pushed.Y-1].things[0], pushed, 12))){
+                grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
+                grid.m_grid[pushed.X][pushed.Y-1].things.Add(pushed);
+                pushed.Y = pushed.Y-1;
+                return true;
+            }
+            if (direction == 6 && (grid.m_grid[pushed.X][pushed.Y+1].things.Count == 0 || canBePushed(grid.m_grid[pushed.X][pushed.Y+1].things[0], pushed, 6))){
+                grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
+                grid.m_grid[pushed.X][pushed.Y+1].things.Add(pushed);
+                pushed.Y = pushed.Y+1;
+                return true;
+            }
+            if (direction == 9 && (grid.m_grid[pushed.X-1][pushed.Y].things.Count == 0 || canBePushed(grid.m_grid[pushed.X-1][pushed.Y].things[0], pushed, 9))){
+                grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
+                grid.m_grid[pushed.X-1][pushed.Y].things.Add(pushed);
+                pushed.X = pushed.X-1;
+                return true;
+            }
+            if (direction == 3 && (grid.m_grid[pushed.X+1][pushed.Y].things.Count == 0 || canBePushed(grid.m_grid[pushed.X+1][pushed.Y].things[0], pushed, 3))){
+                grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
+                grid.m_grid[pushed.X+1][pushed.Y].things.Add(pushed);
+                pushed.X = pushed.X-1;
+                return true;
+            }
+            return false;
         }
     }
     public class Wait {
