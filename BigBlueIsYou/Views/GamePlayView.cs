@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Threading.Tasks;
@@ -197,19 +198,20 @@ namespace CS5410
                         if (s.X == y.X && s.Y == y.Y-1) canMove = false; 
                     }
                     foreach(Thing p in push){
+                        // Console.WriteLine("the condition" + (p.X == y.X && p.Y == y.Y-1));
                         if (p.X == y.X && p.Y == y.Y-1) {
-                            if (canBePushed(y, p, 12)) canMove = true;
+                            // Console.WriteLine("p" + p);
+                            // Console.WriteLine("things above");
+                            canMove = canBePushed(p, y, 12);
                         }
                     }
                     if (canMove){
-                        Console.WriteLine("yous");
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
-                Console.WriteLine("Done-----------------");
             }
         }
 
@@ -271,6 +273,17 @@ namespace CS5410
             if (stop.Contains(pushed)){
                 return false;
             }
+            if (!push.Contains(pushed)){
+                return false;
+            }
+            // var result = from thing in grid.m_grid[pushed.X][pushed.Y-1].things where thing.m_name == pushed.m_name select thing;
+            // Thing result = null;
+            // foreach(Thing t in grid.m_grid[pushed.X][pushed.Y-1].things){
+            //     if (push.Contains(t)){
+            //         result = t;
+            //     }
+            // }
+            // Console.WriteLine("this thing" + grid.m_grid[pushed.X][pushed.Y-1].things.Select(x => x.m_name));
             if (direction == 12 && (grid.m_grid[pushed.X][pushed.Y-1].things.Count == 0 || canBePushed(grid.m_grid[pushed.X][pushed.Y-1].things[0], pushed, 12))){
                 grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
                 grid.m_grid[pushed.X][pushed.Y-1].things.Add(pushed);
