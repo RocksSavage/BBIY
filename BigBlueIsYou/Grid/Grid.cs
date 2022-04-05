@@ -23,13 +23,13 @@ namespace CS5410
         // public string[] level3 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-3.bbiy");
         // public string[] level4 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-4.bbiy");
         // public string[] level5 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-5.bbiy");
-        
+
         // use these five file lines if working in VSCode--------------------------------------------------------------------------------------
-        public string[] level1 = System.IO.File.ReadAllLines("../Levels/levelSource/level-1.bbiy");
-        public string[] level2 = System.IO.File.ReadAllLines("../Levels/levelSource/level-2.bbiy");
-        public string[] level3 = System.IO.File.ReadAllLines("../Levels/levelSource/level-3.bbiy");
-        public string[] level4 = System.IO.File.ReadAllLines("../Levels/levelSource/level-4.bbiy");
-        public string[] level5 = System.IO.File.ReadAllLines("../Levels/levelSource/level-5.bbiy");
+        public string[] level1 = System.IO.File.ReadAllLines("./Levels/levelSource/level-1.bbiy");
+        public string[] level2 = System.IO.File.ReadAllLines("./Levels/levelSource/level-2.bbiy");
+        public string[] level3 = System.IO.File.ReadAllLines("./Levels/levelSource/level-3.bbiy");
+        public string[] level4 = System.IO.File.ReadAllLines("./Levels/levelSource/level-4.bbiy");
+        public string[] level5 = System.IO.File.ReadAllLines("./Levels/levelSource/level-5.bbiy");
 
 
         public Grid(int currentLevel){
