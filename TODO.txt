@@ -16,14 +16,16 @@ Restructure snake Game to show grid
 read in levels from text file
 control YOU/BB up down left right
 control You/bb can be held and is slow
+check grid for is and make rules
+add is push logic
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-check grid for is and make rules
-add is push logic
+if rock is not push rock is wall
 Controlls view
+Add win screen
 Configurable movement controlls
 Keyboard controlls are saved when the program is exited
 Rules are processed vertically and horizontally (see assignment description for particulars)
