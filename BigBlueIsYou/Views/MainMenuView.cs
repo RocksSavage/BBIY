@@ -76,7 +76,7 @@ namespace CS5410
 
             Vector2 stringSize1 = m_fontTitle.MeasureString(Title);
             Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, m_graphics.PreferredBackBufferHeight/8);
-            Printer.PrintWithOutline(Title, m_graphics, m_spriteBatch, stringSize, m_fontTitle, Color.Green, Color.White);
+            Printer.PrintWithOutline(Title, m_spriteBatch, stringSize, m_fontTitle, Color.Green, Color.White);
 
             float bottom = drawMenuItem(m_currentSelection == MenuState.NewGame ? m_fontMenuSelect : m_fontMenu, "New Game", m_graphics.PreferredBackBufferHeight/2, m_currentSelection == MenuState.NewGame ? Color.Black : Color.Blue);
             bottom = drawMenuItem(m_currentSelection == MenuState.Controls ? m_fontMenuSelect : m_fontMenu, "Controls", bottom, m_currentSelection == MenuState.Controls ? Color.Black : Color.Blue);
@@ -89,7 +89,7 @@ namespace CS5410
         {
             Vector2 stringSize1 = font.MeasureString(text);
             Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, y);
-            Printer.PrintWithOutline(text, m_graphics, m_spriteBatch, stringSize, font, color, Color.White);
+            Printer.PrintWithOutline(text, m_spriteBatch, stringSize, font, color, Color.White);
 
             return y + stringSize1.Y;
         }

@@ -31,7 +31,7 @@ namespace CS5410
 
             Vector2 stringSize1 = m_font.MeasureString(MESSAGE);
             Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, m_graphics.PreferredBackBufferHeight / 2 - stringSize1.Y);
-            Printer.PrintWithOutline(MESSAGE, m_graphics, m_spriteBatch, stringSize, m_font, Color.Blue, Color.Yellow);
+            Printer.PrintWithOutline(MESSAGE, m_spriteBatch, stringSize, m_font, Color.Blue, Color.Yellow);
 
             m_spriteBatch.End();
         }

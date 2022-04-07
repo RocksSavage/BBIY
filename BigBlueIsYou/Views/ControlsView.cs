@@ -190,7 +190,7 @@ namespace CS5410
         {
             Vector2 stringSize1 = font.MeasureString(text);
             Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, y);
-            Printer.PrintWithOutline(text, m_graphics, m_spriteBatch, stringSize, font, color, Color.White);
+            Printer.PrintWithOutline(text, m_spriteBatch, stringSize, font, color, Color.White);
             return y + stringSize1.Y;
         }
 
