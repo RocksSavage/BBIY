@@ -5,10 +5,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CS5410
 {
-    public class GameOverView : GameStateView
+    public class YouWinView : GameStateView
     {
         private SpriteFont m_font;
-        private const string MESSAGE = "You Died";
+        private const string MESSAGE = "You Won!   --   Press Enter to Advance";
         private KeyboardState kBS;
         private KeyboardState oldKBS;
 
@@ -21,10 +21,15 @@ namespace CS5410
         {
             kBS = Keyboard.GetState();
             if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape)){
+                oldKBS = kBS;
                 return GameStateEnum.MainMenu;
             }
+            if (kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter)){
+                oldKBS = kBS;
+                return GameStateEnum.GamePlay;
+            }
             oldKBS = kBS;
-            return GameStateEnum.GameOver;
+            return GameStateEnum.YouWin;
         }
 
         public override void render(GameTime gameTime)

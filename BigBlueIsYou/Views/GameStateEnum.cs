@@ -6,7 +6,7 @@
         GamePlay,
         Controls,
         Credits,
-        GameOver,
+        YouWin,
         Exit
     }
 }

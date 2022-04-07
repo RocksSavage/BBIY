@@ -18,14 +18,16 @@ control YOU/BB up down left right
 control You/bb can be held and is slow
 check grid for is and make rules
 add is push logic
+if rock is not push rock is wall ------ Nevermind If rock is not push baba walks right through it
+Add win screen
+make new level load when you win
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-if rock is not push rock is wall
+make water work right
 Controlls view
-Add win screen
 Configurable movement controlls
 Keyboard controlls are saved when the program is exited
 Rules are processed vertically and horizontally (see assignment description for particulars)
@@ -41,6 +43,7 @@ particle effect when Winning: make fireworks
 particle effect when YOU is changed: particles origionate along the edge of the tile not the center
 particle effect when WIN is changed: particles origionate along the edge of the tile not the center
 Level Transition: Fireworks for a few seconds then new level If the whole game is won give the player the option to go back to the main menu
+rework move wait timer it currently feels crappy
 browser integration
 
 Z to undo one step (stretch goal)
