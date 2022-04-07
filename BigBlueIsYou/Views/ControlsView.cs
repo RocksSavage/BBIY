@@ -27,13 +27,12 @@ namespace CS5410
             DOWN,
             LEFT, 
             RIGHT, 
-            SHOOT, 
             QUIT
         }
 
         public override void loadContent(ContentManager contentManager){
-            controlStrings = new List<string> {"UP", "DOWN", "LEFT", "RIGHT", "SHOOT", "QUIT"};
-            controlStringsWithInput = new List<string> {"UP", "DOWN", "LEFT", "RIGHT", "SHOOT", "QUIT"};
+            controlStrings = new List<string> {"UP", "DOWN", "LEFT", "RIGHT", "QUIT"};
+            controlStringsWithInput = new List<string> {"UP", "DOWN", "LEFT", "RIGHT", "QUIT"};
             m_font = contentManager.Load<SpriteFont>("Fonts/menu");
             m_fontMenu = contentManager.Load<SpriteFont>("Fonts/menu");
             m_fontMenuSelect = contentManager.Load<SpriteFont>("Fonts/menu-select");
@@ -98,7 +97,7 @@ namespace CS5410
                     else if(m_currentSelection == Selection.DOWN) {m_controls[1] = key; m_enterNewKey = false;}
                     else if(m_currentSelection == Selection.LEFT) {m_controls[2] = key; m_enterNewKey = false;}
                     else if(m_currentSelection == Selection.RIGHT) {m_controls[3] = key; m_enterNewKey = false;}
-                    else if(m_currentSelection == Selection.SHOOT) {m_controls[4] = key; m_enterNewKey = false;}
+                    // else if(m_currentSelection == Selection.SHOOT) {m_controls[4] = key; m_enterNewKey = false;}
                     updateControlStringsWithInput();
                 }
 
@@ -131,11 +130,6 @@ namespace CS5410
                     return GameStateEnum.Controls;
                 }
                 if (kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter) && m_currentSelection == Selection.RIGHT){
-                    m_enterNewKey = true;
-                    oldKBS = kBS;
-                    return GameStateEnum.Controls;
-                }
-                if (kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter) && m_currentSelection == Selection.SHOOT){
                     m_enterNewKey = true;
                     oldKBS = kBS;
                     return GameStateEnum.Controls;
@@ -179,8 +173,7 @@ namespace CS5410
                 bottom = drawMenuItem(m_currentSelection == Selection.DOWN ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[1], bottom, m_currentSelection == Selection.DOWN ? Color.Black : Color.Blue);
                 bottom = drawMenuItem(m_currentSelection == Selection.LEFT ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[2], bottom, m_currentSelection == Selection.LEFT ? Color.Black : Color.Blue);
                 bottom = drawMenuItem(m_currentSelection == Selection.RIGHT ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[3], bottom, m_currentSelection == Selection.RIGHT ? Color.Black : Color.Blue);
-                bottom = drawMenuItem(m_currentSelection == Selection.SHOOT ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[4], bottom, m_currentSelection == Selection.SHOOT ? Color.Black : Color.Blue);
-                drawMenuItem(m_currentSelection == Selection.QUIT ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[5], bottom, m_currentSelection == Selection.QUIT ? Color.Black : Color.Blue);
+                drawMenuItem(m_currentSelection == Selection.QUIT ? m_fontMenuSelect : m_fontMenu, controlStringsWithInput[4], bottom, m_currentSelection == Selection.QUIT ? Color.Black : Color.Blue);
 
                 m_spriteBatch.End();
             }
@@ -199,13 +192,8 @@ namespace CS5410
             controlStringsWithInput.Add(controlStrings[0] + ": " + m_controls[0].ToString()); 
             controlStringsWithInput.Add(controlStrings[1] + ": " + m_controls[1].ToString()); 
             controlStringsWithInput.Add(controlStrings[2] + ": " + m_controls[2].ToString()); 
-            controlStringsWithInput.Add(controlStrings[3] + ": " + m_controls[3].ToString()); 
-            controlStringsWithInput.Add(controlStrings[4] + ": " + m_controls[4].ToString()); 
-            controlStringsWithInput.Add(controlStrings[5]); 
+            controlStringsWithInput.Add(controlStrings[3] + ": " + m_controls[3].ToString());
+            controlStringsWithInput.Add(controlStrings[4]); 
         }
-
-        // private Keys  (Keyboard kBS) {
-
-        // }
     }
 }

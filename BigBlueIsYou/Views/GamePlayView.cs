@@ -24,7 +24,7 @@ namespace CS5410
         // private Player m_player;
         private Texture2D m_texture;
         private ContentManager m_contentManager;
-        public List<Keys> m_inUseControls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.Space};
+        public List<Keys> m_inUseControls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right};
         public Grid grid;
         public bool YouWin = false;
         public int gridXOffset = 510; // number of pixels from the left side of the screen to where the grid starts
@@ -68,7 +68,7 @@ namespace CS5410
 
         public override GameStateEnum processInput(GameTime gameTime)
         {
-            if(m_inUseControls[0] != m_controls[0] || m_inUseControls[1] != m_controls[1] || m_inUseControls[2] != m_controls[2] || m_inUseControls[3] != m_controls[3] || m_inUseControls[4] != m_controls[4]) {
+            if(m_inUseControls[0] != m_controls[0] || m_inUseControls[1] != m_controls[1] || m_inUseControls[2] != m_controls[2] || m_inUseControls[3] != m_controls[3]) {
                 updateControls();
             }
         
@@ -98,8 +98,8 @@ namespace CS5410
         {
             wipeRules();        //reset the rules
             findRules();       // finds the rules
-            checkDeath();       // checks for things like you touching kill or falling in water or rocks falling in water
-
+            checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
+            checkWin();
         }
 
         public override void render(GameTime gameTime)
@@ -112,14 +112,52 @@ namespace CS5410
 
             m_spriteBatch.End();
         }
-
-        public void checkDeath(){
-            foreach(Thing p in push){
-                if (p.X == y.X && p.Y == y.Y-1) {
-                    canMove = canBePushed(p, y, 12);
+        public void checkWin(){
+            foreach(Thing y in you){
+                foreach(Thing w in win){
+                    if (w.X == y.X && w.Y == y.Y){
+                        youWin = true; 
+                        Console.WriteLine("You Win!");
+                    }
                 }
             }
-            foreach(Thing y in you){}
+        }
+
+        public void checkKillAndSink(){
+            List<Thing> thingsToDelete = new List<Thing>();
+            foreach(Thing p in push){
+                foreach(Thing s in sink){
+                    if (p.X == s.X && p.Y == s.Y) {
+                        Console.WriteLine("this happens");
+                        thingsToDelete.Add(p);
+                        thingsToDelete.Add(s);
+                    }
+
+                }
+            }
+            foreach(Thing y in you){
+                foreach(Thing s in sink){
+                    if (y.X == s.X && y.Y == s.Y) {
+                        Console.WriteLine("this happens");
+                        thingsToDelete.Add(s);
+                        thingsToDelete.Add(y);
+                    }
+
+                }
+            }
+            foreach(Thing k in kill){
+                foreach(Thing y in you){
+                    if (y.X == k.X && y.Y == k.Y) {
+                        thingsToDelete.Add(y);
+                    }
+                }
+            }
+            foreach(Thing t in thingsToDelete){
+                grid.m_grid[t.X][t.Y].things.Remove(t);
+                push.Remove(t);
+                you.Remove(t);
+                sink.Remove(t);
+            }
 
         }
 

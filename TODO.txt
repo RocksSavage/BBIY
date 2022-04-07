@@ -21,14 +21,15 @@ add is push logic
 if rock is not push rock is wall ------ Nevermind If rock is not push baba walks right through it
 Add win screen
 make new level load when you win
+make water work right
+make kill work right
+Controlls view
+Configurable movement controlls
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-make water work right
-Controlls view
-Configurable movement controlls
 Keyboard controlls are saved when the program is exited
 Rules are processed vertically and horizontally (see assignment description for particulars)
 Use TA written python code to extract animated spritesheet                                              Trent I want you to do this please :D
