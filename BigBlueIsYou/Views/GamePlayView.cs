@@ -26,12 +26,13 @@ namespace CS5410
         private ContentManager m_contentManager;
         public List<Keys> m_inUseControls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.Space};
         public Grid grid;
-        public bool gameOver = false;
+        public bool YouWin = false;
         public int gridXOffset = 510; // number of pixels from the left side of the screen to where the grid starts
         public Random rnd = new Random();
         public int millisecondsToWait = 100;
         public int moveTimer = 0;
         // private bool saving = false;
+        public bool youWin = false;
         public int currentLevel = 1;
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -81,10 +82,13 @@ namespace CS5410
             }
 
             m_inputKeyboard.Update(gameTime);
-            if (gameOver){
+            if (youWin){
+                Console.WriteLine("does this happen? 2");
+                currentLevel++;
+                grid = new Grid(currentLevel);
+                youWin = false;
                 loadContent(m_contentManager);
-                gameOver = false;
-                return GameStateEnum.GameOver;
+                return GameStateEnum.YouWin;
             }
 
             oldKBS = kBS;
@@ -94,8 +98,7 @@ namespace CS5410
         {
             wipeRules();        //reset the rules
             findRules();       // finds the rules
-            
-
+            checkDeath();       // checks for things like you touching kill or falling in water or rocks falling in water
 
         }
 
@@ -108,6 +111,16 @@ namespace CS5410
 
 
             m_spriteBatch.End();
+        }
+
+        public void checkDeath(){
+            foreach(Thing p in push){
+                if (p.X == y.X && p.Y == y.Y-1) {
+                    canMove = canBePushed(p, y, 12);
+                }
+            }
+            foreach(Thing y in you){}
+
         }
 
         public void findRules(){
@@ -125,21 +138,24 @@ namespace CS5410
             // check neighboring cells to see if rules exist
         }
         public void checkForRules(Thing t){
-            if (grid.m_grid[t.X-1][t.Y].things.Count > 0 && grid.m_grid[t.X+1][t.Y].things.Count > 0){
+            if (grid.m_grid[t.X-1][t.Y].things.Count > 0 && grid.m_grid[t.X+1][t.Y].things.Count > 0){ // checks for horizontal rules
+                // Console.WriteLine("thing1" + grid.m_grid[t.X-1][t.Y].things[0].m_name);
+                // Console.WriteLine("thing2" + grid.m_grid[t.X+1][t.Y].things[0].m_name);
                 if (text.Contains(grid.m_grid[t.X-1][t.Y].things[0].m_name) && text.Contains(grid.m_grid[t.X+1][t.Y].things[0].m_name)) {
                     Char obj = grid.m_grid[t.X-1][t.Y].things[0].m_name;
                     Char txt = grid.m_grid[t.X+1][t.Y].things[0].m_name;
-                    Console.WriteLine("this happens");
-                    if (txt == 'Y') performRules(you, obj);
-                    if (txt == 'X') performRules(win, obj);
-                    if (txt == 'P') performRules(push, obj);
-                    if (txt == 'S') performRules(stop, obj);
-                    if (txt == 'N') performRules(sink, obj);
-                    if (txt == 'K') performRules(kill, obj);
+                    if (txt == 'Y') performRules(you, Char.ToLower(obj));
+                    if (txt == 'X') performRules(win, Char.ToLower(obj));
+                    if (txt == 'P') performRules(push, Char.ToLower(obj));
+                    if (txt == 'S') performRules(stop, Char.ToLower(obj));
+                    if (txt == 'N') performRules(sink, Char.ToLower(obj));
+                    if (txt == 'K') performRules(kill, Char.ToLower(obj));
                         // reorganizes lists according to the rules
                 }
             }
-            if (grid.m_grid[t.X][t.Y-1].things.Count > 0 && grid.m_grid[t.X][t.Y+1].things.Count > 0){
+            if (grid.m_grid[t.X][t.Y-1].things.Count > 0 && grid.m_grid[t.X][t.Y+1].things.Count > 0){ // checks for vertical rules
+                // Console.WriteLine("thing1" + grid.m_grid[t.X][t.Y-1].things[0].m_name);
+                // Console.WriteLine("thing2" + grid.m_grid[t.X][t.Y+1].things[0].m_name);
                 if (text.Contains(grid.m_grid[t.X][t.Y-1].things[0].m_name) && text.Contains(grid.m_grid[t.X][t.Y+1].things[0].m_name)) {
                     Char obj = grid.m_grid[t.X][t.Y-1].things[0].m_name;
                     Char txt = grid.m_grid[t.X][t.Y+1].things[0].m_name;
@@ -196,6 +212,12 @@ namespace CS5410
                     foreach(Thing s in stop){
                         if (s.X == y.X && s.Y == y.Y-1) canMove = false; 
                     }
+                    foreach(Thing w in win){
+                        if (w.X == y.X && w.Y == y.Y-1){
+                            youWin = true; 
+                            Console.WriteLine("You Win!");
+                        }
+                    }
                     foreach(Thing p in push){
                         if (p.X == y.X && p.Y == y.Y-1) {
                             canMove = canBePushed(p, y, 12);
@@ -219,6 +241,12 @@ namespace CS5410
                     foreach(Thing s in stop){
                         if (s.X == y.X && s.Y == y.Y+1) canMove = false; 
                     }
+                    foreach(Thing w in win){
+                        if (w.X == y.X && w.Y == y.Y+1){
+                            youWin = true; 
+                            Console.WriteLine("You Win!");
+                        }
+                    }
                     foreach(Thing p in push){
                         if (p.X == y.X && p.Y == y.Y+1) {
                             canMove = canBePushed(p, y, 6);
@@ -240,7 +268,13 @@ namespace CS5410
                 foreach(Thing y in you){
                     bool canMove = true;
                     foreach(Thing s in stop){
-                        if (s.X == y.X-1&& s.Y == y.Y) canMove = false; 
+                        if (s.X == y.X-1 && s.Y == y.Y) canMove = false; 
+                    }
+                    foreach(Thing w in win){
+                        if (w.X == y.X-1 && w.Y == y.Y){
+                            youWin = true; 
+                            Console.WriteLine("You Win!");
+                        }
                     }
                     foreach(Thing p in push){
                         if (p.X == y.X-1 && p.Y == y.Y) {
@@ -264,6 +298,12 @@ namespace CS5410
                     bool canMove = true;
                     foreach(Thing s in stop){
                         if (s.X == y.X+1 && s.Y == y.Y) canMove = false; 
+                    }
+                    foreach(Thing w in win){
+                        if (w.X == y.X+1 && w.Y == y.Y){
+                            youWin = true; 
+                            Console.WriteLine("You Win!");
+                        }
                     }
                     foreach(Thing p in push){
                         if (p.X == y.X+1 && p.Y == y.Y) {
