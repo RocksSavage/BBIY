@@ -59,7 +59,7 @@ namespace CS5410
             m_font = contentManager.Load<SpriteFont>("Fonts/gameFont");
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
-           
+            Renderer.loadSprites(contentManager);
 
             updateControls();
 

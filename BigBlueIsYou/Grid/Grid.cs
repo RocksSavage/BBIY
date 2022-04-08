@@ -72,7 +72,7 @@ namespace CS5410
                 foreach(Cell c in col){
                     if(c.things.Count > 0){
                         foreach(Thing t in c.things){
-                            Printer.PrintThing(t, c, spriteBatch, font);
+                            Renderer.PrintThing(t, c, spriteBatch, font);
                         }
                     }
                 }
@@ -108,9 +108,12 @@ namespace CS5410
 
         public List<Thing> things = new List<Thing>();
 
+        public Point coord;
         public int X { get; set; }
         public int Y { get; set; }
         public Cell(int x, int y){
+            coord.X = x;
+            coord.Y = y;
             X = x;
             Y = y;
         }
