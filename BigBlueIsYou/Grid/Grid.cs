@@ -17,6 +17,7 @@ namespace CS5410
         public List<List<Cell>> m_grid;
         public Random rnd = new Random();
         public int m_currentLevel;
+        public Renderer m_renderer;
         // use these five file lines if working in visual studio--------------------------------------------------------------------------------------
          public string[] level1 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-1.bbiy");
         public string[] level2 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-2.bbiy");
@@ -60,9 +61,9 @@ namespace CS5410
                     col.Add(cell);
                 }
                 m_grid.Add(col);
-            } 
+            }
         }
-        public void renderLevel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, SpriteFont font){
+        public void renderLevel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, SpriteFont font, int gameStep){
 
             foreach (List<Cell> col in m_grid){
                 // foreach(Cell c in r){
@@ -72,7 +73,7 @@ namespace CS5410
                 foreach(Cell c in col){
                     if(c.things.Count > 0){
                         foreach(Thing t in c.things){
-                            Renderer.PrintThing(t, c, spriteBatch, font);
+                            Renderer.PrintThing(t, c, gameStep, spriteBatch, font);
                         }
                     }
                 }
