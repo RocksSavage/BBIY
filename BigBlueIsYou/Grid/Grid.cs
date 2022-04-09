@@ -41,22 +41,27 @@ namespace CS5410
         }
 
         public void makeLevel(int m_currentLevel){
-            string[] size = level1[1].Split(' ');
+            string[] level = level1;
+            if (m_currentLevel == 2) level = level2;
+            if (m_currentLevel == 3) level = level3;
+            if (m_currentLevel == 4) level = level4;
+            if (m_currentLevel == 5) level = level5;
+            string[] size = level[1].Split(' ');
             m_X = int.Parse(size[0]);
             m_Y = int.Parse(size[2]);
-            makeGrid();
+            makeGrid(level);
         }
-        public void makeGrid(){
+        public void makeGrid(string[] level){
             for (int i = 2; i < m_X+2; i++){
                 List<Cell> col = new List<Cell>();
                 for (int j = 0; j < m_Y; j++){
                     Cell cell = new Cell(i, j);
-                    if(level1[i][j] != ' '){                // adds background letters like shrubs grass
+                    if(level[i][j] != ' '){                // adds background letters like shrubs grass
                         // Console.WriteLine("cell.X " + (cell.X-2) + " cell.Y " + cell.Y);
-                        cell.things.Add(new Thing(level1[i][j], i-2, j)); 
+                        cell.things.Add(new Thing(level[i][j], i-2, j)); 
                     }
-                    if(level1[i+20][j] != ' '){             // adds foreground letters like bb is you rock skull ice flag
-                        cell.things.Add(new Thing(level1[i+20][j], i-2, j));
+                    if(level[i+20][j] != ' '){             // adds foreground letters like bb is you rock skull ice flag
+                        cell.things.Add(new Thing(level[i+20][j], i-2, j));
                     }
                     col.Add(cell);
                 }
