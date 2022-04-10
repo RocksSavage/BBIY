@@ -35,6 +35,8 @@ namespace CS5410
         public bool youWin = false;
         public int currentLevel = 1;
         public int gameStep = 0;
+        private SoundEffect m_moveSound;
+
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
         
@@ -62,6 +64,10 @@ namespace CS5410
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
             Renderer.loadSprites(contentManager);
+            
+            // Audio
+            m_moveSound = contentManager.Load<SoundEffect>("Audio/zapsplat_thud");
+
 
             updateControls();
         }
@@ -360,6 +366,13 @@ namespace CS5410
                 moveTimer = moveTimer % millisecondsToWait;
             }
             gameStep++;
+        }
+
+        private void generalMove()
+        {
+            gameStep++; // sprite animations rely on this
+            m_moveSound.Play();
+
         }
         public bool canBePushed(Thing pushed, Thing pusher, int direction){
             // if direction is out of bounds return false
