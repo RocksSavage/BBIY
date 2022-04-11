@@ -17,19 +17,20 @@ namespace CS5410
         public List<List<Cell>> m_grid;
         public Random rnd = new Random();
         public int m_currentLevel;
+        public Renderer m_renderer;
         // use these five file lines if working in visual studio--------------------------------------------------------------------------------------
-        // public string[] level1 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-1.bbiy");
-        // public string[] level2 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-2.bbiy");
-        // public string[] level3 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-3.bbiy");
-        // public string[] level4 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-4.bbiy");
-        // public string[] level5 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-5.bbiy");
+         public string[] level1 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-1.bbiy");
+        public string[] level2 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-2.bbiy");
+        public string[] level3 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-3.bbiy");
+        public string[] level4 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-4.bbiy");
+        public string[] level5 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-5.bbiy");
 
         // use these five file lines if working in VSCode--------------------------------------------------------------------------------------
-        public string[] level1 = System.IO.File.ReadAllLines("./Levels/levelSource/level-1.bbiy");
-        public string[] level2 = System.IO.File.ReadAllLines("./Levels/levelSource/level-2.bbiy");
-        public string[] level3 = System.IO.File.ReadAllLines("./Levels/levelSource/level-3.bbiy");
-        public string[] level4 = System.IO.File.ReadAllLines("./Levels/levelSource/level-4.bbiy");
-        public string[] level5 = System.IO.File.ReadAllLines("./Levels/levelSource/level-5.bbiy");
+        //public string[] level1 = System.IO.File.ReadAllLines("./Levels/levelSource/level-1.bbiy");
+        //public string[] level2 = System.IO.File.ReadAllLines("./Levels/levelSource/level-2.bbiy");
+        //public string[] level3 = System.IO.File.ReadAllLines("./Levels/levelSource/level-3.bbiy");
+        //public string[] level4 = System.IO.File.ReadAllLines("./Levels/levelSource/level-4.bbiy");
+        //public string[] level5 = System.IO.File.ReadAllLines("./Levels/levelSource/level-5.bbiy");
 
 
         public Grid(int currentLevel){
@@ -65,9 +66,9 @@ namespace CS5410
                     col.Add(cell);
                 }
                 m_grid.Add(col);
-            } 
+            }
         }
-        public void renderLevel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, SpriteFont font){
+        public void renderLevel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, SpriteFont font, int gameStep){
 
             foreach (List<Cell> col in m_grid){
                 // foreach(Cell c in r){
@@ -77,10 +78,7 @@ namespace CS5410
                 foreach(Cell c in col){
                     if(c.things.Count > 0){
                         foreach(Thing t in c.things){
-                            String s = Char.ToString(t.m_name);
-                            Vector2 stringSize1 = font.MeasureString(s);
-                            Vector2 stringSize = new Vector2(c.X*30, (c.Y+2)*30);
-                            Printer.PrintWithOutline(s, graphics, spriteBatch, stringSize, font, Color.Green, Color.White);
+                            Renderer.PrintThing(t, c, gameStep, spriteBatch, font);
                         }
                     }
                 }
@@ -116,9 +114,12 @@ namespace CS5410
 
         public List<Thing> things = new List<Thing>();
 
+        public Point coord;
         public int X { get; set; }
         public int Y { get; set; }
         public Cell(int x, int y){
+            coord.X = x;
+            coord.Y = y;
             X = x;
             Y = y;
         }
