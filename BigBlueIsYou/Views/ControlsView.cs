@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace CS5410
 {
@@ -13,6 +17,8 @@ namespace CS5410
         private KeyboardState oldKBS;
         private SpriteFont m_font;
         private SpriteFont m_fontMenu;
+        private bool saving = false;   
+        // private bool loading = false;     
         private SpriteFont m_fontMenuSelect;
         private const string MESSAGE = "                      Enter the new key: \r\n (Alpha Numeric and directional keys only)";
         private bool m_enterNewKey = false;
@@ -36,11 +42,14 @@ namespace CS5410
             m_font = contentManager.Load<SpriteFont>("Fonts/menu");
             m_fontMenu = contentManager.Load<SpriteFont>("Fonts/menu");
             m_fontMenuSelect = contentManager.Load<SpriteFont>("Fonts/menu-select");
+            // loadConfigurableControls();
             updateControlStringsWithInput();
         }
 
         public override GameStateEnum processInput(GameTime gameTime){
             kBS = Keyboard.GetState();
+            // loadConfigurableControls();
+            updateControlStringsWithInput();
             if (m_enterNewKey){
                 key = Keys.None;
                 if(kBS.IsKeyDown(Keys.A)) {key = Keys.A; }
@@ -99,6 +108,7 @@ namespace CS5410
                     else if(m_currentSelection == Selection.RIGHT) {m_controls[3] = key; m_enterNewKey = false;}
                     // else if(m_currentSelection == Selection.SHOOT) {m_controls[4] = key; m_enterNewKey = false;}
                     updateControlStringsWithInput();
+                    saveConfigurableControls();
                 }
 
             }else{
@@ -195,5 +205,97 @@ namespace CS5410
             controlStringsWithInput.Add(controlStrings[3] + ": " + m_controls[3].ToString());
             controlStringsWithInput.Add(controlStrings[4]); 
         }
+
+        private void saveConfigurableControls()
+        {
+            lock (this)
+            {
+                if (!this.saving)
+                {
+                    this.saving = true;
+                    //
+                    // Create something to save
+                    // GameState myState = new GameState(100000, 20);
+                    
+                    // m_controls.Add(score);
+                    // m_controls.Sort();
+                    // m_controls.Reverse();
+                    finalizeSaveAsync(m_controls);
+                }
+            }
+        }
+        private async void finalizeSaveAsync(List<Keys> controls)
+        {
+            await Task.Run(() =>
+            {
+                using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    try
+                    {
+                        using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.OpenOrCreate))
+                        {
+                            if (fs != null)
+                            {
+                                XmlSerializer mySerializer = new XmlSerializer(typeof(List<Keys>));
+                                // Console.WriteLine(controls[0] == Keys.Up);
+                                Console.WriteLine(controls[0] == Keys.NumPad8);
+                                mySerializer.Serialize(fs, controls);
+                                // Console.WriteLine(controls[0] == Keys.Up);
+                                Console.WriteLine(controls[0] == Keys.NumPad8);
+                            }
+                        }
+                    }
+                    catch (IsolatedStorageException)
+                    {
+                        // Ideally show something to the user, but this is demo code :)
+                    }
+                }
+
+                this.saving = false;
+            });
+        }
+//                 private void loadConfigurableControls()
+//         {
+//             lock (this)
+//             {
+//                 if (!this.loading)
+//                 {
+//                     this.loading = true;
+// #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//                     finalizeLoadAsync();
+// #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//                 }
+//             }
+//         }
+//         private async Task finalizeLoadAsync()
+//         {
+//             await Task.Run(() =>
+//             {
+//                 using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
+//                 {
+//                     try
+//                     {
+//                         if (storage.FileExists("ConfigurableControls.xml"))
+//                         {
+//                             using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.Open))
+//                             {
+//                                 if (fs != null)
+//                                 {
+//                                     XmlSerializer mySerializer = new XmlSerializer(typeof(List<Keys>));
+//                                     m_controls = (List<Keys>)mySerializer.Deserialize(fs);
+//                                 }
+//                             }
+//                         }
+//                     }
+//                     catch (IsolatedStorageException)
+//                     {
+//                         // Ideally show something to the user, but this is demo code :)
+//                     }
+//                 }
+
+//                 this.loading = false;
+//             });
+//         }
+        
     }
 }

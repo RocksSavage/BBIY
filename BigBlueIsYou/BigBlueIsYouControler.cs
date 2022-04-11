@@ -3,6 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using CS5410.Input;
+using System;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace CS5410
 {
@@ -13,7 +18,10 @@ namespace CS5410
         private KeyboardInput m_inputKeyboard;
         private GameStateEnum m_nextStateEnum = GameStateEnum.MainMenu;
         private Dictionary<GameStateEnum, IGameState> m_states;
-        public List<Keys> m_controls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.Space};
+        public List<Keys> m_controls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right};
+        public List<Keys> controls = new List<Keys>();
+        // private bool saving = false;   
+        private bool loading = false;   
 
         public ECSBigBlueIsYouControler()
         {
@@ -43,12 +51,16 @@ namespace CS5410
             // We are starting with the main menu
             m_currentState = m_states[GameStateEnum.MainMenu];
 
+            loadConfigurableControls();
+            Console.WriteLine("m_controls up is up" + (m_controls[0] == Keys.Up));
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             // Give all game states a chance to load their content
+            // Console.WriteLine(m_controls[0] == Keys.Up);
             foreach (var item in m_states)
             {
                 item.Value.initialize(this.GraphicsDevice, m_graphics, m_inputKeyboard, m_controls);
@@ -85,6 +97,52 @@ namespace CS5410
             
 
             base.Draw(gameTime);
+        }
+        private void loadConfigurableControls()
+        {
+            lock (this)
+            {
+                if (!this.loading)
+                {
+                    this.loading = true;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    finalizeLoadAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                }
+            }
+        }
+        private async Task finalizeLoadAsync()
+        {
+            await Task.Run(() =>
+            {
+                using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    try
+                    {
+                        if (storage.FileExists("ConfigurableControls.xml"))
+                        {
+                            using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.Open))
+                            {
+                                if (fs != null)
+                                {
+                                    XmlSerializer mySerializer = new XmlSerializer(typeof(List<Keys>));
+                                    // Console.WriteLine("look here" + (m_controls[0] == Keys.Up));
+                                    Console.WriteLine("This happens!!!!!!!!!!!!!!!");
+                                    controls = (List<Keys>)mySerializer.Deserialize(fs);
+                                    Console.WriteLine("yeah" + (controls[0] == Keys.Up));
+                                    Console.WriteLine("This happens ================================");
+                                }
+                            }
+                        }
+                    }
+                    catch (IsolatedStorageException)
+                    {
+                        // Ideally show something to the user, but this is demo code :)
+                    }
+                }
+
+                this.loading = false;
+            });
         }
     }
 }

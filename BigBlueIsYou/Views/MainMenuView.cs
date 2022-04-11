@@ -43,7 +43,6 @@ namespace CS5410
             }
             
             if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape)){
-                Console.WriteLine("This Happens eh");
                 return GameStateEnum.Exit;
             }
             if (!(kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter))) {
@@ -57,7 +56,6 @@ namespace CS5410
             }
             if (m_currentSelection == MenuState.Controls){
                 oldKBS = kBS;
-                Console.WriteLine("This Happens");
                 return GameStateEnum.Controls;
             }
             if (m_currentSelection == MenuState.Credits) {

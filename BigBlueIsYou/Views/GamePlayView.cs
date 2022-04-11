@@ -68,7 +68,9 @@ namespace CS5410
 
         public override GameStateEnum processInput(GameTime gameTime)
         {
+            Console.WriteLine("--------" +( m_controls[0] == Keys.Up));
             if(m_inUseControls[0] != m_controls[0] || m_inUseControls[1] != m_controls[1] || m_inUseControls[2] != m_controls[2] || m_inUseControls[3] != m_controls[3]) {
+                // Console.WriteLine("this happens");
                 updateControls();
             }
         
@@ -128,7 +130,6 @@ namespace CS5410
             foreach(Thing p in push){
                 foreach(Thing s in sink){
                     if (p.X == s.X && p.Y == s.Y) {
-                        Console.WriteLine("this happens");
                         thingsToDelete.Add(p);
                         thingsToDelete.Add(s);
                     }
@@ -138,7 +139,6 @@ namespace CS5410
             foreach(Thing y in you){
                 foreach(Thing s in sink){
                     if (y.X == s.X && y.Y == s.Y) {
-                        Console.WriteLine("this happens");
                         thingsToDelete.Add(s);
                         thingsToDelete.Add(y);
                     }
