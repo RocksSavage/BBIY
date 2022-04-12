@@ -17,6 +17,7 @@ read in levels from text file
 control YOU/BB up down left right
 control You/bb can be held and is slow
 check grid for is and make rules
+Rules are processed vertically and horizontally (see assignment description for particulars)
 add is push logic
 if rock is not push rock is wall ------ Nevermind If rock is not push baba walks right through it
 Add win screen
@@ -25,16 +26,15 @@ make water work right
 make kill work right
 Controlls view
 Configurable movement controlls
+R to reset the level
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
 Keyboard controlls are saved when the program is exited
-Rules are processed vertically and horizontally (see assignment description for particulars)
 Use TA written python code to extract animated spritesheet                                              Trent I want you to do this please :D
 Animated Sprites for Nouns and verbs exception YOU/BB                                                   Trent I want you to do this please :D
-R to reset the level
 Sound Effect: Background music
 Sound Effect: Win a level music
 Sound Effect: Each time YOU is moved make a little walking/step sound (should be subtle)

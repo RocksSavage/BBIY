@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.Diagnostics;
 using CS5410.Input;
 using System;
+using System.Collections;
 
 namespace CS5410
 {
@@ -36,6 +37,7 @@ namespace CS5410
         public int currentLevel = 1;
         public int gameStep = 0;
         private SoundEffect m_moveSound;
+        private Stack revertStack = new Stack();
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -74,7 +76,7 @@ namespace CS5410
 
         public override GameStateEnum processInput(GameTime gameTime)
         {
-            Console.WriteLine("--------" +( m_controls[0] == Keys.Up));
+            // Console.WriteLine("--------" +( m_controls[0] == Keys.Up));
             if(m_inUseControls[0] != m_controls[0] || m_inUseControls[1] != m_controls[1] || m_inUseControls[2] != m_controls[2] || m_inUseControls[3] != m_controls[3]) {
                 // Console.WriteLine("this happens");
                 updateControls();
@@ -87,6 +89,12 @@ namespace CS5410
                 oldKBS = kBS;
                 loadContent(m_contentManager);
                 return GameStateEnum.MainMenu;
+            }
+            if (kBS.IsKeyUp(Keys.R) && oldKBS.IsKeyDown(Keys.R))
+            {
+                oldKBS = kBS;
+                loadContent(m_contentManager);
+                // return GameStateEnum.MainMenu;
             }
 
             m_inputKeyboard.Update(gameTime);
@@ -271,11 +279,11 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
+                        gameStep++;
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
             }
-            gameStep++;
         }
 
         public void onMoveDown(GameTime gameTime, float scale){
@@ -301,11 +309,11 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X][y.Y+1].things.Add(y);
                         y.Y = y.Y+1;
+                        gameStep++;
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
             }
-            gameStep++;
         }
 
         public void onMoveLeft(GameTime gameTime, float scale){
@@ -331,11 +339,11 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X-1][y.Y].things.Add(y);
                         y.X = y.X-1;
+                        gameStep++;
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
             }
-            gameStep++;
         }
 
         public void onMoveRight(GameTime gameTime, float scale){
@@ -361,11 +369,11 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X+1][y.Y].things.Add(y);
                         y.X = y.X+1;
+                        gameStep++;
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
             }
-            gameStep++;
         }
 
         private void generalMove()

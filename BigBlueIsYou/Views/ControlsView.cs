@@ -102,6 +102,7 @@ namespace CS5410
                 if(kBS.IsKeyDown(Keys.Left)) {key = Keys.Left; }
                 if(kBS.IsKeyDown(Keys.Right)) {key = Keys.Right; }
                 if (key != Keys.None){
+                    // Console.WriteLine(key)
                     if(m_currentSelection == Selection.UP) {m_controls[0] = key; m_enterNewKey = false;}
                     else if(m_currentSelection == Selection.DOWN) {m_controls[1] = key; m_enterNewKey = false;}
                     else if(m_currentSelection == Selection.LEFT) {m_controls[2] = key; m_enterNewKey = false;}
