@@ -39,6 +39,10 @@ namespace CS5410
             makeLevel(m_currentLevel);
 
         }
+        // public Grid(Grid grid){
+        //     m_grid = grid.m_grid;
+
+        // }
 
         public void makeLevel(int m_currentLevel){
             string[] level = level1;

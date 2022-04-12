@@ -27,6 +27,7 @@ namespace CS5410
         private ContentManager m_contentManager;
         public List<Keys> m_inUseControls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right};
         public Grid grid;
+        // public Grid grid2;
         public bool YouWin = false;
         public int gridXOffset = 510; // number of pixels from the left side of the screen to where the grid starts
         public Random rnd = new Random();
@@ -37,7 +38,7 @@ namespace CS5410
         public int currentLevel = 1;
         public int gameStep = 0;
         private SoundEffect m_moveSound;
-        private Stack revertStack = new Stack();
+        private Stack<Grid> gridStack;
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -62,6 +63,9 @@ namespace CS5410
         {
             m_contentManager = contentManager;
             grid = new Grid(currentLevel);
+            // grid2 = new Grid(currentLevel);
+            gridStack = new Stack<Grid>();
+            gridStack.Push(grid);
             m_font = contentManager.Load<SpriteFont>("Fonts/gameFont");
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
@@ -96,6 +100,13 @@ namespace CS5410
                 loadContent(m_contentManager);
                 // return GameStateEnum.MainMenu;
             }
+            if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z))
+            {
+                oldKBS = kBS;
+                grid = gridStack.Pop();
+                // grid2 = gridStack.Pop();
+
+            }
 
             m_inputKeyboard.Update(gameTime);
             if (youWin){
@@ -122,8 +133,8 @@ namespace CS5410
         {
             m_spriteBatch.Begin();
 
-
             grid.renderLevel(m_graphics, m_spriteBatch, m_font, gameStep);
+            // grid2.renderLevel(m_graphics, m_spriteBatch, m_font, gameStep);
 
 
             m_spriteBatch.End();
@@ -280,6 +291,8 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
                         gameStep++;
+                        gridStack.Push(grid);
+                        Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -310,6 +323,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y+1].things.Add(y);
                         y.Y = y.Y+1;
                         gameStep++;
+                        gridStack.Push(grid);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -340,6 +354,7 @@ namespace CS5410
                         grid.m_grid[y.X-1][y.Y].things.Add(y);
                         y.X = y.X-1;
                         gameStep++;
+                        gridStack.Push(grid);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -370,6 +385,7 @@ namespace CS5410
                         grid.m_grid[y.X+1][y.Y].things.Add(y);
                         y.X = y.X+1;
                         gameStep++;
+                        gridStack.Push(grid);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
