@@ -103,7 +103,9 @@ namespace CS5410
             if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z))
             {
                 oldKBS = kBS;
+                // Grid temp = gridStack.Pop();
                 grid = gridStack.Pop();
+                grid.printGrid();
                 // grid2 = gridStack.Pop();
 
             }
@@ -324,6 +326,7 @@ namespace CS5410
                         y.Y = y.Y+1;
                         gameStep++;
                         gridStack.Push(grid);
+                        Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -355,6 +358,7 @@ namespace CS5410
                         y.X = y.X-1;
                         gameStep++;
                         gridStack.Push(grid);
+                        Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -386,6 +390,7 @@ namespace CS5410
                         y.X = y.X+1;
                         gameStep++;
                         gridStack.Push(grid);
+                        Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;

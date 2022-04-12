@@ -8,6 +8,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Diagnostics;
 
 namespace CS5410
 {
@@ -233,7 +234,7 @@ namespace CS5410
                 {
                     try
                     {
-                        using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.OpenOrCreate))
+                        using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls4.xml", FileMode.OpenOrCreate))
                         {
                             if (fs != null)
                             {
@@ -241,6 +242,7 @@ namespace CS5410
                                 // Console.WriteLine(controls[0] == Keys.Up);
                                 Console.WriteLine(controls[0] == Keys.NumPad8);
                                 mySerializer.Serialize(fs, controls);
+                                Wait.wait();
                                 // Console.WriteLine(controls[0] == Keys.Up);
                                 Console.WriteLine(controls[0] == Keys.NumPad8);
                             }
@@ -254,49 +256,18 @@ namespace CS5410
 
                 this.saving = false;
             });
+        }    
+        public class Wait {
+            public static void wait(){
+                Console.WriteLine("wait is called");
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                while (true) {
+                    if (stopwatch.ElapsedMilliseconds >= 200)
+                    {
+                        break;
+                    }
+                }
+            }
         }
-//                 private void loadConfigurableControls()
-//         {
-//             lock (this)
-//             {
-//                 if (!this.loading)
-//                 {
-//                     this.loading = true;
-// #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-//                     finalizeLoadAsync();
-// #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-//                 }
-//             }
-//         }
-//         private async Task finalizeLoadAsync()
-//         {
-//             await Task.Run(() =>
-//             {
-//                 using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
-//                 {
-//                     try
-//                     {
-//                         if (storage.FileExists("ConfigurableControls.xml"))
-//                         {
-//                             using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.Open))
-//                             {
-//                                 if (fs != null)
-//                                 {
-//                                     XmlSerializer mySerializer = new XmlSerializer(typeof(List<Keys>));
-//                                     m_controls = (List<Keys>)mySerializer.Deserialize(fs);
-//                                 }
-//                             }
-//                         }
-//                     }
-//                     catch (IsolatedStorageException)
-//                     {
-//                         // Ideally show something to the user, but this is demo code :)
-//                     }
-//                 }
-
-//                 this.loading = false;
-//             });
-//         }
-        
     }
 }

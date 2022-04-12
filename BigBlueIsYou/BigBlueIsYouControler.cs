@@ -119,16 +119,16 @@ namespace CS5410
                 {
                     try
                     {
-                        if (storage.FileExists("ConfigurableControls.xml"))
+                        if (storage.FileExists("ConfigurableControls4.xml"))
                         {
-                            using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.Open))
+                            using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls4.xml", FileMode.Open))
                             {
                                 if (fs != null)
                                 {
                                     XmlSerializer mySerializer = new XmlSerializer(typeof(List<Keys>));
                                     // Console.WriteLine("look here" + (m_controls[0] == Keys.Up));
                                     Console.WriteLine("This happens!!!!!!!!!!!!!!!");
-                                    controls = (List<Keys>)mySerializer.Deserialize(fs);
+                                    m_controls = (List<Keys>)mySerializer.Deserialize(fs);
                                     Console.WriteLine("yeah" + (controls[0] == Keys.Up));
                                     Console.WriteLine("This happens ================================");
                                 }

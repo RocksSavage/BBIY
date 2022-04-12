@@ -72,6 +72,14 @@ namespace CS5410
                 m_grid.Add(col);
             }
         }
+        public void printGrid(){
+            foreach (List<Cell> col in m_grid){
+                foreach(Cell c in col){
+                    Console.Write((c.things.Count() > 0) ? c.things[0].m_name.ToString() : " ");
+                }
+                Console.WriteLine("");
+            }
+        }
         public void renderLevel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, SpriteFont font, int gameStep){
 
             foreach (List<Cell> col in m_grid){
