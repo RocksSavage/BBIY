@@ -65,7 +65,7 @@ namespace CS5410
             Console.WriteLine("currentLevel" + currentLevel);
             grid = new Grid(currentLevel);
             gridStack = new Stack<Grid>();
-            gridStack.Push(new Grid(grid));
+            gridStack.Push(grid.getDeepClone());
             m_font = contentManager.Load<SpriteFont>("Fonts/gameFont");
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
@@ -319,7 +319,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
                         gameStep++;
-                        gridStack.Push(grid.Clone());
+                        gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
                 }
@@ -352,7 +352,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y+1].things.Add(y);
                         y.Y = y.Y+1;
                         gameStep++;
-                        gridStack.Push(new Grid(grid));
+                        gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
                 }
@@ -385,7 +385,7 @@ namespace CS5410
                         grid.m_grid[y.X-1][y.Y].things.Add(y);
                         y.X = y.X-1;
                         gameStep++;
-                        gridStack.Push(new Grid(grid));
+                        gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
                 }
@@ -418,7 +418,7 @@ namespace CS5410
                         grid.m_grid[y.X+1][y.Y].things.Add(y);
                         y.X = y.X+1;
                         gameStep++;
-                        gridStack.Push(new Grid(grid));
+                        gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
                 }

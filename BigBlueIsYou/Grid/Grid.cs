@@ -41,13 +41,34 @@ namespace CS5410
             makeLevel(m_currentLevel);
 
         }
-        public Grid(Grid grid){
-            m_grid = grid.m_grid;
-
+        public Grid(int m_size,
+                    int gridSizeAdjust,
+                    int gridXOffset,
+                    int m_X,
+                    int m_Y,
+                    List<List<Cell>> m_grid,
+                    int m_currentLevel,
+                    Renderer m_renderer)
+        {
+            this.m_size = m_size;
+            this.gridSizeAdjust = gridSizeAdjust;
+            this.gridXOffset = gridXOffset;
+            this.m_X = m_X;
+            this.m_Y = m_Y;
+            this.m_grid = m_grid;
+            this.m_currentLevel = m_currentLevel;
+            this.m_renderer = m_renderer;
         }
 
-        public Grid Clone(){
-            return (Grid)this.MemberwiseClone();
+        public Grid getDeepClone(){
+            return new Grid(this.m_size,
+                    this.gridSizeAdjust,
+                    this.gridXOffset,
+                    this.m_X,
+                    this.m_Y,
+                    this.m_grid.Select(x => x.ToList()).ToList(), // creates deep copy
+                    this.m_currentLevel,
+                    this.m_renderer); // keep object (as if it was a singleton)
         }
 
         public void makeLevel(int currentLevel){
