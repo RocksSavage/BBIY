@@ -27,12 +27,13 @@ make kill work right
 Controlls view
 Configurable movement controlls
 R to reset the level
+redo menu to be able to choose level
+particle effect on Win: make fireworks
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-redo menu to be able to choose level
 support multiple screen sizes
 Use TA written python code to extract animated spritesheet                                              Trent I want you to do this please :D
 Animated Sprites for Nouns and verbs exception YOU/BB                                                   Trent I want you to do this please :D
@@ -41,7 +42,6 @@ Sound Effect: Win a level music
 Sound Effect: Each time YOU is moved make a little walking/step sound (should be subtle)
 Sound Effect: When WIN is changed
 Create particle System
-particle effect when Winning: make fireworks
 particle effect when YOU is changed: particles origionate along the edge of the tile not the center
 particle effect when WIN is changed: particles origionate along the edge of the tile not the center
 particle effect when Anything is destroyed: particles origionate along the edge of the tile not the center

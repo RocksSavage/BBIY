@@ -54,7 +54,7 @@ namespace CS5410
             m_currentState = m_states[GameStateEnum.MainMenu];
 
             loadConfigurableControls();
-            Console.WriteLine("m_controls up is up" + (m_controls[0] == Keys.Up));
+            // Console.WriteLine("m_controls up is up" + (m_controls[0] == Keys.Up));
 
             base.Initialize();
         }
