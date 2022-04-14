@@ -17,6 +17,7 @@ namespace CS5410
         private IGameState m_currentState;
         private KeyboardInput m_inputKeyboard;
         private GameStateEnum m_nextStateEnum = GameStateEnum.MainMenu;
+        private int m_level = 1;
         private Dictionary<GameStateEnum, IGameState> m_states;
         public List<Keys> m_controls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right};
         public List<Keys> controls = new List<Keys>();
@@ -61,9 +62,10 @@ namespace CS5410
         {
             // Give all game states a chance to load their content
             // Console.WriteLine(m_controls[0] == Keys.Up);
+            // Console.WriteLine("Level" + m_level);
             foreach (var item in m_states)
             {
-                item.Value.initialize(this.GraphicsDevice, m_graphics, m_inputKeyboard, m_controls);
+                item.Value.initialize(this.GraphicsDevice, m_graphics, m_inputKeyboard, m_controls, m_level);
                 item.Value.loadContent(this.Content);
             }
         }
@@ -127,10 +129,7 @@ namespace CS5410
                                 {
                                     XmlSerializer mySerializer = new XmlSerializer(typeof(List<Keys>));
                                     // Console.WriteLine("look here" + (m_controls[0] == Keys.Up));
-                                    Console.WriteLine("This happens!!!!!!!!!!!!!!!");
                                     m_controls = (List<Keys>)mySerializer.Deserialize(fs);
-                                    Console.WriteLine("yeah" + (controls[0] == Keys.Up));
-                                    Console.WriteLine("This happens ================================");
                                 }
                             }
                         }

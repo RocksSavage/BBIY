@@ -24,13 +24,15 @@ namespace CS5410
         // public string[] level3 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-3.bbiy");
         // public string[] level4 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-4.bbiy");
         // public string[] level5 = System.IO.File.ReadAllLines("../../../Levels/levelSource/level-5.bbiy");
+        // public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
 
         // use these five file lines if working in VSCode--------------------------------------------------------------------------------------
-        public string[] level1 = System.IO.File.ReadAllLines("./Levels/levelSource/level-1.bbiy");
-        public string[] level2 = System.IO.File.ReadAllLines("./Levels/levelSource/level-2.bbiy");
-        public string[] level3 = System.IO.File.ReadAllLines("./Levels/levelSource/level-3.bbiy");
-        public string[] level4 = System.IO.File.ReadAllLines("./Levels/levelSource/level-4.bbiy");
-        public string[] level5 = System.IO.File.ReadAllLines("./Levels/levelSource/level-5.bbiy");
+        // public string[] level1 = System.IO.File.ReadAllLines("./Levels/levelSource/level-1.bbiy");
+        // public string[] level2 = System.IO.File.ReadAllLines("./Levels/levelSource/level-2.bbiy");
+        // public string[] level3 = System.IO.File.ReadAllLines("./Levels/levelSource/level-3.bbiy");
+        // public string[] level4 = System.IO.File.ReadAllLines("./Levels/levelSource/level-4.bbiy");
+        // public string[] level5 = System.IO.File.ReadAllLines("./Levels/levelSource/level-5.bbiy");
+        public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
 
 
         public Grid(int currentLevel){
@@ -39,18 +41,29 @@ namespace CS5410
             makeLevel(m_currentLevel);
 
         }
-        // public Grid(Grid grid){
-        //     m_grid = grid.m_grid;
+        public Grid(Grid grid){
+            m_grid = grid.m_grid;
 
-        // }
+        }
 
-        public void makeLevel(int m_currentLevel){
-            string[] level = level1;
-            if (m_currentLevel == 2) level = level2;
-            if (m_currentLevel == 3) level = level3;
-            if (m_currentLevel == 4) level = level4;
-            if (m_currentLevel == 5) level = level5;
+        public Grid Clone(){
+            return (Grid)this.MemberwiseClone();
+        }
+
+        public void makeLevel(int currentLevel){
+            Console.WriteLine("currentLevel" + currentLevel);
+            m_currentLevel = currentLevel;
+            string[] level = levels;
+            int levelOffset = 42;
+            level = level.Skip(levelOffset * (currentLevel-1)).Take(levelOffset).ToArray();
+            // if (m_currentLevel == 2) level = level2;
+            // if (m_currentLevel == 3) level = level3;
+            // if (m_currentLevel == 4) level = level4;
+            // if (m_currentLevel == 5) level = level5;
             string[] size = level[1].Split(' ');
+            // Console.WriteLine("size " + size);
+            // Console.WriteLine("size [0]" + size[0]);
+            // Console.WriteLine("size [2]" + size[2]);
             m_X = int.Parse(size[0]);
             m_Y = int.Parse(size[2]);
             makeGrid(level);
@@ -61,7 +74,7 @@ namespace CS5410
                 for (int j = 0; j < m_Y; j++){
                     Cell cell = new Cell(i, j);
                     if(level[i][j] != ' '){                // adds background letters like shrubs grass
-                        // Console.WriteLine("cell.X " + (cell.X-2) + " cell.Y " + cell.Y);
+                        // Console.WriteLine("i* 1 " + i*m_currentLevel + m_currentLevel);
                         cell.things.Add(new Thing(level[i][j], i-2, j)); 
                     }
                     if(level[i+20][j] != ' '){             // adds foreground letters like bb is you rock skull ice flag
@@ -83,10 +96,6 @@ namespace CS5410
         public void renderLevel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, SpriteFont font, int gameStep){
 
             foreach (List<Cell> col in m_grid){
-                // foreach(Cell c in r){
-                //     // Console.Write(c + ""); 
-                // }
-                    // Console.WriteLine();
                 foreach(Cell c in col){
                     if(c.things.Count > 0){
                         foreach(Thing t in c.things){
@@ -96,31 +105,6 @@ namespace CS5410
                 }
             }
         }
-        // public void checkMushrooms(){
-        //     List<Mushroom> deadMushrooms = new List<Mushroom>();
-        //     foreach (Mushroom m in m_mushroomList){
-        //         if (m.health == 0){
-        //             deadMushrooms.Add(m);
-        //         }
-        //     }
-        //     foreach (Mushroom m in deadMushrooms){
-        //         m_mushroomList.Remove(m);
-        //     }
-        // }
-        // public void makeMushroomList(){
-        //     for(int r = 0; r < m_size; r++){
-        //         for(int c = 0; c < m_size; c++){
-        //             if (m_grid[r][c].mushroom != null){
-        //                 if(m_grid[r][c].mushroom.health > 0){
-        //                     m_mushroomList.Add(m_grid[r][c].mushroom);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // public void addMushroomToMushroomList(int x, int y){
-        //     m_mushroomList.Add(new Mushroom(x, y));
-        // }
     }
     public class Cell{
 

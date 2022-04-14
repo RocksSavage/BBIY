@@ -3,17 +3,11 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using System.Diagnostics;
 using CS5410.Input;
 using System;
-using System.Collections;
+using CS5410.Particles;
 
 namespace CS5410
 {
@@ -39,6 +33,10 @@ namespace CS5410
         public int gameStep = 0;
         private SoundEffect m_moveSound;
         private Stack<Grid> gridStack;
+        private bool reload = true;
+        private List<ParticleEmitter> particles = new List<ParticleEmitter>();
+        private ParticleEmitter m_emitter1;
+        private Texture2D fire;
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -62,18 +60,21 @@ namespace CS5410
         public override void loadContent(ContentManager contentManager)
         {
             m_contentManager = contentManager;
+            Console.WriteLine("m_level" + m_level);
+            currentLevel = m_level;
+            Console.WriteLine("currentLevel" + currentLevel);
             grid = new Grid(currentLevel);
-            // grid2 = new Grid(currentLevel);
             gridStack = new Stack<Grid>();
-            gridStack.Push(grid);
+            gridStack.Push(new Grid(grid));
             m_font = contentManager.Load<SpriteFont>("Fonts/gameFont");
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
             Renderer.loadSprites(contentManager);
             
+            fire = contentManager.Load<Texture2D>("Images/fire");
+            
             // Audio
             m_moveSound = contentManager.Load<SoundEffect>("Audio/zapsplat_thud");
-
 
             updateControls();
         }
@@ -81,8 +82,12 @@ namespace CS5410
         public override GameStateEnum processInput(GameTime gameTime)
         {
             // Console.WriteLine("--------" +( m_controls[0] == Keys.Up));
+            if (reload) {
+                // Console.WriteLine("This Happens");
+                loadContent(m_contentManager);
+                reload = false;
+            }
             if(m_inUseControls[0] != m_controls[0] || m_inUseControls[1] != m_controls[1] || m_inUseControls[2] != m_controls[2] || m_inUseControls[3] != m_controls[3]) {
-                // Console.WriteLine("this happens");
                 updateControls();
             }
         
@@ -90,6 +95,7 @@ namespace CS5410
 
             if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape))
             {
+                reload = true;
                 oldKBS = kBS;
                 loadContent(m_contentManager);
                 return GameStateEnum.MainMenu;
@@ -112,9 +118,10 @@ namespace CS5410
 
             m_inputKeyboard.Update(gameTime);
             if (youWin){
-                Console.WriteLine("does this happen? 2");
-                currentLevel++;
-                grid = new Grid(currentLevel);
+                // Console.WriteLine("does this happen? 2");
+                // m_level++;
+                // grid = new Grid(m_level);
+                reload = true;
                 youWin = false;
                 loadContent(m_contentManager);
                 return GameStateEnum.YouWin;
@@ -129,6 +136,7 @@ namespace CS5410
             findRules();       // finds the rules
             checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
             checkWin();
+            updateParticles();
         }
 
         public override void render(GameTime gameTime)
@@ -140,6 +148,9 @@ namespace CS5410
 
 
             m_spriteBatch.End();
+        }
+        public void updateParticles(){
+            // foreach() // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
         }
         public void checkWin(){
             foreach(Thing y in you){
@@ -270,6 +281,7 @@ namespace CS5410
         }
 
         public void onMoveUp(GameTime gameTime, float scale){
+            // grid.printGrid();
             moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if(moveTimer > millisecondsToWait){
                 foreach(Thing y in you){
@@ -281,6 +293,7 @@ namespace CS5410
                         if (w.X == y.X && w.Y == y.Y-1){
                             youWin = true; 
                             Console.WriteLine("You Win!");
+                            makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -293,8 +306,8 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
                         gameStep++;
-                        gridStack.Push(grid);
-                        Console.WriteLine(gridStack.Count);
+                        gridStack.Push(grid.Clone());
+                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -313,6 +326,7 @@ namespace CS5410
                         if (w.X == y.X && w.Y == y.Y+1){
                             youWin = true; 
                             Console.WriteLine("You Win!");
+                            makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -325,8 +339,8 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y+1].things.Add(y);
                         y.Y = y.Y+1;
                         gameStep++;
-                        gridStack.Push(grid);
-                        Console.WriteLine(gridStack.Count);
+                        gridStack.Push(new Grid(grid));
+                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -345,6 +359,7 @@ namespace CS5410
                         if (w.X == y.X-1 && w.Y == y.Y){
                             youWin = true; 
                             Console.WriteLine("You Win!");
+                            makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -357,8 +372,8 @@ namespace CS5410
                         grid.m_grid[y.X-1][y.Y].things.Add(y);
                         y.X = y.X-1;
                         gameStep++;
-                        gridStack.Push(grid);
-                        Console.WriteLine(gridStack.Count);
+                        gridStack.Push(new Grid(grid));
+                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -377,6 +392,7 @@ namespace CS5410
                         if (w.X == y.X+1 && w.Y == y.Y){
                             youWin = true; 
                             Console.WriteLine("You Win!");
+                            makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -389,12 +405,25 @@ namespace CS5410
                         grid.m_grid[y.X+1][y.Y].things.Add(y);
                         y.X = y.X+1;
                         gameStep++;
-                        gridStack.Push(grid);
-                        Console.WriteLine(gridStack.Count);
+                        gridStack.Push(new Grid(grid));
+                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
             }
+        }
+        
+        public void makeFireworks(int x, int y){
+            
+            m_emitter1 = new ParticleEmitter(
+                fire,
+                new TimeSpan(0, 0, 0, 0, 5),
+                x, y,
+                20,
+                2,
+                new TimeSpan(0, 0, 4),
+                new TimeSpan(0, 0, 0, 0, 3000));
+            particles.Add(m_emitter1);
         }
 
         private void generalMove()

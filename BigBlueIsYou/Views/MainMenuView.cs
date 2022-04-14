@@ -13,6 +13,8 @@ namespace CS5410
         private SpriteFont m_fontTitle;
         private SpriteFont m_fontMenu;
         private SpriteFont m_fontMenuSelect;
+        private bool levelSelect = false;
+        private Keys key;
         private const string Title = "BBIY";
 
         private enum MenuState
@@ -34,35 +36,58 @@ namespace CS5410
         public override GameStateEnum processInput(GameTime gameTime)
         {
             kBS = Keyboard.GetState();
-            // Arrow keys to navigate the menu
-            if (kBS.IsKeyUp(Keys.Down) && oldKBS.IsKeyDown(Keys.Down) && m_currentSelection != MenuState.Credits){
-                m_currentSelection = m_currentSelection + 1;
-            }
-            if (kBS.IsKeyUp(Keys.Up) && oldKBS.IsKeyDown(Keys.Up) && m_currentSelection != MenuState.NewGame){
-                m_currentSelection = m_currentSelection - 1;
-            }
-            
-            if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape)){
-                return GameStateEnum.Exit;
-            }
-            if (!(kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter))) {
-                oldKBS = kBS; 
-                return GameStateEnum.MainMenu;
-            }
-            oldKBS = kBS;
-            if (m_currentSelection == MenuState.NewGame) {
+            if (levelSelect){
+                key = Keys.None;
+                if(kBS.IsKeyDown(Keys.D1)) {key = Keys.D1; }
+                if(kBS.IsKeyDown(Keys.D2)) {key = Keys.D2; }
+                if(kBS.IsKeyDown(Keys.D3)) {key = Keys.D3; }
+                if(kBS.IsKeyDown(Keys.D4)) {key = Keys.D4; }
+                if(kBS.IsKeyDown(Keys.D5)) {key = Keys.D5; }
+                if(kBS.IsKeyDown(Keys.NumPad1)) {key = Keys.NumPad1; }
+                if(kBS.IsKeyDown(Keys.NumPad2)) {key = Keys.NumPad2; }
+                if(kBS.IsKeyDown(Keys.NumPad3)) {key = Keys.NumPad3; }
+                if(kBS.IsKeyDown(Keys.NumPad4)) {key = Keys.NumPad4; }
+                if(kBS.IsKeyDown(Keys.NumPad5)) {key = Keys.NumPad5; }
+                if (key != Keys.None){
+                    if(key == Keys.D1 || key == Keys.NumPad1) { m_level = 1; levelSelect = false;}
+                    if(key == Keys.D2 || key == Keys.NumPad2) { m_level = 2; levelSelect = false;}
+                    if(key == Keys.D3 || key == Keys.NumPad3) { m_level = 3; levelSelect = false;}
+                    if(key == Keys.D4 || key == Keys.NumPad4) { m_level = 4; levelSelect = false;}
+                    if(key == Keys.D5 || key == Keys.NumPad5) { m_level = 5; levelSelect = false;}
+                    Console.WriteLine("main menu level" + m_level);
+                    oldKBS = kBS;
+                    return GameStateEnum.GamePlay;
+                }
+            } else {
+                // Arrow keys to navigate the menu
+                if (kBS.IsKeyUp(Keys.Down) && oldKBS.IsKeyDown(Keys.Down) && m_currentSelection != MenuState.Credits){
+                    m_currentSelection = m_currentSelection + 1;
+                }
+                if (kBS.IsKeyUp(Keys.Up) && oldKBS.IsKeyDown(Keys.Up) && m_currentSelection != MenuState.NewGame){
+                    m_currentSelection = m_currentSelection - 1;
+                }
+                
+                if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape)){
+                    return GameStateEnum.Exit;
+                }
+                if (!(kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter))) {
+                    oldKBS = kBS; 
+                    return GameStateEnum.MainMenu;
+                }
                 oldKBS = kBS;
-                return GameStateEnum.GamePlay;
-            }
-            if (m_currentSelection == MenuState.Controls){
-                oldKBS = kBS;
-                return GameStateEnum.Controls;
-            }
-            if (m_currentSelection == MenuState.Credits) {
-                oldKBS = kBS;
-                return GameStateEnum.Credits;
-            }
+                if (m_currentSelection == MenuState.NewGame) {
+                    levelSelect = true;
+                }
+                if (m_currentSelection == MenuState.Controls){
+                    oldKBS = kBS;
+                    return GameStateEnum.Controls;
+                }
+                if (m_currentSelection == MenuState.Credits) {
+                    oldKBS = kBS;
+                    return GameStateEnum.Credits;
+                }
 
+            }
             return GameStateEnum.MainMenu;
         }
         public override void update(GameTime gameTime)
@@ -70,17 +95,28 @@ namespace CS5410
         }
         public override void render(GameTime gameTime)
         {
-            m_spriteBatch.Begin();
+            if (levelSelect == false){
 
-            Vector2 stringSize1 = m_fontTitle.MeasureString(Title);
-            Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, m_graphics.PreferredBackBufferHeight/8);
-            Printer.PrintWithOutline(Title, m_spriteBatch, stringSize, m_fontTitle, Color.Green, Color.White);
+                m_spriteBatch.Begin();
 
-            float bottom = drawMenuItem(m_currentSelection == MenuState.NewGame ? m_fontMenuSelect : m_fontMenu, "New Game", m_graphics.PreferredBackBufferHeight/2, m_currentSelection == MenuState.NewGame ? Color.Black : Color.Blue);
-            bottom = drawMenuItem(m_currentSelection == MenuState.Controls ? m_fontMenuSelect : m_fontMenu, "Controls", bottom, m_currentSelection == MenuState.Controls ? Color.Black : Color.Blue);
-            bottom = drawMenuItem(m_currentSelection == MenuState.Credits ? m_fontMenuSelect : m_fontMenu, "Credits", bottom, m_currentSelection == MenuState.Credits ? Color.Black : Color.Blue);
+                Vector2 stringSize1 = m_fontTitle.MeasureString(Title);
+                Vector2 stringSize = new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize1.X / 2, m_graphics.PreferredBackBufferHeight/8);
+                Printer.PrintWithOutline(Title, m_spriteBatch, stringSize, m_fontTitle, Color.Green, Color.White);
 
-            m_spriteBatch.End();
+                float bottom = drawMenuItem(m_currentSelection == MenuState.NewGame ? m_fontMenuSelect : m_fontMenu, "New Game", m_graphics.PreferredBackBufferHeight/2, m_currentSelection == MenuState.NewGame ? Color.Black : Color.Blue);
+                bottom = drawMenuItem(m_currentSelection == MenuState.Controls ? m_fontMenuSelect : m_fontMenu, "Controls", bottom, m_currentSelection == MenuState.Controls ? Color.Black : Color.Blue);
+                bottom = drawMenuItem(m_currentSelection == MenuState.Credits ? m_fontMenuSelect : m_fontMenu, "Credits", bottom, m_currentSelection == MenuState.Credits ? Color.Black : Color.Blue);
+
+                m_spriteBatch.End();
+            } else {
+                m_spriteBatch.Begin();
+
+                Vector2 stringSize = m_fontMenu.MeasureString("hello there");
+                m_spriteBatch.DrawString(m_fontMenu, "pick a level 1, 2, 3, 4, 5",
+                new Vector2(m_graphics.PreferredBackBufferWidth / 3 - stringSize.X / 2, m_graphics.PreferredBackBufferHeight / 2 - stringSize.Y), Color.Yellow);
+
+                m_spriteBatch.End();
+            }
         }
 
         private float drawMenuItem(SpriteFont font, string text, float y, Color color)

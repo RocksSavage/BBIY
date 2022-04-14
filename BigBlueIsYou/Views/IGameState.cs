@@ -11,7 +11,7 @@ namespace CS5410
     public interface IGameState
     {
         void initializeSession();
-        void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics, KeyboardInput inputKeyboard, List<Keys> controls);
+        void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics, KeyboardInput inputKeyboard, List<Keys> controls, int level);
         void loadContent(ContentManager contentManager);
         GameStateEnum processInput(GameTime gameTime);
         void update(GameTime gameTime);

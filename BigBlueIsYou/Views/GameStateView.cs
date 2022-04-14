@@ -14,13 +14,15 @@ namespace CS5410
         protected SpriteBatch m_spriteBatch;
         protected KeyboardInput m_inputKeyboard;
         public List<Keys> m_controls;
+        public int m_level;
 
-        public void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics, KeyboardInput inputKeyboard, List<Keys> controls)
+        public void initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics, KeyboardInput inputKeyboard, List<Keys> controls, int level)
         {
             m_graphics = graphics;
             m_spriteBatch = new SpriteBatch(graphicsDevice);
             m_inputKeyboard = inputKeyboard;
             m_controls = controls;
+            m_level = level;
         }
 
         public virtual void initializeSession() { }

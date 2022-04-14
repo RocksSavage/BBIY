@@ -8,7 +8,7 @@ namespace CS5410
     public class YouWinView : GameStateView
     {
         private SpriteFont m_font;
-        private const string MESSAGE = "You Won!   --   Press Enter to Advance";
+        private const string MESSAGE = "You Won!   --   Press Enter to return to main menu";
         private KeyboardState kBS;
         private KeyboardState oldKBS;
 
@@ -26,7 +26,7 @@ namespace CS5410
             }
             if (kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter)){
                 oldKBS = kBS;
-                return GameStateEnum.GamePlay;
+                return GameStateEnum.MainMenu;
             }
             oldKBS = kBS;
             return GameStateEnum.YouWin;

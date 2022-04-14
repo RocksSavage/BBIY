@@ -47,6 +47,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/menu-select.spritefont
 
+#begin Images/fire.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/fire.png
+
 #begin Images/square.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -32,7 +32,8 @@ Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-Keyboard controlls are saved when the program is exited
+redo menu to be able to choose level
+support multiple screen sizes
 Use TA written python code to extract animated spritesheet                                              Trent I want you to do this please :D
 Animated Sprites for Nouns and verbs exception YOU/BB                                                   Trent I want you to do this please :D
 Sound Effect: Background music
@@ -43,8 +44,10 @@ Create particle System
 particle effect when Winning: make fireworks
 particle effect when YOU is changed: particles origionate along the edge of the tile not the center
 particle effect when WIN is changed: particles origionate along the edge of the tile not the center
+particle effect when Anything is destroyed: particles origionate along the edge of the tile not the center
 Level Transition: Fireworks for a few seconds then new level If the whole game is won give the player the option to go back to the main menu
 rework move wait timer it currently feels crappy
 browser integration
 
 Z to undo one step (stretch goal)
+Keyboard controlls are saved when the program is exited --- missing 5 points the way we have it, lets get other things done before returning to this
