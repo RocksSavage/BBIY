@@ -10,7 +10,6 @@ namespace CS5410.Particles
     {
 
         private Dictionary<int, Particle> m_particles = new Dictionary<int, Particle>();
-        private Texture2D m_texSmoke;
         private Texture2D m_texFire;
         private MyRandom m_random = new MyRandom();
 
@@ -20,11 +19,10 @@ namespace CS5410.Particles
         private int m_sarticleSize;
         private int m_speed;
         private TimeSpan m_lifetime;
-        private TimeSpan m_switchover;
 
         public Vector2 Gravity { get; set; }
 
-        public ParticleEmitter(Texture2D fire, TimeSpan rate, int sourceX, int sourceY, int size, int speed, TimeSpan lifetime, TimeSpan wwitchover)
+        public ParticleEmitter(Texture2D fire, TimeSpan rate, int sourceX, int sourceY, int size, int speed, TimeSpan lifetime)
         {
             m_rate = rate;
             m_sourceX = sourceX;
@@ -32,13 +30,12 @@ namespace CS5410.Particles
             m_sarticleSize = size;
             m_speed = speed;
             m_lifetime = lifetime;
-            m_switchover = wwitchover;
             m_texFire = fire;
 
             // m_texSmoke = content.Load<Texture2D>("Images/smoke");
             // m_texFire = content.Load<Texture2D>("Images/fire");
 
-            this.Gravity = new Vector2(1000, 1000);
+            this.Gravity = new Vector2(0, 0);
         }
 
         private TimeSpan m_accumulated = TimeSpan.Zero;
@@ -57,8 +54,8 @@ namespace CS5410.Particles
 
                 Particle p = new Particle(
                     m_random.Next(),
-                    new Vector2(m_sourceX + (int)m_random.nextGaussian(1, 1), m_sourceY),
-                    m_random.nextCircleVector(),
+                    new Vector2((float)m_random.nextRange(0, 1900), m_sourceY),
+                    new Vector2(0, -1),
                     (float)m_random.nextGaussian(m_speed, 1),
                     m_lifetime);
 
@@ -84,7 +81,7 @@ namespace CS5410.Particles
                 }
                 //
                 // Update its position
-                p.position += (p.direction * p.speed/4000);
+                p.position += (p.direction * p.speed);
                 //
                 // Have it rotate proportional to its speed
                 p.rotation += p.speed / 50.0f;
@@ -110,14 +107,7 @@ namespace CS5410.Particles
             foreach (Particle p in m_particles.Values)
             {
                 Texture2D texDraw;
-                // if (p.lifetime < m_switchover)
-                // {
-                    // texDraw = m_texSmoke;
-                // }
-                // else
-                // {
-                    texDraw = m_texFire;
-                // }
+                texDraw = m_texFire;
 
                 r.X = (int)p.position.X;
                 r.Y = (int)p.position.Y;

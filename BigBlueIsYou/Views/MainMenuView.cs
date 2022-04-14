@@ -54,7 +54,6 @@ namespace CS5410
                     if(key == Keys.D3 || key == Keys.NumPad3) { m_level[0] = 3; levelSelect = false;}
                     if(key == Keys.D4 || key == Keys.NumPad4) { m_level[0] = 4; levelSelect = false;}
                     if(key == Keys.D5 || key == Keys.NumPad5) { m_level[0] = 5; levelSelect = false;}
-                    Console.WriteLine("main menu level" + m_level[0]);
                     oldKBS = kBS;
                     return GameStateEnum.GamePlay;
                 }

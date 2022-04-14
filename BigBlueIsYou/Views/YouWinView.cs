@@ -27,9 +27,8 @@ namespace CS5410
                 new TimeSpan(0, 0, 0, 0, 5),
                 middleX, middleY,
                 20,
-                1,
-                new TimeSpan(0, 0, 4),
-                new TimeSpan(0, 0, 0, 0, 3000));
+                -2,
+                new TimeSpan(0, 0, 4));
         }
 
         public override GameStateEnum processInput(GameTime gameTime)

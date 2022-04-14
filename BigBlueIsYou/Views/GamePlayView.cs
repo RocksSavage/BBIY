@@ -60,9 +60,7 @@ namespace CS5410
         public override void loadContent(ContentManager contentManager)
         {
             m_contentManager = contentManager;
-            Console.WriteLine("m_level" + m_level[0]);
             currentLevel = m_level[0];
-            Console.WriteLine("currentLevel" + currentLevel);
             grid = new Grid(currentLevel);
             gridStack = new Stack<Grid>();
             gridStack.Push(grid.getDeepClone());
@@ -111,7 +109,7 @@ namespace CS5410
                 oldKBS = kBS;
                 // Grid temp = gridStack.Pop();
                 grid = gridStack.Pop();
-                grid.printGrid();
+                // grid.printGrid();
                 // grid2 = gridStack.Pop();
 
             }
@@ -433,8 +431,7 @@ namespace CS5410
                 x, y,
                 20,
                 2,
-                new TimeSpan(0, 0, 4),
-                new TimeSpan(0, 0, 0, 0, 3000));
+                new TimeSpan(0, 0, 4));
             particles.Add(m_emitter1);
         }
 

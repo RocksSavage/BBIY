@@ -11,7 +11,6 @@ namespace CS5410
         // global variables (look away, grader!)
         public static Point cellDim = new Point(30, 30);
         public static Point sourceDim = new Point(24, 24);
-        private static GamePlayView gamePlayView = null;
 
         // the Great Wall of Sprites
 
