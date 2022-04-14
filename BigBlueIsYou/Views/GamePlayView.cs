@@ -60,8 +60,8 @@ namespace CS5410
         public override void loadContent(ContentManager contentManager)
         {
             m_contentManager = contentManager;
-            Console.WriteLine("m_level" + m_level);
-            currentLevel = m_level;
+            Console.WriteLine("m_level" + m_level[0]);
+            currentLevel = m_level[0];
             Console.WriteLine("currentLevel" + currentLevel);
             grid = new Grid(currentLevel);
             gridStack = new Stack<Grid>();
@@ -123,6 +123,9 @@ namespace CS5410
                 // grid = new Grid(m_level);
                 reload = true;
                 youWin = false;
+                // while(true){
+
+                // }
                 loadContent(m_contentManager);
                 return GameStateEnum.YouWin;
             }
@@ -136,7 +139,7 @@ namespace CS5410
             findRules();       // finds the rules
             checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
             checkWin();
-            updateParticles();
+            updateParticles(gameTime);
         }
 
         public override void render(GameTime gameTime)
@@ -144,13 +147,23 @@ namespace CS5410
             m_spriteBatch.Begin();
 
             grid.renderLevel(m_graphics, m_spriteBatch, m_font, gameStep);
+            drawParticles(m_spriteBatch);
             // grid2.renderLevel(m_graphics, m_spriteBatch, m_font, gameStep);
 
 
             m_spriteBatch.End();
         }
-        public void updateParticles(){
-            // foreach() // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
+        public void drawParticles(SpriteBatch spriteBatch){
+            foreach(ParticleEmitter pe in particles){
+                
+                pe.draw(m_spriteBatch);
+            }
+
+        }
+        public void updateParticles(GameTime gameTime){
+            foreach(ParticleEmitter pe in particles){ // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
+                pe.update(gameTime);
+            }
         }
         public void checkWin(){
             foreach(Thing y in you){
@@ -414,7 +427,6 @@ namespace CS5410
         }
         
         public void makeFireworks(int x, int y){
-            
             m_emitter1 = new ParticleEmitter(
                 fire,
                 new TimeSpan(0, 0, 0, 0, 5),
