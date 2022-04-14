@@ -49,12 +49,12 @@ namespace CS5410
                 if(kBS.IsKeyDown(Keys.NumPad4)) {key = Keys.NumPad4; }
                 if(kBS.IsKeyDown(Keys.NumPad5)) {key = Keys.NumPad5; }
                 if (key != Keys.None){
-                    if(key == Keys.D1 || key == Keys.NumPad1) { m_level = 1; levelSelect = false;}
-                    if(key == Keys.D2 || key == Keys.NumPad2) { m_level = 2; levelSelect = false;}
-                    if(key == Keys.D3 || key == Keys.NumPad3) { m_level = 3; levelSelect = false;}
-                    if(key == Keys.D4 || key == Keys.NumPad4) { m_level = 4; levelSelect = false;}
-                    if(key == Keys.D5 || key == Keys.NumPad5) { m_level = 5; levelSelect = false;}
-                    Console.WriteLine("main menu level" + m_level);
+                    if(key == Keys.D1 || key == Keys.NumPad1) { m_level[0] = 1; levelSelect = false;}
+                    if(key == Keys.D2 || key == Keys.NumPad2) { m_level[0] = 2; levelSelect = false;}
+                    if(key == Keys.D3 || key == Keys.NumPad3) { m_level[0] = 3; levelSelect = false;}
+                    if(key == Keys.D4 || key == Keys.NumPad4) { m_level[0] = 4; levelSelect = false;}
+                    if(key == Keys.D5 || key == Keys.NumPad5) { m_level[0] = 5; levelSelect = false;}
+                    Console.WriteLine("main menu level" + m_level[0]);
                     oldKBS = kBS;
                     return GameStateEnum.GamePlay;
                 }

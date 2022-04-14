@@ -17,7 +17,7 @@ namespace CS5410
         private IGameState m_currentState;
         private KeyboardInput m_inputKeyboard;
         private GameStateEnum m_nextStateEnum = GameStateEnum.MainMenu;
-        private int m_level = 1;
+        private List<int> m_level = new List<int>();
         private Dictionary<GameStateEnum, IGameState> m_states;
         public List<Keys> m_controls = new List<Keys> {Keys.Up, Keys.Down, Keys.Left, Keys.Right};
         public List<Keys> controls = new List<Keys>();
@@ -30,6 +30,7 @@ namespace CS5410
             Content.RootDirectory = "Content";
             m_inputKeyboard = new KeyboardInput();
             IsMouseVisible = true;
+            m_level.Add(1);
         }
 
         protected override void Initialize()
