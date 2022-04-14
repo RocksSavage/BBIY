@@ -19,10 +19,10 @@ namespace CS5410
         public int m_currentLevel;
         public Renderer m_renderer;
         // use these five file lines if working in visual studio--------------------------------------------------------------------------------------
-        // public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
+         public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
 
         // use these five file lines if working in VSCode--------------------------------------------------------------------------------------
-        public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
+        //public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
 
 
         public Grid(int currentLevel){
@@ -56,7 +56,7 @@ namespace CS5410
                     this.gridXOffset,
                     this.m_X,
                     this.m_Y,
-                    this.m_grid.Select(x => x.ToList()).ToList(), // creates deep copy
+                    this.m_grid.Select(list => list.Select(cell => cell.getDeepCopy()).ToList()).ToList(), // needs to deep copy cells in the list!!!
                     this.m_currentLevel,
                     this.m_renderer); // keep object (as if it was a singleton)
         }
@@ -113,18 +113,29 @@ namespace CS5410
         public List<Thing> things = new List<Thing>();
 
         public Point coord;
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int X
+        {
+            get => coord.X;
+            set => coord.X = value;
+        }
+        public int Y
+        {
+            get => coord.Y;
+            set => coord.Y = value;
+        }
         public Cell(int x, int y){
-            coord.X = x;
-            coord.Y = y;
-            X = x;
-            Y = y;
+            coord = new Point(x, y); // this is kind of horrible, but it *might* ensure a deep copy is made?
         }
         
         public override string ToString(){
             // return "x:"+ X+ " y:"+ Y + "  " + ((things.Count() > 0) ? things[0].ToString() : "") + "  ";
             return ((things.Count() > 0) ? things[0].ToString() + "    " : "     ");
+        }
+        public Cell getDeepCopy()
+        {
+            var dcpy = new Cell(this.X, this.Y);
+            dcpy.things = this.things.ToList();
+            return dcpy;
         }
     }
     public class Thing{

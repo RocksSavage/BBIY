@@ -107,11 +107,13 @@ namespace CS5410
             if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z))
             {
                 oldKBS = kBS;
-                // Grid temp = gridStack.Pop();
-                grid = gridStack.Pop();
-                // grid.printGrid();
-                // grid2 = gridStack.Pop();
+                Grid bob = new Grid(currentLevel);
+                if (gridStack.TryPop(out grid))
+                {
+                    Console.WriteLine("Popped the Grid Stack");
 
+                }
+                //grid = bob;
             }
 
             m_inputKeyboard.Update(gameTime);
