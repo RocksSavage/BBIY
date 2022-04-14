@@ -28,26 +28,26 @@ Controlls view
 Configurable movement controlls
 R to reset the level
 redo menu to be able to choose level
+Use TA written python code to extract animated spritesheet                                              Trent I want you to do this please :D
+Animated Sprites for Nouns and verbs exception YOU/BB                                                   Trent I want you to do this please :D
+Create particle System
 particle effect on Win: make fireworks
+Level Transition: Fireworks for a few seconds then new level If the whole game is won give the player the option to go back to the main menu
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-support multiple screen sizes
-Use TA written python code to extract animated spritesheet                                              Trent I want you to do this please :D
-Animated Sprites for Nouns and verbs exception YOU/BB                                                   Trent I want you to do this please :D
 Sound Effect: Background music
 Sound Effect: Win a level music
 Sound Effect: Each time YOU is moved make a little walking/step sound (should be subtle)
 Sound Effect: When WIN is changed
-Create particle System
 particle effect when YOU is changed: particles origionate along the edge of the tile not the center
 particle effect when WIN is changed: particles origionate along the edge of the tile not the center
 particle effect when Anything is destroyed: particles origionate along the edge of the tile not the center
-Level Transition: Fireworks for a few seconds then new level If the whole game is won give the player the option to go back to the main menu
-rework move wait timer it currently feels crappy
+support multiple screen sizes
 browser integration
+rework move wait timer it currently feels crappy
 
-Z to undo one step (stretch goal)
+Z to undo one step (stretch goal) figure out deep clone and add clone to the stack in the right spot
 Keyboard controlls are saved when the program is exited --- missing 5 points the way we have it, lets get other things done before returning to this

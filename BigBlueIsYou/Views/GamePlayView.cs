@@ -109,7 +109,7 @@ namespace CS5410
                 oldKBS = kBS;
                 // Grid temp = gridStack.Pop();
                 grid = gridStack.Pop();
-                grid.printGrid();
+                // grid.printGrid();
                 // grid2 = gridStack.Pop();
 
             }
