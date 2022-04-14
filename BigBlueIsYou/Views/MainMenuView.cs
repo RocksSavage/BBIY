@@ -111,9 +111,10 @@ namespace CS5410
             } else {
                 m_spriteBatch.Begin();
 
-                Vector2 stringSize = m_fontMenu.MeasureString("hello there");
-                m_spriteBatch.DrawString(m_fontMenu, "pick a level 1, 2, 3, 4, 5",
-                new Vector2(m_graphics.PreferredBackBufferWidth / 3 - stringSize.X / 2, m_graphics.PreferredBackBufferHeight / 2 - stringSize.Y), Color.Yellow);
+                string usrMssg = "pick a level 1, 2, 3, 4, 5";
+                Vector2 stringSize = m_fontMenu.MeasureString(usrMssg);
+                m_spriteBatch.DrawString(m_fontMenu, usrMssg,
+                new Vector2(m_graphics.PreferredBackBufferWidth / 2 - stringSize.X / 2, m_graphics.PreferredBackBufferHeight / 2 - stringSize.Y), Color.Yellow);
 
                 m_spriteBatch.End();
             }
