@@ -215,13 +215,8 @@ namespace CS5410
                 if (!this.saving)
                 {
                     this.saving = true;
-                    //
-                    // Create something to save
-                    // GameState myState = new GameState(100000, 20);
                     
-                    // m_controls.Add(score);
-                    // m_controls.Sort();
-                    // m_controls.Reverse();
+                    // Create something to save
                     finalizeSaveAsync(m_controls);
                 }
             }
@@ -234,17 +229,13 @@ namespace CS5410
                 {
                     try
                     {
-                        using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls4.xml", FileMode.OpenOrCreate))
+                        using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.OpenOrCreate))
                         {
                             if (fs != null)
                             {
                                 XmlSerializer mySerializer = new XmlSerializer(typeof(List<Keys>));
-                                // Console.WriteLine(controls[0] == Keys.Up);
-                                Console.WriteLine(controls[0] == Keys.NumPad8);
+
                                 mySerializer.Serialize(fs, controls);
-                                Wait.wait();
-                                // Console.WriteLine(controls[0] == Keys.Up);
-                                Console.WriteLine(controls[0] == Keys.NumPad8);
                             }
                         }
                     }
