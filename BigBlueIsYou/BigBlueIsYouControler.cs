@@ -54,7 +54,6 @@ namespace CS5410
             m_currentState = m_states[GameStateEnum.MainMenu];
 
             loadConfigurableControls();
-            // Console.WriteLine("m_controls up is up" + (m_controls[0] == Keys.Up));
 
             base.Initialize();
         }
@@ -124,7 +123,7 @@ namespace CS5410
                     {
                         if (storage.FileExists("ConfigurableControls.xml"))
                         {
-                            using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls4.xml", FileMode.Open))
+                            using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.Open))
                             {
                                 if (fs != null)
                                 {
@@ -138,6 +137,7 @@ namespace CS5410
                     catch (IsolatedStorageException)
                     {
                         // Ideally show something to the user, but this is demo code :)
+                        Console.WriteLine("-! Isolated Storage Exception");
                     }
                 }
 
