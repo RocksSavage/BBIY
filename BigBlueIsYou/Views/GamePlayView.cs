@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CS5410.Input;
@@ -32,6 +33,9 @@ namespace CS5410
         public int currentLevel = 1;
         public int gameStep = 0;
         private SoundEffect m_moveSound;
+        private SoundEffect winChangedSound;
+        private Song m_music;
+        private bool musicIsPlaying = false;
         private Stack<Grid> gridStack;
         private bool reload = true;
         private List<ParticleEmitterLine> particles;
@@ -42,7 +46,7 @@ namespace CS5410
         private Texture2D fire;
         private Char lastYou = ' ';
         private Char lastWin = ' ';
-        private bool sparkleYou = false;
+        // private bool sparkleYou = false;
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -80,7 +84,11 @@ namespace CS5410
             particles2 = new List<ParticleEmitterFromCenter>();
             
             // Audio
-            m_moveSound = contentManager.Load<SoundEffect>("Audio/zapsplat_thud");
+            winChangedSound = contentManager.Load<SoundEffect>("Audio/zelda-chest");
+            m_moveSound = contentManager.Load<SoundEffect>("Audio/Step");
+            m_music = contentManager.Load<Song>("Audio/Sara'sSong");
+            musicIsPlaying = false; 
+
 
             updateControls();
         }
@@ -124,6 +132,7 @@ namespace CS5410
             if (youWin){
                 reload = true;
                 youWin = false;
+                musicIsPlaying = false;
                 loadContent(m_contentManager);
                 return GameStateEnum.YouWin;
             }
@@ -133,6 +142,10 @@ namespace CS5410
         }
         public override void update(GameTime gameTime)
         {
+            if (!musicIsPlaying){
+               MediaPlayer.Play(m_music);
+                musicIsPlaying = true; 
+            }
             wipeRules();        //reset the rules
             findRules();       // finds the rules
             checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
@@ -306,6 +319,7 @@ namespace CS5410
                 }
                 if (win[0].m_name != lastWin){
                     // Console.WriteLine("this is the place");
+                    winChangedSound.Play();
                     emitSparklesWin();
                     lastWin = win[0].m_name;
                 }

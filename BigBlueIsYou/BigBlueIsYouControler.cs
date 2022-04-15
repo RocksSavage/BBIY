@@ -39,6 +39,10 @@ namespace CS5410
             m_graphics.IsFullScreen = false;
             m_graphics.PreferredBackBufferWidth = 1080;
             m_graphics.PreferredBackBufferHeight = 720;
+            // m_graphics.PreferredBackBufferWidth = 1920;
+            // m_graphics.PreferredBackBufferHeight = 1080;
+            // m_graphics.PreferredBackBufferWidth = 2560;
+            // m_graphics.PreferredBackBufferHeight = 1440;
 
             m_graphics.ApplyChanges();
 

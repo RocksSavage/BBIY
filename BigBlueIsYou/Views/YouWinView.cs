@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 using CS5410.Particles;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,8 @@ namespace CS5410
         private const string MESSAGE = "You Won!   --   Press Enter to return to main menu";
         private KeyboardState kBS;
         private KeyboardState oldKBS;
+        private SoundEffect winSound;
+        private bool winSoundCanPlay = true;
         private Texture2D fire;
         private List<ParticleEmitterLine> particles = new List<ParticleEmitterLine>();
         private ParticleEmitterLine m_emitter1;
@@ -23,6 +27,8 @@ namespace CS5410
         {
             m_font = contentManager.Load<SpriteFont>("Fonts/menu");
             fire = contentManager.Load<Texture2D>("Images/fire");
+            winSound = contentManager.Load<SoundEffect>("Audio/WinSound");
+            winSoundCanPlay = true;
             int middleY = 10;
             for (int i = 0; i < 1000; i++){
                 int middleX = (int)m_random.nextRange(0, 1900);
@@ -70,7 +76,12 @@ namespace CS5410
 
         public override void update(GameTime gameTime)
         {
+            if(winSoundCanPlay){
+                winSound.Play();
+                winSoundCanPlay = false;
+            }
             
+            MediaPlayer.Stop();
             foreach(ParticleEmitterLine pe in particles){
                 pe.update(gameTime);
             }

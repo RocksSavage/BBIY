@@ -13,11 +13,35 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Audio/zapsplat_thud.mp3
+#begin Audio/Sara'sSong.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Sara'sSong.mp3
+
+#begin Audio/Step.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
+/build:Audio/Step.mp3
+
+#begin Audio/WinSound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/WinSound.mp3
+
+#begin Audio/zapsplat_thud.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
 /build:Audio/zapsplat_thud.mp3
+
+#begin Audio/zelda-chest.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/zelda-chest.mp3
 
 #begin Fonts/gameFont.spritefont
 /importer:FontDescriptionImporter
