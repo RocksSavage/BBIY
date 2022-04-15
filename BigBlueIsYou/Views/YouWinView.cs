@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using CS5410.Particles;
 using System;
+using System.Collections.Generic;
 
 namespace CS5410
 {
@@ -14,21 +15,27 @@ namespace CS5410
         private KeyboardState kBS;
         private KeyboardState oldKBS;
         private Texture2D fire;
-        private ParticleEmitter m_emitter1;
+        private List<ParticleEmitterLine> particles = new List<ParticleEmitterLine>();
+        private ParticleEmitterLine m_emitter1;
+        private MyRandom m_random = new MyRandom();
 
         public override void loadContent(ContentManager contentManager)
         {
             m_font = contentManager.Load<SpriteFont>("Fonts/menu");
             fire = contentManager.Load<Texture2D>("Images/fire");
-            int middleX = m_graphics.GraphicsDevice.Viewport.Width / 2;
             int middleY = 10;
-            m_emitter1 = new ParticleEmitter(
-                fire,
-                new TimeSpan(0, 0, 0, 0, 5),
-                middleX, middleY,
-                20,
-                -2,
-                new TimeSpan(0, 0, 4));
+            for (int i = 0; i < 1000; i++){
+                int middleX = (int)m_random.nextRange(0, 1900);
+                int spawnTime = (int)m_random.nextRange(500, 10000);
+                m_emitter1 = new ParticleEmitterLine(
+                    fire,
+                    new TimeSpan(0, 0, 0, 0, spawnTime),
+                    middleX, middleY,
+                    20,
+                    -1,
+                    new TimeSpan(0, 0, 4));
+                particles.Add(m_emitter1);
+            }
         }
 
         public override GameStateEnum processInput(GameTime gameTime)
@@ -53,7 +60,10 @@ namespace CS5410
             Vector2 stringSize1 = m_font.MeasureString(MESSAGE);
             Vector2 stringSize = new Vector2( m_graphics.GraphicsDevice.Viewport.Width / 2 - stringSize1.X/2, m_graphics.GraphicsDevice.Viewport.Height / 2- stringSize1.Y/2);
             Printer.PrintWithOutline(MESSAGE, m_spriteBatch, stringSize, m_font, Color.Green, Color.White);
-            m_emitter1.draw(m_spriteBatch);
+            foreach(ParticleEmitterLine pe in particles){
+                pe.draw(m_spriteBatch);
+            }
+
 
             m_spriteBatch.End();
         }
@@ -61,7 +71,9 @@ namespace CS5410
         public override void update(GameTime gameTime)
         {
             
-            m_emitter1.update(gameTime);
+            foreach(ParticleEmitterLine pe in particles){
+                pe.update(gameTime);
+            }
         }
     }
 }

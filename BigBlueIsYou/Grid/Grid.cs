@@ -19,10 +19,10 @@ namespace CS5410
         public int m_currentLevel;
         public Renderer m_renderer;
         // use these five file lines if working in visual studio--------------------------------------------------------------------------------------
-         public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
+        //  public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
 
         // use these five file lines if working in VSCode--------------------------------------------------------------------------------------
-        //public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
+        public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
 
 
         public Grid(int currentLevel){

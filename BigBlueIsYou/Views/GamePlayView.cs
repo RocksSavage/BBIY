@@ -34,9 +34,15 @@ namespace CS5410
         private SoundEffect m_moveSound;
         private Stack<Grid> gridStack;
         private bool reload = true;
-        private List<ParticleEmitter> particles = new List<ParticleEmitter>();
-        private ParticleEmitter m_emitter1;
+        private List<ParticleEmitterLine> particles;
+        private List<ParticleEmitterFromCenter> particles2;
+        private ParticleEmitterLine m_emitter1;
+        private ParticleEmitterLine m_emitter2;
+        private ParticleEmitterFromCenter m_emitter3;
         private Texture2D fire;
+        private Char lastYou = ' ';
+        private Char lastWin = ' ';
+        private bool sparkleYou = false;
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -70,6 +76,8 @@ namespace CS5410
             Renderer.loadSprites(contentManager);
             
             fire = contentManager.Load<Texture2D>("Images/fire");
+            particles = new List<ParticleEmitterLine>();
+            particles2 = new List<ParticleEmitterFromCenter>();
             
             // Audio
             m_moveSound = contentManager.Load<SoundEffect>("Audio/zapsplat_thud");
@@ -79,9 +87,7 @@ namespace CS5410
 
         public override GameStateEnum processInput(GameTime gameTime)
         {
-            // Console.WriteLine("--------" +( m_controls[0] == Keys.Up));
             if (reload) {
-                // Console.WriteLine("This Happens");
                 loadContent(m_contentManager);
                 reload = false;
             }
@@ -102,7 +108,6 @@ namespace CS5410
             {
                 oldKBS = kBS;
                 loadContent(m_contentManager);
-                // return GameStateEnum.MainMenu;
             }
             if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z))
             {
@@ -113,19 +118,12 @@ namespace CS5410
                     Console.WriteLine("Popped the Grid Stack");
 
                 }
-                //grid = bob;
             }
 
             m_inputKeyboard.Update(gameTime);
             if (youWin){
-                // Console.WriteLine("does this happen? 2");
-                // m_level++;
-                // grid = new Grid(m_level);
                 reload = true;
                 youWin = false;
-                // while(true){
-
-                // }
                 loadContent(m_contentManager);
                 return GameStateEnum.YouWin;
             }
@@ -153,15 +151,30 @@ namespace CS5410
 
             m_spriteBatch.End();
         }
+        public void emitSparklesYou(){
+            foreach(Thing y in you){
+                makePartilesAroundThing(y.X, y.Y);
+            }
+        }
+        public void emitSparklesWin(){
+            foreach(Thing w in win){
+                makePartilesAroundThing(w.X, w.Y);
+            }
+        }
         public void drawParticles(SpriteBatch spriteBatch){
-            foreach(ParticleEmitter pe in particles){
-                
+            foreach(ParticleEmitterLine pe in particles){ 
+                pe.draw(m_spriteBatch);
+            }
+            foreach(ParticleEmitterFromCenter pe in particles2){ 
                 pe.draw(m_spriteBatch);
             }
 
         }
         public void updateParticles(GameTime gameTime){
-            foreach(ParticleEmitter pe in particles){ // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
+            foreach(ParticleEmitterLine pe in particles){ // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
+                pe.update(gameTime);
+            }
+            foreach(ParticleEmitterFromCenter pe in particles2){
                 pe.update(gameTime);
             }
         }
@@ -204,12 +217,25 @@ namespace CS5410
                 }
             }
             foreach(Thing t in thingsToDelete){
+                makeDeathPartiles(t.X, t.Y);
                 grid.m_grid[t.X][t.Y].things.Remove(t);
                 push.Remove(t);
                 you.Remove(t);
                 sink.Remove(t);
             }
 
+        }
+                
+        public void makeDeathPartiles(int x, int y){
+            Console.WriteLine("Death!");
+            m_emitter3 = new ParticleEmitterFromCenter(
+                fire,
+                new TimeSpan(0, 0, 0, 0, 5),
+                (x+2)*30+15, (y+2)*30+15,
+                15,
+                1,
+                new TimeSpan(0, 0, 0, 0, 150));
+            particles2.Add(m_emitter3);
         }
 
         public void findRules(){
@@ -261,6 +287,30 @@ namespace CS5410
                 performRules(push, c); // all text blocks are pushable
             }
 
+            if(you.Count > 0){
+                if(lastYou == ' '){
+                    lastYou = you[0].m_name;
+                
+                }
+                if (you[0].m_name != lastYou){
+                    // Console.WriteLine("this is the place");
+                    emitSparklesYou();
+                    lastYou = you[0].m_name;
+                }
+            }
+
+            if(win.Count > 0){
+                if(lastWin == ' '){
+                    lastWin = win[0].m_name;
+                
+                }
+                if (win[0].m_name != lastWin){
+                    // Console.WriteLine("this is the place");
+                    emitSparklesWin();
+                    lastWin = win[0].m_name;
+                }
+            }
+
         }
         public void wipeRules(){
             you = new List<Thing>();
@@ -306,7 +356,7 @@ namespace CS5410
                         if (w.X == y.X && w.Y == y.Y-1){
                             youWin = true; 
                             Console.WriteLine("You Win!");
-                            makeFireworks(w.X, w.Y);
+                            // makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -318,7 +368,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
-                        gameStep++;
+                        generalMove();
                         gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
@@ -339,7 +389,7 @@ namespace CS5410
                         if (w.X == y.X && w.Y == y.Y+1){
                             youWin = true; 
                             Console.WriteLine("You Win!");
-                            makeFireworks(w.X, w.Y);
+                            // makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -351,7 +401,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X][y.Y+1].things.Add(y);
                         y.Y = y.Y+1;
-                        gameStep++;
+                        generalMove();
                         gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
@@ -372,7 +422,7 @@ namespace CS5410
                         if (w.X == y.X-1 && w.Y == y.Y){
                             youWin = true; 
                             Console.WriteLine("You Win!");
-                            makeFireworks(w.X, w.Y);
+                            // makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -384,7 +434,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X-1][y.Y].things.Add(y);
                         y.X = y.X-1;
-                        gameStep++;
+                        generalMove();
                         gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
@@ -405,7 +455,7 @@ namespace CS5410
                         if (w.X == y.X+1 && w.Y == y.Y){
                             youWin = true; 
                             Console.WriteLine("You Win!");
-                            makeFireworks(w.X, w.Y);
+                            // makeFireworks(w.X, w.Y);
                         }
                     }
                     foreach(Thing p in push){
@@ -417,7 +467,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y].things.Remove(y);
                         grid.m_grid[y.X+1][y.Y].things.Add(y);
                         y.X = y.X+1;
-                        gameStep++;
+                        generalMove();
                         gridStack.Push(grid.getDeepClone());
                         // Console.WriteLine(gridStack.Count);
                     }
@@ -426,21 +476,33 @@ namespace CS5410
             }
         }
         
-        public void makeFireworks(int x, int y){
-            m_emitter1 = new ParticleEmitter(
+        public void makePartilesAroundThing(int x, int y){
+            Console.WriteLine("x, y: " + x + " " + y);
+            m_emitter1 = new ParticleEmitterLine(
                 fire,
-                new TimeSpan(0, 0, 0, 0, 5),
-                x, y,
-                20,
+                new TimeSpan(0, 0, 0, 0, 50),
+                (x+2)*30, (y+2)*30+15,
+                10,
                 2,
-                new TimeSpan(0, 0, 4));
+                new TimeSpan(0, 0, 0, 0, 100));
             particles.Add(m_emitter1);
+            m_emitter2 = new ParticleEmitterLine(
+                fire,
+                new TimeSpan(0, 0, 0, 0, 50),
+                (x+3)*30, (y+2)*30+15,
+                10,
+                1,
+                new TimeSpan(0, 0, 0, 0, 100));
+            particles.Add(m_emitter2);
         }
 
         private void generalMove()
         {
             gameStep++; // sprite animations rely on this
             m_moveSound.Play();
+            Console.WriteLine("when is this called?");
+            particles.Clear();
+            particles2.Clear();
 
         }
         public bool canBePushed(Thing pushed, Thing pusher, int direction){
