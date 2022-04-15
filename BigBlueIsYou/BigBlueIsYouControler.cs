@@ -122,7 +122,7 @@ namespace CS5410
                 {
                     try
                     {
-                        if (storage.FileExists("ConfigurableControls4.xml"))
+                        if (storage.FileExists("ConfigurableControls.xml"))
                         {
                             using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls4.xml", FileMode.Open))
                             {
