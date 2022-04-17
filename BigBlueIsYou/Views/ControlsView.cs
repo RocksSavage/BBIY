@@ -229,7 +229,7 @@ namespace CS5410
                 {
                     try
                     {
-                        using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.OpenOrCreate))
+                        using (IsolatedStorageFileStream fs = storage.OpenFile("ConfigurableControls.xml", FileMode.Create))
                         {
                             if (fs != null)
                             {

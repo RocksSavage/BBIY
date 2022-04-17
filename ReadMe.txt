@@ -1,0 +1,1 @@
+This program works differently in Visual Studio vs VS Code go to the Grid.cs file and comment in the appropriate imports for VS or VSC.

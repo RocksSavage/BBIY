@@ -40,6 +40,7 @@ Sound Effect: Background music
 Sound Effect: Win a level music
 Sound Effect: Each time YOU is moved make a little walking/step sound (should be subtle)
 Sound Effect: When WIN is changed
+Keyboard controlls are saved when the program is exited --- missing 5 points the way we have it, lets get other things done before returning to this
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
@@ -51,5 +52,3 @@ refactor particles to meet standards
 support multiple screen sizes
 browser integration
 rework move wait timer it currently feels crappy
-
-Keyboard controlls are saved when the program is exited --- missing 5 points the way we have it, lets get other things done before returning to this
