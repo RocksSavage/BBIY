@@ -47,6 +47,7 @@ namespace CS5410
         private Char lastYou = ' ';
         private Char lastWin = ' ';
         // private bool sparkleYou = false;
+        private bool moved = false;
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -120,10 +121,13 @@ namespace CS5410
             if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z))
             {
                 oldKBS = kBS;
-                Grid bob = new Grid(currentLevel);
-                if (gridStack.TryPop(out grid))
-                {
-                    Console.WriteLine("Popped the Grid Stack");
+                if (gridStack.Count > 0) {
+                    grid = gridStack.Pop().getDeepClone();
+                    // Grid bob = new Grid(currentLevel);
+                    // if (gridStack.TryPop(out grid))
+                    // {
+                    //     Console.WriteLine("Popped the Grid Stack");
+                    // }
 
                 }
             }
@@ -145,6 +149,10 @@ namespace CS5410
             if (!musicIsPlaying){
                MediaPlayer.Play(m_music);
                 musicIsPlaying = true; 
+            }
+            if (moved) {
+                gridStack.Push(grid.getDeepClone());
+                moved = false;
             }
             wipeRules();        //reset the rules
             findRules();       // finds the rules
@@ -383,7 +391,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y-1].things.Add(y);
                         y.Y = y.Y-1;
                         generalMove();
-                        gridStack.Push(grid.getDeepClone());
+                        moved = true;
                         // Console.WriteLine(gridStack.Count);
                     }
                 }
@@ -416,7 +424,7 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y+1].things.Add(y);
                         y.Y = y.Y+1;
                         generalMove();
-                        gridStack.Push(grid.getDeepClone());
+                        moved = true;
                         // Console.WriteLine(gridStack.Count);
                     }
                 }
@@ -449,7 +457,7 @@ namespace CS5410
                         grid.m_grid[y.X-1][y.Y].things.Add(y);
                         y.X = y.X-1;
                         generalMove();
-                        gridStack.Push(grid.getDeepClone());
+                        moved = true;
                         // Console.WriteLine(gridStack.Count);
                     }
                 }
@@ -482,7 +490,7 @@ namespace CS5410
                         grid.m_grid[y.X+1][y.Y].things.Add(y);
                         y.X = y.X+1;
                         generalMove();
-                        gridStack.Push(grid.getDeepClone());
+                        moved = true;
                         // Console.WriteLine(gridStack.Count);
                     }
                 }

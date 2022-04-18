@@ -50,5 +50,9 @@ fix z undo bugs
 Z to undo one step (stretch goal) figure out deep clone and add clone to the stack in the right spot
 refactor particles to meet standards
 support multiple screen sizes
-browser integration
+
+
+
+
 rework move wait timer it currently feels crappy
+browser integration
