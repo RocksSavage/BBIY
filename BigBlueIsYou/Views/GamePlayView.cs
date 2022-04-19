@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CS5410.Input;
 using System;
-using CS5410.Particles;
 
 namespace CS5410
 {
@@ -38,11 +37,12 @@ namespace CS5410
         private bool musicIsPlaying = false;
         private Stack<Grid> gridStack;
         private bool reload = true;
-        private List<ParticleEmitterLine> particles;
-        private List<ParticleEmitterFromCenter> particles2;
-        private ParticleEmitterLine m_emitter1;
-        private ParticleEmitterLine m_emitter2;
-        private ParticleEmitterFromCenter m_emitter3;
+        // private List<ParticleEmitterLine> particles;
+        // private List<ParticleEmitterFromCenter> particles2;
+        // private ParticleEmitterLine m_emitter1;
+        // private ParticleEmitterLine m_emitter2;
+        // private ParticleEmitterFromCenter m_emitter3;
+        private ParticleSystem particleSystem;
         private Texture2D fire;
         private Char lastYou = ' ';
         private Char lastWin = ' ';
@@ -81,8 +81,9 @@ namespace CS5410
             Renderer.loadSprites(contentManager);
             
             fire = contentManager.Load<Texture2D>("Images/fire");
-            particles = new List<ParticleEmitterLine>();
-            particles2 = new List<ParticleEmitterFromCenter>();
+            ParticleSystem particleSystem = new ParticleSystem();
+            // particles = new List<ParticleEmitterLine>();
+            // particles2 = new List<ParticleEmitterFromCenter>();
             
             // Audio
             winChangedSound = contentManager.Load<SoundEffect>("Audio/zelda-chest");
@@ -158,7 +159,7 @@ namespace CS5410
             findRules();       // finds the rules
             checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
             checkWin();
-            updateParticles(gameTime);
+            ParticleSystem.update(gameTime);
         }
 
         public override void render(GameTime gameTime)
@@ -166,39 +167,30 @@ namespace CS5410
             m_spriteBatch.Begin();
 
             grid.renderLevel(m_graphics, m_spriteBatch, m_font, gameStep);
-            drawParticles(m_spriteBatch);
+            ParticleSystem.drawParticles(m_spriteBatch);
             // grid2.renderLevel(m_graphics, m_spriteBatch, m_font, gameStep);
 
 
             m_spriteBatch.End();
         }
-        public void emitSparklesYou(){
-            foreach(Thing y in you){
-                makePartilesAroundThing(y.X, y.Y);
-            }
-        }
-        public void emitSparklesWin(){
-            foreach(Thing w in win){
-                makePartilesAroundThing(w.X, w.Y);
-            }
-        }
-        public void drawParticles(SpriteBatch spriteBatch){
-            foreach(ParticleEmitterLine pe in particles){ 
-                pe.draw(m_spriteBatch);
-            }
-            foreach(ParticleEmitterFromCenter pe in particles2){ 
-                pe.draw(m_spriteBatch);
-            }
+        
+        // public void drawParticles(SpriteBatch spriteBatch){
+        //     foreach(ParticleEmitterLine pe in particles){ 
+        //         pe.draw(m_spriteBatch);
+        //     }
+        //     foreach(ParticleEmitterFromCenter pe in particles2){ 
+        //         pe.draw(m_spriteBatch);
+        //     }
 
-        }
-        public void updateParticles(GameTime gameTime){
-            foreach(ParticleEmitterLine pe in particles){ // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
-                pe.update(gameTime);
-            }
-            foreach(ParticleEmitterFromCenter pe in particles2){
-                pe.update(gameTime);
-            }
-        }
+        // }
+        // public void updateParticles(GameTime gameTime){
+        //     foreach(ParticleEmitterLine pe in particles){ // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
+        //         pe.update(gameTime);
+        //     }
+        //     foreach(ParticleEmitterFromCenter pe in particles2){
+        //         pe.update(gameTime);
+        //     }
+        // }
         public void checkWin(){
             foreach(Thing y in you){
                 foreach(Thing w in win){
@@ -238,7 +230,7 @@ namespace CS5410
                 }
             }
             foreach(Thing t in thingsToDelete){
-                makeDeathPartiles(t.X, t.Y);
+                ParticleSystem.makeDeathPartiles(t.X, t.Y, fire);
                 grid.m_grid[t.X][t.Y].things.Remove(t);
                 push.Remove(t);
                 you.Remove(t);
@@ -247,17 +239,17 @@ namespace CS5410
 
         }
                 
-        public void makeDeathPartiles(int x, int y){
-            Console.WriteLine("Death!");
-            m_emitter3 = new ParticleEmitterFromCenter(
-                fire,
-                new TimeSpan(0, 0, 0, 0, 5),
-                (x+2)*30+15, (y+2)*30+15,
-                15,
-                1,
-                new TimeSpan(0, 0, 0, 0, 150));
-            particles2.Add(m_emitter3);
-        }
+        // public void makeDeathPartiles(int x, int y){
+        //     Console.WriteLine("Death!");
+        //     m_emitter3 = new ParticleEmitterFromCenter(
+        //         fire,
+        //         new TimeSpan(0, 0, 0, 0, 5),
+        //         (x+2)*30+15, (y+2)*30+15,
+        //         15,
+        //         1,
+        //         new TimeSpan(0, 0, 0, 0, 150));
+        //     particles2.Add(m_emitter3);
+        // }
 
         public void findRules(){
             foreach(List<Cell> col in grid.m_grid){
@@ -315,7 +307,9 @@ namespace CS5410
                 }
                 if (you[0].m_name != lastYou){
                     // Console.WriteLine("this is the place");
-                    emitSparklesYou();
+                    foreach(Thing y in you){
+                        ParticleSystem.makePartilesAroundThing(y.X, y.Y, fire);
+                    }
                     lastYou = you[0].m_name;
                 }
             }
@@ -328,7 +322,9 @@ namespace CS5410
                 if (win[0].m_name != lastWin){
                     // Console.WriteLine("this is the place");
                     winChangedSound.Play();
-                    emitSparklesWin();
+                    foreach(Thing w in win){
+                        ParticleSystem.makePartilesAroundThing(w.X, w.Y, fire);
+                    }
                     lastWin = win[0].m_name;
                 }
             }
@@ -498,33 +494,32 @@ namespace CS5410
             }
         }
         
-        public void makePartilesAroundThing(int x, int y){
-            Console.WriteLine("x, y: " + x + " " + y);
-            m_emitter1 = new ParticleEmitterLine(
-                fire,
-                new TimeSpan(0, 0, 0, 0, 50),
-                (x+2)*30, (y+2)*30+15,
-                10,
-                2,
-                new TimeSpan(0, 0, 0, 0, 100));
-            particles.Add(m_emitter1);
-            m_emitter2 = new ParticleEmitterLine(
-                fire,
-                new TimeSpan(0, 0, 0, 0, 50),
-                (x+3)*30, (y+2)*30+15,
-                10,
-                1,
-                new TimeSpan(0, 0, 0, 0, 100));
-            particles.Add(m_emitter2);
-        }
+        // public void makePartilesAroundThing(int x, int y){
+        //     Console.WriteLine("x, y: " + x + " " + y);
+        //     m_emitter1 = new ParticleEmitterLine(
+        //         fire,
+        //         new TimeSpan(0, 0, 0, 0, 50),
+        //         (x+2)*30, (y+2)*30+15,
+        //         10,
+        //         2,
+        //         new TimeSpan(0, 0, 0, 0, 100));
+        //     particles.Add(m_emitter1);
+        //     m_emitter2 = new ParticleEmitterLine(
+        //         fire,
+        //         new TimeSpan(0, 0, 0, 0, 50),
+        //         (x+3)*30, (y+2)*30+15,
+        //         10,
+        //         1,
+        //         new TimeSpan(0, 0, 0, 0, 100));
+        //     particles.Add(m_emitter2);
+        // }
 
         private void generalMove()
         {
             gameStep++; // sprite animations rely on this
             m_moveSound.Play();
             Console.WriteLine("when is this called?");
-            particles.Clear();
-            particles2.Clear();
+            ParticleSystem.endParticle();
 
         }
         public bool canBePushed(Thing pushed, Thing pusher, int direction){

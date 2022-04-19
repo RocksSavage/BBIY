@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CS5410.Particles
+namespace CS5410
 {
     public class Particle
     {

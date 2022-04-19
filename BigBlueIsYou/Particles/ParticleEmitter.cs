@@ -4,8 +4,100 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CS5410.Particles
+namespace CS5410
 {
+    public class ParticleSystem {
+        
+        private static List<ParticleEmitterLine> particles;
+        private static List<ParticleEmitterFromCenter> particles2;
+        private static ParticleEmitterLine m_emitter1;
+        private static ParticleEmitterLine m_emitter2;
+        private static ParticleEmitterFromCenter m_emitter3;
+
+        public ParticleSystem(){
+            
+            particles = new List<ParticleEmitterLine>();
+            particles2 = new List<ParticleEmitterFromCenter>();
+
+        }
+        public static void update(GameTime gameTime) {
+            
+            updateParticles(gameTime);
+        }
+        public static void render(SpriteBatch m_spriteBatch) {
+            
+            drawParticles(m_spriteBatch);
+        }
+        // public void emitSparklesYou(){
+        //     foreach(Thing y in you){
+        //         makePartilesAroundThing(y.X, y.Y);
+        //     }
+        // }
+        // public void emitSparklesWin(){
+        //     foreach(Thing w in win){
+        //         makePartilesAroundThing(w.X, w.Y);
+        //     }
+        // }
+        public static void drawParticles(SpriteBatch spriteBatch){
+            if(particles.Count > 0){
+                foreach(ParticleEmitterLine pe in particles){ 
+                    pe.draw(spriteBatch);
+                }
+            }
+            if(particles2.Count > 0){
+                foreach(ParticleEmitterFromCenter pe in particles2){ 
+                    pe.draw(spriteBatch);
+                }
+            }
+
+        }
+        public static void updateParticles(GameTime gameTime){
+            foreach(ParticleEmitterLine pe in particles){ // foreach loop going through list of emmiters and updating them then I need to draw the particles with a render funciton
+                pe.update(gameTime);
+            }
+            foreach(ParticleEmitterFromCenter pe in particles2){
+                pe.update(gameTime);
+            }
+        }
+                
+        public static void makePartilesAroundThing(int x, int y, Texture2D fire){
+            Console.WriteLine("x, y: " + x + " " + y);
+            m_emitter1 = new ParticleEmitterLine(
+                fire,
+                new TimeSpan(0, 0, 0, 0, 50),
+                (x+2)*30, (y+2)*30+15,
+                10,
+                2,
+                new TimeSpan(0, 0, 0, 0, 100));
+            particles.Add(m_emitter1);
+            m_emitter2 = new ParticleEmitterLine(
+                fire,
+                new TimeSpan(0, 0, 0, 0, 50),
+                (x+3)*30, (y+2)*30+15,
+                10,
+                1,
+                new TimeSpan(0, 0, 0, 0, 100));
+            particles.Add(m_emitter2);
+        }
+                
+        public static void makeDeathPartiles(int x, int y, Texture2D fire){
+            Console.WriteLine("Death!");
+            m_emitter3 = new ParticleEmitterFromCenter(
+                fire,
+                new TimeSpan(0, 0, 0, 0, 5),
+                (x+2)*30+15, (y+2)*30+15,
+                15,
+                1,
+                new TimeSpan(0, 0, 0, 0, 150));
+            particles2.Add(m_emitter3);
+        }
+        public static void endParticle() {
+            particles.Clear();
+            particles2.Clear();
+        }
+
+
+    }
     public class ParticleEmitterLine
     {
 
