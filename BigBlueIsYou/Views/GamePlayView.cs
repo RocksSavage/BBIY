@@ -66,8 +66,9 @@ namespace CS5410
         {
             m_contentManager = contentManager;
             currentLevel = m_level[0];
-            grid = new Grid(currentLevel, m_graphics);
+            grid = new Grid(currentLevel, gameStep, m_graphics);
             gridStack = new Stack<Grid>();
+            gridStack.Push(grid.getDeepClone()); // always remember original state
             m_font = contentManager.Load<SpriteFont>("Fonts/gameFont");
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
@@ -114,18 +115,22 @@ namespace CS5410
             if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z))
             {
                 oldKBS = kBS;
-                if (gridStack.Count > 0) {
-                    grid = gridStack.Pop();
-                    // Grid bob = new Grid(currentLevel);
-                    // if (gridStack.TryPop(out grid))
-                    // {
-                    //     Console.WriteLine("Popped the Grid Stack");
-                    // }
+                if (gridStack.Count > 0) { // always keep the first state
 
+                    // On 'z' press, restore previous game state (not the current state, which is stored on the top of the stack at all times
+                    if (gridStack.Count > 1)
+                        gridStack.Pop();
+                    grid = gridStack.Peek();
+                    Console.WriteLine($"Popped the Grid Stack r:{gridStack.Count}");
+                }
+                else
+                {
+                     Console.WriteLine($"🚫 pop Grid Stack r:{gridStack.Count}");
                 }
             }
 
             m_inputKeyboard.Update(gameTime);
+            
             if (youWin){
                 reload = true;
                 youWin = false;
@@ -452,9 +457,17 @@ namespace CS5410
         private void generalMove()
         {
             gameStep++; // sprite animations rely on this
+            this.grid.gameStep = gameStep;
             m_moveSound.Play();
             ParticleSystem.endParticle();
 
+            // deletelater
+            Console.Write("Order: ");
+            foreach (Grid grid in gridStack)
+            {
+                Console.Write(grid.gameStep.ToString() + ", ");
+            }
+            Console.Write("\n");
         }
         public bool canBePushed(Thing pushed, Thing pusher, int direction){
             // if direction is out of bounds return false
