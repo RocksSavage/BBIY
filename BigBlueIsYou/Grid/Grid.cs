@@ -9,6 +9,7 @@ using System;
 namespace CS5410
 {
     public class Grid {
+        public int gameStep=99;
         public int m_size { get; set; }
         public int gridSizeAdjust;
         public int gridXOffset = 510;
@@ -19,20 +20,22 @@ namespace CS5410
         public int m_currentLevel;
         public Renderer m_renderer;
         // use this file if working in visual studio--------------------------------------------------------------------------------------
-        //  public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
+          public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
 
         // use this file if working in VSCode--------------------------------------------------------------------------------------
-        public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
+        //public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
 
 
-        public Grid(int currentLevel, GraphicsDeviceManager m_graphics){
+        public Grid(int currentLevel, int gameStep, GraphicsDeviceManager m_graphics){
+            this.gameStep = gameStep;
             m_grid = new List<List<Cell>>();
             m_currentLevel = currentLevel;
             makeLevel(m_currentLevel);
             gridSizeAdjust = m_graphics.PreferredBackBufferHeight/24;
 
         }
-        public Grid(int m_size,
+        public Grid(int gameStep,
+                    int m_size,
                     int gridSizeAdjust,
                     int gridXOffset,
                     int m_X,
@@ -41,6 +44,7 @@ namespace CS5410
                     int m_currentLevel,
                     Renderer m_renderer)
         {
+            this.gameStep = gameStep;
             this.m_size = m_size;
             this.gridSizeAdjust = gridSizeAdjust;
             this.gridXOffset = gridXOffset;
@@ -52,7 +56,8 @@ namespace CS5410
         }
 
         public Grid getDeepClone(){
-            return new Grid(this.m_size,
+            return new Grid(this.gameStep,
+                    this.m_size,
                     this.gridSizeAdjust,
                     this.gridXOffset,
                     this.m_X,
