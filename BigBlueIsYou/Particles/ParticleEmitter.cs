@@ -10,8 +10,8 @@ namespace CS5410
         
         private static List<ParticleEmitterLine> particles;
         private static List<ParticleEmitterFromCenter> particles2;
-        private static ParticleEmitterLine m_emitter1;
-        private static ParticleEmitterLine m_emitter2;
+        // private static ParticleEmitterLine m_emitter1;
+        // private static ParticleEmitterLine m_emitter2;
         private static ParticleEmitterFromCenter m_emitter3;
 
         public ParticleSystem(){
@@ -60,32 +60,42 @@ namespace CS5410
             }
         }
                 
-        public static void makePartilesAroundThing(int x, int y, Texture2D fire){
-            Console.WriteLine("x, y: " + x + " " + y);
-            m_emitter1 = new ParticleEmitterLine(
-                fire,
-                new TimeSpan(0, 0, 0, 0, 50),
-                (x+2)*30, (y+2)*30+15,
-                10,
-                2,
-                new TimeSpan(0, 0, 0, 0, 100));
-            particles.Add(m_emitter1);
-            m_emitter2 = new ParticleEmitterLine(
-                fire,
-                new TimeSpan(0, 0, 0, 0, 50),
-                (x+3)*30, (y+2)*30+15,
-                10,
-                1,
-                new TimeSpan(0, 0, 0, 0, 100));
-            particles.Add(m_emitter2);
+        public static void makePartilesAroundThing(int x, int y, int spritesize, Texture2D fire){
+            for (int i = 0; i < spritesize; i+= 2){
+                Console.WriteLine("This happens");
+                PartilesAroundThing((x+2) * spritesize + i, (y+2)* spritesize, fire);
+            }
+            for (int i = 0; i < spritesize; i+= 2){
+                Console.WriteLine("This happens");
+                PartilesAroundThing((x+2) * spritesize + i, (y+2)* spritesize + spritesize, fire);
+            }
+            for (int i = 0; i < spritesize; i+= 2){
+                Console.WriteLine("This happens");
+                PartilesAroundThing((x+2) * spritesize, (y+2)* spritesize + i, fire);
+            }
+            for (int i = 0; i < spritesize; i+= 2){
+                Console.WriteLine("This happens");
+                PartilesAroundThing((x+2) * spritesize + spritesize, (y+2)* spritesize + i, fire);
+            }
         }
                 
+        public static void PartilesAroundThing(int x, int y, Texture2D fire){
+            // Console.WriteLine("Death!");
+            m_emitter3 = new ParticleEmitterFromCenter(
+                fire,
+                new TimeSpan(0, 0, 0, 0, 75),
+                x, y,
+                7,
+                1,
+                new TimeSpan(0, 0, 0, 0, 150));
+            particles2.Add(m_emitter3);
+        }
         public static void makeDeathPartiles(int x, int y, Texture2D fire){
-            Console.WriteLine("Death!");
+            // Console.WriteLine("Death!");
             m_emitter3 = new ParticleEmitterFromCenter(
                 fire,
                 new TimeSpan(0, 0, 0, 0, 5),
-                (x+2)*30+15, (y+2)*30+15,
+                x, y,
                 15,
                 1,
                 new TimeSpan(0, 0, 0, 0, 150));

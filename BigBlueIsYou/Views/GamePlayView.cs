@@ -34,12 +34,13 @@ namespace CS5410
         private bool musicIsPlaying = false;
         private Stack<Grid> gridStack;
         private bool reload = true;
-        private ParticleSystem particleSystem;
+        // private ParticleSystem particleSystem;
         private Texture2D fire;
         private Char lastYou = ' ';
         private Char lastWin = ' ';
         // private bool sparkleYou = false;
         private bool moved = false;
+        private int screenSizeOffset;
         private Renderer renderer = new Renderer();
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
@@ -71,6 +72,7 @@ namespace CS5410
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
             renderer.loadContent(contentManager, m_graphics);
+            screenSizeOffset = m_graphics.PreferredBackBufferHeight/24;
             
             fire = contentManager.Load<Texture2D>("Images/fire");
             ParticleSystem particleSystem = new ParticleSystem();
@@ -201,7 +203,7 @@ namespace CS5410
                 }
             }
             foreach(Thing t in thingsToDelete){
-                ParticleSystem.makeDeathPartiles(t.X, t.Y, fire);
+                ParticleSystem.makeDeathPartiles((t.X+2)*screenSizeOffset+(screenSizeOffset/2), (t.Y+2)*screenSizeOffset+(screenSizeOffset/2), fire);
                 grid.m_grid[t.X][t.Y].things.Remove(t);
                 push.Remove(t);
                 you.Remove(t);
@@ -266,7 +268,7 @@ namespace CS5410
                 }
                 if (you[0].m_name != lastYou){
                     foreach(Thing y in you){
-                        ParticleSystem.makePartilesAroundThing(y.X, y.Y, fire);
+                        ParticleSystem.makePartilesAroundThing(y.X, y.Y, m_graphics.PreferredBackBufferHeight/24, fire);
                     }
                     lastYou = you[0].m_name;
                 }
@@ -280,7 +282,7 @@ namespace CS5410
                 if (win[0].m_name != lastWin){
                     winChangedSound.Play();
                     foreach(Thing w in win){
-                        ParticleSystem.makePartilesAroundThing(w.X, w.Y, fire);
+                        ParticleSystem.makePartilesAroundThing(w.X, w.Y, m_graphics.PreferredBackBufferHeight/24, fire);
                     }
                     lastWin = win[0].m_name;
                 }
