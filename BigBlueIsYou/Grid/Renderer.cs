@@ -6,11 +6,13 @@ using System;
 
 namespace CS5410
 {
-    public struct Renderer
+    
+    public class Renderer
     {
+        public GraphicsDeviceManager m_graphics;
         // global variables (look away, grader!)
-        public static Point cellDim = new Point(30, 30);
-        public static Point sourceDim = new Point(24, 24);
+        public static Point cellDim;
+        public static Point sourceDim;
 
         // the Great Wall of Sprites
 
@@ -37,8 +39,10 @@ namespace CS5410
         static Texture2D tSink;
         static Texture2D tKill;
 
-        public static void loadSprites(ContentManager contentManager)
+        public void loadContent(ContentManager contentManager, GraphicsDeviceManager m_graphics)
         {
+            cellDim = new Point(m_graphics.PreferredBackBufferHeight/24, m_graphics.PreferredBackBufferHeight/24);
+            sourceDim = new Point(24, 24);
             wall = contentManager.Load<Texture2D>("Sprites/wall");
             rock = contentManager.Load<Texture2D>("Sprites/rock");
             flag = contentManager.Load<Texture2D>("Sprites/flag");

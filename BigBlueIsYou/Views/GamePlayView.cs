@@ -40,6 +40,7 @@ namespace CS5410
         private Char lastWin = ' ';
         // private bool sparkleYou = false;
         private bool moved = false;
+        private Renderer renderer = new Renderer();
 
         public List<Char> objects = new List<Char>(){'w', 'r', 'f', 'b', 'l', 'g', 'a', 'v', 'h'};
         public List<Char> text = new List<Char>(){'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'};
@@ -64,13 +65,12 @@ namespace CS5410
         {
             m_contentManager = contentManager;
             currentLevel = m_level[0];
-            grid = new Grid(currentLevel);
+            grid = new Grid(currentLevel, m_graphics);
             gridStack = new Stack<Grid>();
-            gridStack.Push(grid.getDeepClone());
             m_font = contentManager.Load<SpriteFont>("Fonts/gameFont");
             m_texture = new Texture2D(m_graphics.GraphicsDevice, 1, 1);
             m_texture.SetData(new Color[] { Color.White});
-            Renderer.loadSprites(contentManager);
+            renderer.loadContent(contentManager, m_graphics);
             
             fire = contentManager.Load<Texture2D>("Images/fire");
             ParticleSystem particleSystem = new ParticleSystem();
@@ -113,7 +113,7 @@ namespace CS5410
             {
                 oldKBS = kBS;
                 if (gridStack.Count > 0) {
-                    grid = gridStack.Pop().getDeepClone();
+                    grid = gridStack.Pop();
                     // Grid bob = new Grid(currentLevel);
                     // if (gridStack.TryPop(out grid))
                     // {
@@ -451,7 +451,6 @@ namespace CS5410
         {
             gameStep++; // sprite animations rely on this
             m_moveSound.Play();
-            Console.WriteLine("when is this called?");
             ParticleSystem.endParticle();
 
         }

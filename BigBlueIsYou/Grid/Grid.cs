@@ -10,7 +10,7 @@ namespace CS5410
 {
     public class Grid {
         public int m_size { get; set; }
-        public int gridSizeAdjust = 30;
+        public int gridSizeAdjust;
         public int gridXOffset = 510;
         public int m_X;
         public int m_Y;
@@ -18,17 +18,18 @@ namespace CS5410
         public Random rnd = new Random();
         public int m_currentLevel;
         public Renderer m_renderer;
-        // use these five file lines if working in visual studio--------------------------------------------------------------------------------------
+        // use this file if working in visual studio--------------------------------------------------------------------------------------
         //  public string[] levels = System.IO.File.ReadAllLines("../../../Levels/levelSource/levels-all.bbiy");
 
-        // use these five file lines if working in VSCode--------------------------------------------------------------------------------------
+        // use this file if working in VSCode--------------------------------------------------------------------------------------
         public string[] levels = System.IO.File.ReadAllLines("./Levels/levelSource/levels-all.bbiy");
 
 
-        public Grid(int currentLevel){
+        public Grid(int currentLevel, GraphicsDeviceManager m_graphics){
             m_grid = new List<List<Cell>>();
             m_currentLevel = currentLevel;
             makeLevel(m_currentLevel);
+            gridSizeAdjust = m_graphics.PreferredBackBufferHeight/24;
 
         }
         public Grid(int m_size,

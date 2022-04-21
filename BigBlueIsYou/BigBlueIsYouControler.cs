@@ -13,7 +13,7 @@ namespace CS5410
 {
     public class ECSBigBlueIsYouControler : Game
     {
-        private GraphicsDeviceManager m_graphics;
+        public GraphicsDeviceManager m_graphics;
         private IGameState m_currentState;
         private KeyboardInput m_inputKeyboard;
         private GameStateEnum m_nextStateEnum = GameStateEnum.MainMenu;

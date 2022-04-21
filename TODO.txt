@@ -42,6 +42,7 @@ Sound Effect: Each time YOU is moved make a little walking/step sound (should be
 Sound Effect: When WIN is changed
 Keyboard controlls are saved when the program is exited --- missing 5 points the way we have it, lets get other things done before returning to this
 refactor particles to meet standards
+support multiple screen sizes
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
@@ -49,7 +50,8 @@ TODO vvvvvvvvvvvv-------------------------------------------------
 
 fix z undo bugs
 Z to undo one step (stretch goal) figure out deep clone and add clone to the stack in the right spot
-support multiple screen sizes
+Refactor particles again
+flip xy
 
 
 
