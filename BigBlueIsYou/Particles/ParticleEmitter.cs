@@ -62,19 +62,19 @@ namespace CS5410
                 
         public static void makePartilesAroundThing(int x, int y, int spritesize, Texture2D fire){
             for (int i = 0; i < spritesize; i+= 2){
-                Console.WriteLine("This happens");
+                // Console.WriteLine("This happens");
                 PartilesAroundThing((x+2) * spritesize + i, (y+2)* spritesize, fire);
             }
             for (int i = 0; i < spritesize; i+= 2){
-                Console.WriteLine("This happens");
+                // Console.WriteLine("This happens");
                 PartilesAroundThing((x+2) * spritesize + i, (y+2)* spritesize + spritesize, fire);
             }
             for (int i = 0; i < spritesize; i+= 2){
-                Console.WriteLine("This happens");
+                // Console.WriteLine("This happens");
                 PartilesAroundThing((x+2) * spritesize, (y+2)* spritesize + i, fire);
             }
             for (int i = 0; i < spritesize; i+= 2){
-                Console.WriteLine("This happens");
+                // Console.WriteLine("This happens");
                 PartilesAroundThing((x+2) * spritesize + spritesize, (y+2)* spritesize + i, fire);
             }
         }
