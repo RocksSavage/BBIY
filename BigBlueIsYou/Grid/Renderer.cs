@@ -46,7 +46,7 @@ namespace CS5410
             wall = contentManager.Load<Texture2D>("Sprites/wall");
             rock = contentManager.Load<Texture2D>("Sprites/rock");
             flag = contentManager.Load<Texture2D>("Sprites/flag");
-            bigBlue = contentManager.Load<Texture2D>("Sprites/AggieTransparentBackground");
+            bigBlue = contentManager.Load<Texture2D>("Sprites/Aggie");
             floor = contentManager.Load<Texture2D>("Sprites/floor");
             grass = contentManager.Load<Texture2D>("Sprites/grass");
             water = contentManager.Load<Texture2D>("Sprites/water");
@@ -145,7 +145,7 @@ namespace CS5410
             }
             else if (t.m_name == 'b')
             {
-                spriteBatch.Draw(bigBlue, destinationRectangle, aggieSourceRectangle, Color.Blue);
+                spriteBatch.Draw(bigBlue, destinationRectangle, aggieSourceRectangle, Color.SkyBlue);
             }
             else if (t.m_name == 'l')
             {
