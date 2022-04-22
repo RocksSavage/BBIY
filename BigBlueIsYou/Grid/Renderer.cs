@@ -46,7 +46,7 @@ namespace CS5410
             wall = contentManager.Load<Texture2D>("Sprites/wall");
             rock = contentManager.Load<Texture2D>("Sprites/rock");
             flag = contentManager.Load<Texture2D>("Sprites/flag");
-            bigBlue = contentManager.Load<Texture2D>("Sprites/bigblue"); 
+            bigBlue = contentManager.Load<Texture2D>("Sprites/Aggie");
             floor = contentManager.Load<Texture2D>("Sprites/floor");
             grass = contentManager.Load<Texture2D>("Sprites/grass");
             water = contentManager.Load<Texture2D>("Sprites/water");
@@ -75,6 +75,7 @@ namespace CS5410
 
             Rectangle destinationRectangle = new Rectangle((c.coord + BradsShim) * cellDim, cellDim);
             Rectangle sourceRectangle = new Rectangle(new Point(gameStep % 3, 0) * sourceDim, sourceDim);
+            Rectangle aggieSourceRectangle = new Rectangle(0, 0, 100, 100);
             
             //{'W', 'R', 'F', 'B', 'I', 'S', 'P', 'V', 'A', 'Y', 'X', 'N', 'K'}
             if (t.m_name == 'W')
@@ -144,7 +145,7 @@ namespace CS5410
             }
             else if (t.m_name == 'b')
             {
-                spriteBatch.Draw(wall, destinationRectangle, sourceRectangle, Color.White);
+                spriteBatch.Draw(bigBlue, destinationRectangle, aggieSourceRectangle, Color.SkyBlue);
             }
             else if (t.m_name == 'l')
             {

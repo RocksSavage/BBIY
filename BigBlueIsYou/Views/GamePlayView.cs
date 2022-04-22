@@ -459,12 +459,9 @@ namespace CS5410
             ParticleSystem.endParticle();
 
             // deletelater
-            Console.Write("Order: ");
             foreach (Grid grid in gridStack)
             {
-                Console.Write(grid.gameStep.ToString() + ", ");
             }
-            Console.Write("\n");
         }
         public bool canBePushed(Thing pushed, Thing pusher, int direction){
             // if direction is out of bounds return false
