@@ -66,6 +66,7 @@ namespace CS5410
         {
             m_contentManager = contentManager;
             currentLevel = m_level[0];
+            gameStep = 0;
             grid = new Grid(currentLevel, gameStep, m_graphics);
             gridStack = new Stack<Grid>();
             gridStack.Push(grid.getDeepClone()); // always remember original state
@@ -112,21 +113,21 @@ namespace CS5410
                 oldKBS = kBS;
                 loadContent(m_contentManager);
             }
-            if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z))
+            if (kBS.IsKeyUp(Keys.Z) && oldKBS.IsKeyDown(Keys.Z)) // undo
             {
                 oldKBS = kBS;
-                if (gridStack.Count > 0) { // always keep the first state
-
-                    // On 'z' press, restore previous game state (not the current state, which is stored on the top of the stack at all times
-                    if (gridStack.Count > 1)
-                        gridStack.Pop();
-                    grid = gridStack.Peek();
-                    Console.WriteLine($"Popped the Grid Stack r:{gridStack.Count}");
-                }
-                else
+                // On 'z' press, restore previous game state (not the current state, which is stored on the top of the stack at all times
+                if (gridStack.Count > 1) // always keep the first state
+                    gridStack.Pop();
+                grid = gridStack.Peek().getDeepClone();
+                update(gameTime); // force call to update to re-hydrate all the rule-related lists
+                Console.Write($"Popped Grid Stack r:{gridStack.Count}. Order:");
+                Console.Write("Order: ");
+                foreach (Grid grid in gridStack)
                 {
-                     Console.WriteLine($"🚫 pop Grid Stack r:{gridStack.Count}");
+                    Console.Write(grid.gameStep.ToString() + ", ");
                 }
+                Console.Write("\n");
             }
 
             m_inputKeyboard.Update(gameTime);
@@ -148,13 +149,13 @@ namespace CS5410
                MediaPlayer.Play(m_music);
                 musicIsPlaying = true; 
             }
+            wipeRules();        //reset the rules
+            findRules();       // finds the rules
+            checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
             if (moved) {
                 gridStack.Push(grid.getDeepClone());
                 moved = false;
             }
-            wipeRules();        //reset the rules
-            findRules();       // finds the rules
-            checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
             checkWin();
             ParticleSystem.update(gameTime);
         }
@@ -347,8 +348,7 @@ namespace CS5410
                     }
                     if (canMove){
                         grid.m_grid[y.X][y.Y].things.Remove(y);
-                        grid.m_grid[y.X][y.Y-1].things.Add(y);
-                        y.Y = y.Y-1;
+                        grid.m_grid[y.X][y.Y-1].things.Add(new Thing('b',y.X,y.Y-1));
                         generalMove();
                         moved = true;
                         // Console.WriteLine(gridStack.Count);
@@ -379,8 +379,7 @@ namespace CS5410
                     }
                     if (canMove){
                         grid.m_grid[y.X][y.Y].things.Remove(y);
-                        grid.m_grid[y.X][y.Y+1].things.Add(y);
-                        y.Y = y.Y+1;
+                        grid.m_grid[y.X][y.Y+1].things.Add(new Thing(y.m_name, y.X,y.Y+1));
                         generalMove();
                         moved = true;
                         // Console.WriteLine(gridStack.Count);
@@ -411,8 +410,7 @@ namespace CS5410
                     }
                     if (canMove){
                         grid.m_grid[y.X][y.Y].things.Remove(y);
-                        grid.m_grid[y.X-1][y.Y].things.Add(y);
-                        y.X = y.X-1;
+                        grid.m_grid[y.X-1][y.Y].things.Add(new Thing(y.m_name, y.X-1, y.Y));
                         generalMove();
                         moved = true;
                         // Console.WriteLine(gridStack.Count);
@@ -443,8 +441,7 @@ namespace CS5410
                     }
                     if (canMove){
                         grid.m_grid[y.X][y.Y].things.Remove(y);
-                        grid.m_grid[y.X+1][y.Y].things.Add(y);
-                        y.X = y.X+1;
+                        grid.m_grid[y.X+1][y.Y].things.Add(new Thing(y.m_name, y.X+1, y.Y));
                         generalMove();
                         moved = true;
                         // Console.WriteLine(gridStack.Count);
@@ -490,8 +487,7 @@ namespace CS5410
                 }
                 if (grid.m_grid[pushed.X][pushed.Y-1].things.Count == 0 || canBePushed(result, pushed, 12)){
                     grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X][pushed.Y-1].things.Add(pushed);
-                    pushed.Y = pushed.Y-1;
+                    grid.m_grid[pushed.X][pushed.Y-1].things.Add(new Thing(pushed.m_name, pushed.X, pushed.Y - 1));
                     return true;
                 }
             }
@@ -506,8 +502,7 @@ namespace CS5410
                 }
                 if (grid.m_grid[pushed.X][pushed.Y+1].things.Count == 0 || canBePushed(result, pushed, 6)){
                     grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X][pushed.Y+1].things.Add(pushed);
-                    pushed.Y = pushed.Y+1;
+                    grid.m_grid[pushed.X][pushed.Y+1].things.Add(new Thing(pushed.m_name, pushed.X, pushed.Y+1));
                     return true;
                 }
             }
@@ -522,8 +517,7 @@ namespace CS5410
                 }
                 if (grid.m_grid[pushed.X-1][pushed.Y].things.Count == 0 || canBePushed(result, pushed, 9)){
                     grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X-1][pushed.Y].things.Add(pushed);
-                    pushed.X = pushed.X-1;
+                    grid.m_grid[pushed.X-1][pushed.Y].things.Add(new Thing(pushed.m_name, pushed.X -1 , pushed.Y));
                     return true;
                 }
             }
@@ -538,8 +532,7 @@ namespace CS5410
                 }
                 if (grid.m_grid[pushed.X+1][pushed.Y].things.Count == 0 || canBePushed(result, pushed, 3)){
                     grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X+1][pushed.Y].things.Add(pushed);
-                    pushed.X = pushed.X+1;
+                    grid.m_grid[pushed.X+1][pushed.Y].things.Add(new Thing(pushed.m_name, pushed.X + 1, pushed.Y));
                     return true;
                 }
             }
