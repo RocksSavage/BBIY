@@ -128,6 +128,8 @@ namespace CS5410
                     Console.Write(grid.gameStep.ToString() + ", ");
                 }
                 Console.Write("\n");
+
+                ParticleSystem.endParticle();
             }
 
             m_inputKeyboard.Update(gameTime);
@@ -237,6 +239,7 @@ namespace CS5410
                 // Console.WriteLine("thing1" + grid.m_grid[t.X-1][t.Y].things[0].m_name);
                 // Console.WriteLine("thing2" + grid.m_grid[t.X+1][t.Y].things[0].m_name);
                 if (text.Contains(grid.m_grid[t.X-1][t.Y].things[0].m_name) && text.Contains(grid.m_grid[t.X+1][t.Y].things[0].m_name)) {
+                    // "if there is a horizontal rule / sentence"
                     Char obj = grid.m_grid[t.X-1][t.Y].things[0].m_name;
                     Char txt = grid.m_grid[t.X+1][t.Y].things[0].m_name;
                     if (txt == 'Y') performRules(you, Char.ToLower(obj));
@@ -304,10 +307,14 @@ namespace CS5410
             kill = new List<Thing>();
         }
         public void performRules(List<Thing> rule, Char obj){
-            foreach(List<Cell> col in grid.m_grid){           // adds obj to list
-                foreach(Cell c in col){
-                    foreach(Thing t in c.things){
-                        if (t.m_name == obj){
+            foreach (List<Cell> col in grid.m_grid)
+            {           // adds obj to list
+                foreach (Cell c in col)
+                {
+                    foreach (Thing t in c.things)
+                    {
+                        if (t.m_name == obj && !rule.Contains(t))
+                        {
                             rule.Add(t);
                         }
                     }
