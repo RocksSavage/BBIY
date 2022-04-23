@@ -538,8 +538,10 @@ namespace CS5410
                     }
                 }
                 if (grid.m_grid[pushed.X][pushed.Y-1].things.Count == 0 || canBePushed(result, pushed, 12)){
-                    grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X][pushed.Y-1].things.Add(new Thing(pushed.m_name, pushed.X, pushed.Y - 1));
+                    if (grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed))
+                    {
+                        grid.m_grid[pushed.X][pushed.Y - 1].things.Add(new Thing(pushed.m_name, pushed.X, pushed.Y - 1));
+                    }
                     return true;
                 }
             }
@@ -553,8 +555,10 @@ namespace CS5410
                     }
                 }
                 if (grid.m_grid[pushed.X][pushed.Y+1].things.Count == 0 || canBePushed(result, pushed, 6)){
-                    grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X][pushed.Y+1].things.Add(new Thing(pushed.m_name, pushed.X, pushed.Y+1));
+                    if (grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed))
+                    {
+                        grid.m_grid[pushed.X][pushed.Y + 1].things.Add(new Thing(pushed.m_name, pushed.X, pushed.Y + 1));
+                    }
                     return true;
                 }
             }
@@ -568,8 +572,10 @@ namespace CS5410
                     }
                 }
                 if (grid.m_grid[pushed.X-1][pushed.Y].things.Count == 0 || canBePushed(result, pushed, 9)){
-                    grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X-1][pushed.Y].things.Add(new Thing(pushed.m_name, pushed.X -1 , pushed.Y));
+                    if (grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed))
+                    {
+                        grid.m_grid[pushed.X - 1][pushed.Y].things.Add(new Thing(pushed.m_name, pushed.X - 1, pushed.Y));
+                    }
                     return true;
                 }
             }
@@ -583,8 +589,10 @@ namespace CS5410
                     }
                 }
                 if (grid.m_grid[pushed.X+1][pushed.Y].things.Count == 0 || canBePushed(result, pushed, 3)){
-                    grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed);
-                    grid.m_grid[pushed.X+1][pushed.Y].things.Add(new Thing(pushed.m_name, pushed.X + 1, pushed.Y));
+                    if (grid.m_grid[pushed.X][pushed.Y].things.Remove(pushed))
+                    {
+                        grid.m_grid[pushed.X + 1][pushed.Y].things.Add(new Thing(pushed.m_name, pushed.X + 1, pushed.Y));
+                    }
                     return true;
                 }
             }
