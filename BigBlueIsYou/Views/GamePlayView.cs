@@ -122,13 +122,13 @@ namespace CS5410
                     gridStack.Pop();
                 grid = gridStack.Peek().getDeepClone();
                 update(gameTime); // force call to update to re-hydrate all the rule-related lists
-                Console.Write($"Popped Grid Stack r:{gridStack.Count}. Order:");
-                Console.Write("Order: ");
+                Debug.Write($"Popped Grid Stack r:{gridStack.Count}. Order:");
+                Debug.Write("Order: ");
                 foreach (Grid grid in gridStack)
                 {
-                    Console.Write(grid.gameStep.ToString() + ", ");
+                    Debug.Write(grid.gameStep.ToString() + ", ");
                 }
-                Console.Write("\n");
+                Debug.Write("\n");
 
                 ParticleSystem.endParticle();
             }
@@ -242,14 +242,9 @@ namespace CS5410
                 // Console.WriteLine("thing2" + grid.m_grid[t.X+1][t.Y].things[0].m_name);
                 if (text.Contains(grid.m_grid[t.X-1][t.Y].things[0].m_name) && text.Contains(grid.m_grid[t.X+1][t.Y].things[0].m_name)) {
                     // "if there is a horizontal rule / sentence"
-                    Char obj = grid.m_grid[t.X-1][t.Y].things[0].m_name;
-                    Char txt = grid.m_grid[t.X+1][t.Y].things[0].m_name;
-                    if (txt == 'Y') performRules(you, Char.ToLower(obj));
-                    if (txt == 'X') performRules(win, Char.ToLower(obj));
-                    if (txt == 'P') performRules(push, Char.ToLower(obj));
-                    if (txt == 'S') performRules(stop, Char.ToLower(obj));
-                    if (txt == 'N') performRules(sink, Char.ToLower(obj));
-                    if (txt == 'K') performRules(kill, Char.ToLower(obj));
+                    char obj = grid.m_grid[t.X-1][t.Y].things[0].m_name;
+                    char txt = grid.m_grid[t.X+1][t.Y].things[0].m_name;
+                    executeRules(obj, txt);
                         // reorganizes lists according to the rules
                 }
             }
@@ -257,14 +252,9 @@ namespace CS5410
                 // Console.WriteLine("thing1" + grid.m_grid[t.X][t.Y-1].things[0].m_name);
                 // Console.WriteLine("thing2" + grid.m_grid[t.X][t.Y+1].things[0].m_name);
                 if (text.Contains(grid.m_grid[t.X][t.Y-1].things[0].m_name) && text.Contains(grid.m_grid[t.X][t.Y+1].things[0].m_name)) {
-                    Char obj = grid.m_grid[t.X][t.Y-1].things[0].m_name;
-                    Char txt = grid.m_grid[t.X][t.Y+1].things[0].m_name;
-                    if (txt == 'Y') performRules(you, Char.ToLower(obj));
-                    if (txt == 'X') performRules(win, Char.ToLower(obj));
-                    if (txt == 'P') performRules(push, Char.ToLower(obj));
-                    if (txt == 'S') performRules(stop, Char.ToLower(obj));
-                    if (txt == 'N') performRules(sink, Char.ToLower(obj));
-                    if (txt == 'K') performRules(kill, Char.ToLower(obj));
+                    char obj = grid.m_grid[t.X][t.Y-1].things[0].m_name;
+                    char txt = grid.m_grid[t.X][t.Y+1].things[0].m_name;
+                    executeRules(obj, txt);
                 }
             }
             performRules(stop, 'h'); // hedge is stop
@@ -341,6 +331,33 @@ namespace CS5410
             }
 
         }
+        void executeRules(char obj, char txt)
+        {
+            // NOUN IS NOUN case
+            if (objects.Contains(Char.ToLower(txt)))
+            {
+                foreach (List<Cell> col in grid.m_grid)
+                {
+                    foreach (Cell c in col)
+                    {
+                        foreach (Thing thang in c.things)
+                        {
+                            if (thang.m_name == Char.ToLower(obj))
+                            {
+                                thang.m_name = Char.ToLower(txt);
+                            }
+                        }
+                    }
+                }
+            }
+            // NOUN IS VERB case
+            if (txt == 'Y') performRules(you, Char.ToLower(obj));
+            if (txt == 'X') performRules(win, Char.ToLower(obj));
+            if (txt == 'P') performRules(push, Char.ToLower(obj));
+            if (txt == 'S') performRules(stop, Char.ToLower(obj));
+            if (txt == 'N') performRules(sink, Char.ToLower(obj));
+            if (txt == 'K') performRules(kill, Char.ToLower(obj));
+        }
         public void wipeRules(){
             you = new List<Thing>();
             win = new List<Thing>();
@@ -388,7 +405,7 @@ namespace CS5410
                     foreach(Thing w in win){
                         if (w.X == y.X && w.Y == y.Y-1){
                             youWin = true; 
-                            Console.WriteLine("You Win!");
+                            Debug.WriteLine("You Win!");
                         }
                     }
                     foreach(Thing p in push){
@@ -401,7 +418,6 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y-1].things.Add(new Thing(y.m_name,y.X,y.Y-1));
                         generalMove();
                         moved = true;
-                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -432,7 +448,6 @@ namespace CS5410
                         grid.m_grid[y.X][y.Y+1].things.Add(new Thing(y.m_name, y.X,y.Y+1));
                         generalMove();
                         moved = true;
-                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -450,7 +465,7 @@ namespace CS5410
                     foreach(Thing w in win){
                         if (w.X == y.X-1 && w.Y == y.Y){
                             youWin = true; 
-                            Console.WriteLine("You Win!");
+                            Debug.WriteLine("You Win!");
                         }
                     }
                     foreach(Thing p in push){
@@ -463,7 +478,6 @@ namespace CS5410
                         grid.m_grid[y.X-1][y.Y].things.Add(new Thing(y.m_name, y.X-1, y.Y));
                         generalMove();
                         moved = true;
-                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;
@@ -481,7 +495,7 @@ namespace CS5410
                     foreach(Thing w in win){
                         if (w.X == y.X+1 && w.Y == y.Y){
                             youWin = true; 
-                            Console.WriteLine("You Win!");
+                            Debug.WriteLine("You Win!");
                         }
                     }
                     foreach(Thing p in push){
@@ -494,7 +508,6 @@ namespace CS5410
                         grid.m_grid[y.X+1][y.Y].things.Add(new Thing(y.m_name, y.X+1, y.Y));
                         generalMove();
                         moved = true;
-                        // Console.WriteLine(gridStack.Count);
                     }
                 }
                 moveTimer = moveTimer % millisecondsToWait;

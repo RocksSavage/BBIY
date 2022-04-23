@@ -50,6 +50,7 @@ flip xy
 realign particles after xy flip
 bug: when You is anything not Baba, going up (only up??) turns the things back into babas
 bug: if a game has been won, all subsequent games wons no longer have music play when victory is acheived
+get rid of console logs
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
@@ -63,4 +64,3 @@ rework move wait timer it currently feels crappy
 merge BLS branch to master (or dev, which ever one Dean said he would test)
 make custom level to make sure that lava/water are kill if there are no rules set ingame to be so
 delete bin and obj folder
-get rid of console logs
