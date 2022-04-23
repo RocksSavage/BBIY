@@ -156,6 +156,8 @@ namespace CS5410
             findRules();       // finds the rules
             checkKillAndSink();       // checks for things like you touching kill or falling in water or rocks falling in water
             if (moved) {
+                gameStep++; // sprite animations rely on this
+                this.grid.gameStep = gameStep;
                 gridStack.Push(grid.getDeepClone());
                 moved = false;
             }
@@ -516,8 +518,7 @@ namespace CS5410
 
         private void generalMove()
         {
-            gameStep++; // sprite animations rely on this
-            this.grid.gameStep = gameStep;
+
             if (canPlayMoveSound){
                 m_moveSound.Play();
                 if (you.Count > 1){
@@ -526,10 +527,6 @@ namespace CS5410
             }
             ParticleSystem.endParticle();
 
-            // deletelater
-            foreach (Grid grid in gridStack)
-            {
-            }
         }
         public bool canBePushed(Thing pushed, Thing pusher, int direction){
             // if direction is out of bounds return false
