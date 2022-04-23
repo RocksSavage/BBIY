@@ -59,4 +59,4 @@ bug: when you is rocks/walls, trying to go off-stage vertically throws a OutOfIn
 
 
 rework move wait timer it currently feels crappy
-browser integration
+merge BLS branch to master (or dev, which ever one Dean said he would test)
