@@ -333,7 +333,7 @@ namespace CS5410
             m_inputKeyboard.registerCommand(m_controls[3], false, new InputDeviceHelper.CommandDelegate(onMoveRight));
         }
 
-        public void onMoveUp(GameTime gameTime, float scale){
+        public void onMoveLeft(GameTime gameTime, float scale){
             // grid.printGrid();
             moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if(moveTimer > millisecondsToWait){
@@ -365,7 +365,7 @@ namespace CS5410
             }
         }
 
-        public void onMoveDown(GameTime gameTime, float scale){
+        public void onMoveRight(GameTime gameTime, float scale){
             moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if(moveTimer > millisecondsToWait){
                 foreach(Thing y in you){
@@ -396,7 +396,7 @@ namespace CS5410
             }
         }
 
-        public void onMoveLeft(GameTime gameTime, float scale){
+        public void onMoveUp(GameTime gameTime, float scale){
             moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if(moveTimer > millisecondsToWait){
                 foreach(Thing y in you){
@@ -427,7 +427,7 @@ namespace CS5410
             }
         }
 
-        public void onMoveRight(GameTime gameTime, float scale){
+        public void onMoveDown(GameTime gameTime, float scale){
             moveTimer += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if(moveTimer > millisecondsToWait){
                 foreach(Thing y in you){

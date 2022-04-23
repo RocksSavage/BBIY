@@ -81,7 +81,7 @@ namespace CS5410
             for (int i = 2; i < m_X+2; i++){
                 List<Cell> col = new List<Cell>();
                 for (int j = 0; j < m_Y; j++){
-                    Cell cell = new Cell(i, j);
+                    Cell cell = new Cell(j, i);
                     if(level[i][j] != ' '){                // adds background letters like shrubs grass
                         cell.things.Add(new Thing(level[i][j], i-2, j)); 
                     }
