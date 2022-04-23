@@ -18,18 +18,22 @@ namespace CS5410
         private KeyboardState oldKBS;
         private SoundEffect winSound;
         private bool winSoundCanPlay = true;
+        private ContentManager m_contentManager;
+        private bool reload = true;
         private Texture2D fire;
-        private List<ParticleEmitterLine> particles = new List<ParticleEmitterLine>();
+        private List<ParticleEmitterLine> particles;
         private ParticleEmitterLine m_emitter1;
         private MyRandom m_random = new MyRandom();
 
         public override void loadContent(ContentManager contentManager)
         {
+            m_contentManager = contentManager;
             m_font = contentManager.Load<SpriteFont>("Fonts/menu");
             fire = contentManager.Load<Texture2D>("Images/fire");
             winSound = contentManager.Load<SoundEffect>("Audio/WinSound");
             winSoundCanPlay = true;
             int middleY = 10;
+            particles = new List<ParticleEmitterLine>();
             for (int i = 0; i < 1000; i++){
                 int middleX = (int)m_random.nextRange(0, 1900);
                 int spawnTime = (int)m_random.nextRange(500, 10000);
@@ -46,13 +50,19 @@ namespace CS5410
 
         public override GameStateEnum processInput(GameTime gameTime)
         {
+            if (reload) {
+                loadContent(m_contentManager);
+                reload = false;
+            }
             kBS = Keyboard.GetState();
             if (kBS.IsKeyUp(Keys.Escape) && oldKBS.IsKeyDown(Keys.Escape)){
                 oldKBS = kBS;
+                reload = true;
                 return GameStateEnum.MainMenu;
             }
             if (kBS.IsKeyUp(Keys.Enter) && oldKBS.IsKeyDown(Keys.Enter)){
                 oldKBS = kBS;
+                reload = true;
                 return GameStateEnum.MainMenu;
             }
             oldKBS = kBS;

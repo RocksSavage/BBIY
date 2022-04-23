@@ -269,6 +269,47 @@ namespace CS5410
             foreach (Char c in text){
                 performRules(push, c); // all text blocks are pushable
             }
+            bool lavaNotKill = false;
+            bool waterNotKill = false;
+            foreach (Thing y in you) {
+                if (y.m_name == 'v'){
+                    lavaNotKill = true;
+                }
+                if ( y.m_name == 'a'){
+                    waterNotKill = true;
+                }
+            }
+            foreach (Thing w in win) {
+                if (w.m_name == 'v'){
+                    lavaNotKill = true;
+                }
+                if (w.m_name == 'a'){
+                    waterNotKill = true;
+                }
+            }
+            foreach (Thing p in push) {
+                if (p.m_name == 'v'){
+                    lavaNotKill = true;
+                }
+                if (p.m_name == 'a'){
+                    waterNotKill = true;
+                }
+            }
+            foreach (Thing s in stop) {
+                if (s.m_name == 'v'){
+                    lavaNotKill = true;
+                }
+                if (s.m_name == 'a'){
+                    waterNotKill = true;
+                }
+            }
+            if (!lavaNotKill) {
+                performRules(kill, 'v'); // lava is kill
+            }
+            if (!waterNotKill) {
+                performRules(kill, 'a'); // lava is kill
+            }
+
 
             if(you.Count > 0){
                 if(lastYou == ' '){
