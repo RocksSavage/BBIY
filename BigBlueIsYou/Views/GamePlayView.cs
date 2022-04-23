@@ -187,12 +187,13 @@ namespace CS5410
         public void checkKillAndSink(){
             List<Thing> thingsToDelete = new List<Thing>();
             foreach(Thing p in push){
-                foreach(Thing s in sink){
-                    if (p.X == s.X && p.Y == s.Y) {
-                        thingsToDelete.Add(p);
-                        thingsToDelete.Add(s);
+                if (!text.Contains(p.m_name)) {
+                    foreach(Thing s in sink){
+                        if (p.X == s.X && p.Y == s.Y) {
+                            thingsToDelete.Add(p);
+                            thingsToDelete.Add(s);
+                        }
                     }
-
                 }
             }
             foreach(Thing y in you){
