@@ -62,3 +62,4 @@ bug?: when you enter
 rework move wait timer it currently feels crappy
 merge BLS branch to master (or dev, which ever one Dean said he would test)
 make custom level to make sure that lava/water are kill if there are no rules set ingame to be so
+delete bin and obj folder
