@@ -355,7 +355,7 @@ namespace CS5410
                     }
                     if (canMove){
                         grid.m_grid[y.X][y.Y].things.Remove(y);
-                        grid.m_grid[y.X][y.Y-1].things.Add(new Thing('b',y.X,y.Y-1));
+                        grid.m_grid[y.X][y.Y-1].things.Add(new Thing(y.m_name,y.X,y.Y-1));
                         generalMove();
                         moved = true;
                         // Console.WriteLine(gridStack.Count);
