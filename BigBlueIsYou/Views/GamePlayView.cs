@@ -211,7 +211,7 @@ namespace CS5410
                 }
             }
             foreach(Thing t in thingsToDelete){
-                ParticleSystem.makeDeathPartiles((t.X+2)*screenSizeOffset+(screenSizeOffset/2), (t.Y+2)*screenSizeOffset+(screenSizeOffset/2), fire);
+                ParticleSystem.makeDeathPartiles((t.Y+2)*screenSizeOffset+(screenSizeOffset/2), (t.X+2)*screenSizeOffset+(screenSizeOffset/2), fire);
                 grid.m_grid[t.X][t.Y].things.Remove(t);
                 push.Remove(t);
                 you.Remove(t);
@@ -277,7 +277,7 @@ namespace CS5410
                 }
                 if (you[0].m_name != lastYou){
                     foreach(Thing y in you){
-                        ParticleSystem.makePartilesAroundThing(y.X, y.Y, m_graphics.PreferredBackBufferHeight/24, fire);
+                        ParticleSystem.makePartilesAroundThing(y.Y, y.X, m_graphics.PreferredBackBufferHeight/24, fire);
                     }
                     lastYou = you[0].m_name;
                 }
@@ -291,7 +291,7 @@ namespace CS5410
                 if (win[0].m_name != lastWin){
                     winChangedSound.Play();
                     foreach(Thing w in win){
-                        ParticleSystem.makePartilesAroundThing(w.X, w.Y, m_graphics.PreferredBackBufferHeight/24, fire);
+                        ParticleSystem.makePartilesAroundThing( w.Y, w.X, m_graphics.PreferredBackBufferHeight/24, fire);
                     }
                     lastWin = win[0].m_name;
                 }

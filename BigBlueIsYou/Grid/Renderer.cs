@@ -71,7 +71,7 @@ namespace CS5410
         public static void PrintThing(Thing t, Cell c, int gameStep, SpriteBatch spriteBatch, SpriteFont font)
         {
             // so there s something inthere water.
-            Point BradsShim = new Point(0, 2);
+            Point BradsShim = new Point(2, 0);
 
             Rectangle destinationRectangle = new Rectangle((c.coord + BradsShim) * cellDim, cellDim);
             Rectangle sourceRectangle = new Rectangle(new Point(gameStep % 3, 0) * sourceDim, sourceDim);
