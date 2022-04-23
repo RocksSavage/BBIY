@@ -29,6 +29,7 @@ namespace CS5410
         public int currentLevel = 1;
         public int gameStep = 0;
         private SoundEffect m_moveSound;
+        private bool canPlayMoveSound;
         private SoundEffect winChangedSound;
         private Song m_music;
         private bool musicIsPlaying = false;
@@ -141,7 +142,7 @@ namespace CS5410
                 loadContent(m_contentManager);
                 return GameStateEnum.YouWin;
             }
-
+            canPlayMoveSound = true;
             oldKBS = kBS;
             return GameStateEnum.GamePlay;
         }
@@ -503,7 +504,12 @@ namespace CS5410
         {
             gameStep++; // sprite animations rely on this
             this.grid.gameStep = gameStep;
-            m_moveSound.Play();
+            if (canPlayMoveSound){
+                m_moveSound.Play();
+                if (you.Count > 1){
+                    canPlayMoveSound = false;
+                }
+            }
             ParticleSystem.endParticle();
 
             // deletelater
