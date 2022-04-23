@@ -51,6 +51,7 @@ realign particles after xy flip
 bug: when You is anything not Baba, going up (only up??) turns the things back into babas
 bug: if a game has been won, all subsequent games wons no longer have music play when victory is acheived
 get rid of console logs
+bug: when you is rocks/walls, the sprites don't animate
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
@@ -58,7 +59,6 @@ TODO vvvvvvvvvvvv-------------------------------------------------
 
 
 bug: when you is rocks/walls, trying to go off-stage vertically throws a OutOfIndex error. Actually, I don't know what triggers this
-bug: when you is rocks/walls, the sprites don't animate
 
 rework move wait timer it currently feels crappy
 merge BLS branch to master (or dev, which ever one Dean said he would test)
