@@ -46,15 +46,16 @@ support multiple screen sizes
 Refactor particles again
 fix z undo bugs
 Z to undo one step (stretch goal) figure out deep clone and add clone to the stack in the right spot
+flip xy
+realign particles after xy flip
+bug: when You is anything not Baba, going up (only up??) turns the things back into babas
+bug: if a game has been won, all subsequent games wons no longer have music play when victory is acheived
 
 Done ^^^^^^^^^^^^-------------------------------------------------
 to move these in vs code highlight all five lines hold alt and press up or down. Or must move the one completed line up.
 TODO vvvvvvvvvvvv-------------------------------------------------
 
-flip xy
 
-bug: when You is anything not Baba, going up (only up??) turns the things back into babas
-bug: if a game has been won, all subsequent games wons no longer have music play when victory is acheived
 bug: when you is rocks/walls, trying to go off-stage vertically throws a OutOfIndex error. Actually, I don't know what triggers this
 
 bug?: when you enter 
