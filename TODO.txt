@@ -57,6 +57,7 @@ bug: when You is anything not Baba, going up (only up??) turns the things back i
 bug: if a game has been won, all subsequent games wons no longer have music play when victory is acheived
 bug: when you is rocks/walls, trying to go off-stage vertically throws a OutOfIndex error. Actually, I don't know what triggers this
 
-
+bug?: when you enter 
 rework move wait timer it currently feels crappy
 merge BLS branch to master (or dev, which ever one Dean said he would test)
+make custom level to make sure that lava/water are kill if there are no rules set ingame to be so
